@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- (c) ammap.com | SVG weather icons -->
+<!-- Severe Thunderstorm | Contributed by hsoJ95 on GitHub: https://github.com/hsoj95 -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64" height="64" viewbox="0 0 64 64">
+    <defs>
+        <filter id="blur" width="200%" height="200%">
+            <feGaussianBlur in="SourceAlpha" stdDeviation="3" />
+            <feOffset dx="0" dy="4" result="offsetblur" />
+            <feComponentTransfer>
+                <feFuncA type="linear" slope="0.05" />
+            </feComponentTransfer>
+            <feMerge>
+                <feMergeNode/>
+                <feMergeNode in="SourceGraphic" />
+            </feMerge>
+        </filter>
+    </defs>
+    <g filter="url(#blur)" id="thunder">
+        <g transform="translate(20,10)">
+            <g class="am-weather-cloud-1">
+                <path d="M47.7,35.4     c0-4.6-3.7-8.2-8.2-8.2c-1,0-1.9,0.2-2.8,0.5c-0.3-3.4-3.1-6.2-6.6-6.2c-3.7,0-6.7,3-6.7,6.7c0,0.8,0.2,1.6,0.4,2.3     c-0.3-0.1-0.7-0.1-1-0.1c-3.7,0-6.7,3-6.7,6.7c0,3.6,2.9,6.6,6.5,6.7l17.2,0C44.2,43.3,47.7,39.8,47.7,35.4z"
+                    fill="#666" stroke="white" stroke-linejoin="round" stroke-width="1.2" transform="translate(-10,-6), scale(0.6)"
+                />
+            </g>
+            <g>
+                <path d="M47.7,35.4     c0-4.6-3.7-8.2-8.2-8.2c-1,0-1.9,0.2-2.8,0.5c-0.3-3.4-3.1-6.2-6.6-6.2c-3.7,0-6.7,3-6.7,6.7c0,0.8,0.2,1.6,0.4,2.3     c-0.3-0.1-0.7-0.1-1-0.1c-3.7,0-6.7,3-6.7,6.7c0,3.6,2.9,6.6,6.5,6.7l17.2,0C44.2,43.3,47.7,39.8,47.7,35.4z"
+                    fill="#333" stroke="white" stroke-linejoin="round" stroke-width="1.2" transform="translate(-20,-11)" />
+            </g>
+            <g transform="translate(-9,28), scale(1.2)">
+                <polygon class="am-weather-stroke" fill="orange" stroke="white" stroke-width="1" points="14.3,-2.9 20.5,-2.9 16.4,4.3 20.3,4.3 11.5,14.6 14.9,6.9 11.1,6.9"
+                />
+            </g>
+            <g id="error" transform="translate(23, 25)">
+                <path d="M7.77911118,2.90598694 L1.78786622,13.0231308 L1.78786622,13.0231308 C1.2250391,13.9735514 1.53924574,15.2002811 2.48966639,15.7631082 C2.79820001,15.9458179 3.15018031,16.0422194 3.50875504,16.0422194 L15.491245,16.0422194 L15.491245,16.0422194 C16.5958145,16.0422194 17.491245,15.1467889 17.491245,14.0422194 C17.491245,13.6836447 17.3948435,13.3316644 17.2121338,13.0231308 L11.2208888,2.90598694 L11.2208888,2.90598694 C10.6580617,1.95556629 9.431332,1.64135966 8.48091135,2.20418678 C8.19172737,2.37543789 7.95036229,2.61680296 7.77911118,2.90598694 Z"
+                    id="Shape" fill="#CC0000" fill-rule="nonzero"></path>
+                <path d="M9.5,10.5 L9.5,5.5" id="Line" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round"></path>
+                <circle id="Oval" fill="#FFFFFF" cx="9.5" cy="13" r="1"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

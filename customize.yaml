@@ -1,0 +1,89 @@
+light.led_canape:
+  supported_features: 128
+  effect: '["colorloop","random"]'
+light.led_cuisine:
+  supported_features: 21
+light.led_cuisine_tuya:
+  supported_features: 21
+person.geraldine:
+  gps_accuracy: 30
+device_tracker.iphone_de_geraldine:
+  friendly_name: Géraldine Location
+  gps_accuracy: 30
+switch.pc:
+  icon: mdi:microsoft-windows
+light.54802417d8f15bac8377:
+  supported_features: 128
+  max_mireds: 500
+light.bff01fc692662a1a82rq8d:
+  supported_features: 128
+sensor.hue_motion_sensor_1_temperature:
+  friendly_name: Température intérieure
+sensor.temperature_interieure:
+  device_class: temperature
+binary_sensor.motion_sensor_ascenseur:
+  device_class: door
+binary_sensor.motion_sensor_escaliers:
+  device_class: door
+sensor.geraldine_temps_a_domicile:
+  device_class: timestamp
+sensor.quentin_temps_a_domicile:
+  device_class: timestamp
+switch.fake_heater:
+  hide: 'true'
+switch.ambihue:
+  icon: mdi:television-ambient-light
+sensor.geraldine_presence:
+  entity_picture: /api/image/serve/37e827dfc658536f331373fd04514048/512x512
+sensor.quentin_presence:
+  entity_picture: /api/image/serve/b34bb8a5fe1a2e43baf5161ee2fac840/512x512
+light.colorikea:
+  supported_features: 128
+  supported_color_modes:
+  - hs
+  effect_list: []
+  effect: none
+light.piece_principale:
+  supported_features: 128
+light.salle_a_manger:
+  supported_features: 128
+light.salon:
+  supported_features: 128
+light.chambre:
+  supported_features: 128
+light.bureau:
+  supported_features: 128
+light.led_chambre:
+  supported_features: 128
+media_player.mi_box_chambre:
+  icon: mdi:speaker
+media_player.television:
+  icon: mdi:speaker
+sensor.mebaboom_3_battery:
+  device_class: battery
+  state_class: measurement
+  unit_of_measurement: '%'
+switch.modulo2:
+  icon: mdi:leaf
+vacuum.xiaomi_vacuum_cleaner:
+  friendly_name: Aspirateur
+cover.baie_vitree:
+  device_class: shade
+cover.haut_canape:
+  device_class: shutter
+cover.chambre_1_gauche:
+  device_class: shutter
+cover.chambre_1_droite:
+  device_class: shutter
+cover.chambre_2_droite:
+  device_class: shutter
+cover.chambre_2_gauche:
+  device_class: shutter
+cover.couloir:
+  device_class: shutter
+cover.salle_de_bain:
+  device_class: shutter
+light.table_salle_a_manger:
+  icon: mdi:ceiling-light-multiple
+light.hotte_cuisine:
+  icon: mdi:light-recessed

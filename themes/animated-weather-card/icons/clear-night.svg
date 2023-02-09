@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="33" height="33" viewbox="0 0 17 17" style="padding: 0.3rem;">
+<defs>
+	<filter id="blur" width="200%" height="200%">
+		<feComponentTransfer>
+			<feFuncA type="linear" slope="0.05"/>
+		</feComponentTransfer>
+		<feMerge> 
+			<feMergeNode/>
+			<feMergeNode in="SourceGraphic"/> 
+		</feMerge>
+	</filter>
+	<style type="text/css"><![CDATA[
+/* MOON */
+@keyframes am-weather-moon {
+	0% {
+		-webkit-transform: rotate(0deg);
+		-moz-transform: rotate(0deg);
+		-ms-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+	10% {
+		-webkit-transform: rotate(15deg);
+		-moz-transform: rotate(15deg);
+		-ms-transform: rotate(15deg);
+		transform: rotate(15deg);
+	}
+	20% {
+		-webkit-transform: rotate(0deg);
+		-moz-transform: rotate(0deg);
+		-ms-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+}
+.am-weather-moon {
+	-webkit-animation-name: am-weather-moon;
+	-moz-animation-name: am-weather-moon;
+	-ms-animation-name: am-weather-moon;
+	animation-name: am-weather-moon;
+	-webkit-animation-duration: 18s;
+	-moz-animation-duration: 18s;
+	-ms-animation-duration: 18s;
+	animation-duration: 18s;
+	-webkit-animation-timing-function: linear;
+	-moz-animation-timing-function: linear;
+	-ms-animation-timing-function: linear;
+	animation-timing-function: linear;
+	-webkit-animation-iteration-count: infinite;
+	-moz-animation-iteration-count: infinite;
+	-ms-animation-iteration-count: infinite;
+	animation-iteration-count: infinite;
+	-webkit-transform-origin: 12.5px 15.15px 0; /* TODO FF CENTER ISSUE */
+	-moz-transform-origin: 12.5px 15.15px 0; /* TODO FF CENTER ISSUE */
+	-ms-transform-origin: 12.5px 15.15px 0; /* TODO FF CENTER ISSUE */
+	transform-origin: 12.5px 15.15px 0; /* TODO FF CENTER ISSUE */
+}
+
+/* EASING */
+.am-weather-easing-ease-in-out {
+	-webkit-animation-timing-function: ease-in-out;
+	-moz-animation-timing-function: ease-in-out;
+	-ms-animation-timing-function: ease-in-out;
+	animation-timing-function: ease-in-out;
+}]]></style>
+	</defs>
+	<g filter="url(#blur)" id="night">
+		<g transform="translate(0,0)">
+			<g class="am-weather-moon-star-1">
+				<polygon fill="orange" points="3.3,1.5 4,2.7 5.2,3.3 4,4 3.3,5.2 2.7,4 1.5,3.3 2.7,2.7" stroke="none" stroke-miterlimit="10"/>
+			</g>
+			<g class="am-weather-moon-star-2">
+				<polygon fill="orange" points="3.3,1.5 4,2.7 5.2,3.3 4,4 3.3,5.2 2.7,4 1.5,3.3 2.7,2.7" stroke="none" stroke-miterlimit="10" transform="translate(20,10)"/>
+			</g>
+			<g class="am-weather-moon">
+				<path d="M14.5,13.2c0-3.7,2-6.9,5-8.7   c-1.5-0.9-3.2-1.3-5-1.3c-5.5,0-10,4.5-10,10s4.5,10,10,10c1.8,0,3.5-0.5,5-1.3C16.5,20.2,14.5,16.9,14.5,13.2z" fill="orange" stroke="orange" stroke-linejoin="round" stroke-width="2"/>
+			</g>
+		</g>
+	</g>
+</svg>

@@ -1,0 +1,239 @@
+#Noctis was my initial theme, it's now modified and maintened by me.
+
+noctis:  
+  card-mod-root-yaml: |
+    .: |
+      @media only screen and (max-width: 600px) {
+          app-header {
+            display: none;
+            opacity: 0;
+          }
+      }
+
+  # Fonts
+  primary-font-family: 'sans-serif'
+  paper-font-common-base_-_font-family: "var(--primary-font-family)"
+  paper-font-common-code_-_font-family: "var(--primary-font-family)"
+  paper-font-body1_-_font-family: "var(--primary-font-family)"
+  paper-font-subhead_-_font-family: "var(--primary-font-family)"
+  paper-font-headline_-_font-family: "var(--primary-font-family)"
+  paper-font-caption_-_font-family: "var(--primary-font-family)"
+  paper-font-title_-_font-family: "var(--primary-font-family)"
+  ha-card-header-font-family: "var(--primary-font-family)"
+
+  # Text
+  text-color: '#ffffff' 
+  primary-text-color: 'var(--text-color)'
+  text-primary-color: 'var(--text-color)'
+  secondary-text-color: "#BAC0C6"
+  text-medium-light-color: '#A0A2A8'
+  text-medium-color: '#80828A'
+  disabled-text-color: '#626569'
+  primary-color: 'var(--accent-color)'
+
+  # Text Fields an Dropdown
+  mdc-text-field-fill-color: 'var(--background-color)'
+  mdc-text-field-ink-color: 'var(--text-color)'
+  mdc-select-fill-color: 'var(--background-color)'
+  mdc-text-field-label-ink-color: 'var(--secondary-text-color)'
+  input-fill-color: 'var(--background-color)'
+  input-ink-color: 'var(--text-color)'
+  input-label-ink-color: 'var(--text-color)'
+  input-disabled-fill-color: 'var(--background-color)'
+  input-disabled-ink-color: 'var(--disabled-text-color)'
+  input-disabled-label-ink-color: 'var(--disabled-text-color)'
+  input-idle-line-color: 'var(--background-color)'
+  input-dropdown-icon-color: 'var(--secondary-text-color)'
+  input-hover-line-color: 'var(--primary-color)'
+  code-editor-background-color: '#222c40'
+  codemirror-property: 'var(--accent-color)'
+  
+  # Main Colors
+  app-header-background-color: '#242e42'
+  header-height: 48px
+  accent-color: '#4089ed'
+  accent-medium-color: 'var(--accent-color)'
+  #entities-divider-color: '#2e4a74'
+
+  # Background
+  background-color: '#242e42'
+  primary-background-color: 'var(--background-color)'
+  #background-color-2: '#20293c' 
+  background-color-2: '#2e4a74' #'#1d2330'
+  secondary-background-color: 'none'
+  markdown-code-background-color: 'var(--background-color)'
+  #opacity: "0"
+  
+  # Card
+  card-background-color: 'var(--ha-card-background)'
+  ha-card-background: '#1d2330' #'rgba(43,55,78,1)' #'linear-gradient(145deg, #273246, #2e3b53)'
+  ha-card-box-shadow: 'none' #'3px 3px 13px -6px rgba(17,35,52,1)'
+  ha-card-border-radius: '28px'
+  ha-card-border-style: 'none !important'
+  ha-card-border-width: 'none !important'
+  ha-card-border-color: 'none !important'
+#   ha-card-background-position: "50% 360%"
+#   ha-card-background-size: "140% 0%"
+#   ha-card-transition: "background 0s"
+#   background-position: "50% 360%"
+#   background-size: "140% 0%"
+  border-color: 'none'
+  grid-card-gap: '14px'
+  border-style: 'none !important'
+
+  # Icons
+  paper-item-icon-color: '#EBEBEB'
+  paper-item-icon-active-color: 'var(--accent-color)'
+  
+  # Sidebar
+  sidebar-background-color: 'var(--background-color)'
+  sidebar-icon-color: '#98a7b9'
+  sidebar-selected-icon-color: 'var(--accent-color)'
+  sidebar-selected-text-color: 'var(--text-color)'
+  paper-listbox-background-color: 'var(--sidebar-background-color)'
+  divider-color: 'var(--background-color)'
+  light-primary-color: 'var(--ha-card-background)'
+
+  # Sliders
+  paper-slider-knob-color: 'var(--accent-color)'
+  paper-slider-pin-color: 'var(--background-color-2)'
+  paper-slider-active-color: 'var(--accent-color)'
+  paper-slider-container-color: 'var(--background-color-2)'
+  #paper-slider-knob-height: '20px'
+  #paper-progress-height: '12px'
+  #paper-slider-height: '12px'
+  #paper-slider-border-radius: '12px'
+  #ha-slider-border-radius: '12px'
+  #ha-slider-background: 'blue'
+
+  # Toggle:
+  paper-toggle-button-checked-bar-color: 'var(--accent-color)'
+  mdc-theme-primary: 'var(--accent-color)'
+
+  # Switch
+  switch-unchecked-color: '#70889e'
+  switch-checked-button-color: 'var(--accent-color)'
+  switch-unchecked-track-color: 'var(--background-color-2)'
+  switch-checked-track-color: 'var(--background-color-2)'
+
+  # Radio Button
+  paper-radio-button-checked-color: 'var(--accent-color)'
+
+  # Popups
+  more-info-header-background: 'var(--secondary-background-color)'
+  paper-dialog-background-color: 'var(--background-color)' #'rgba(47,59,82,0.4)'
+
+  # Tables
+  table-row-background-color: 'var(--background-color)'
+  table-row-alternative-background-color: 'var(--ha-card-background)'
+
+  # Badges
+  label-badge-background-color: 'var(--background-color)'
+  label-badge-text-color: 'var(--text-primary-color)'
+  label-badge-red: 'rgba(73,85,108,1)'
+  label-badge-blue: 'rgba(26,137,245,1)'
+  label-badge-green: 'rgba(0,202,139,1)'
+  label-badge-yellow: 'rgba(222,176,107,1)'
+
+  paper-input-container-focus-color: 'var(--accent-color)'
+  
+  # Custom Header
+  ch-background: 'var(--background-color)'
+  ch-active-tab-color: 'var(--accent-color)'
+  ch-notification-dot-color: 'var(--accent-color)'
+  ch-all-tabs-color: 'var(--sidebar-icon-color)'
+  ch-tab-indicator-color: 'var(--accent-color)'
+
+  # Mini Mediaplayer
+  mini-media-player-base-color: 'var(--text-color)'
+  mini-media-player-accent-color: 'var(--accent-color)'
+
+  # Alarm
+  alarm-color-armed: 'rgba(247,53,67,1)'
+
+
+  card-mod-theme: noctis
+    
+  card-mod-more-info-yaml: |
+     $: |
+      .mdc-dialog .mdc-dialog__scrim {
+         backdrop-filter: blur(15px);
+         -webkit-backdrop-filter: blur(15px);
+         background: rgba(0,0,0,.6);
+      } 
+      .mdc-dialog .mdc-dialog__container .mdc-dialog__surface {
+         box-shadow: none !important;
+         border-radius: var(--ha-card-border-radius);
+      }
+     .: |
+      :host {
+         --ha-card-box-shadow: none;
+      }
+  card-mod-view-yaml: |
+    hui-sidebar-view:
+      $: |
+        @media only screen and (min-width: 768px) {
+            .container {
+              max-width: 520px;
+              margin: auto !important;
+              width: -webkit-fill-available;
+            }
+        }
+        #wrapper: |
+          $: |
+            #progressContainer {
+                border-radius: 14px !important;
+        }
+        # .container::before {
+        #   content: '';
+        #   width: 100%;
+        #   height: 100%;
+        #   background: black;
+        #   opacity: 0;
+        #   position: absolute;
+        #   z-index: 10000;
+        # }
+      .: |
+        "#view>hui-view>hui-sidebar-view$#main>hui-card-options:nth-child(7)>vertical-stack-in-card$ha-card>div>hui-horizontal-stack-card$#root>hui-grid-card$#root>hui-entities-card$#states>div:nth-child(4)>slider-entity-row$div>ha-slider$#sliderBar$#progressContainer" {
+            border-radius: 14px !important;
+        }
+
+    
+  card-mod-card: |
+    ha-card {
+      transition: none;
+      #background-position: 50% 360%;
+      #background-size: 140% 0%;
+      border-style: none !important;
+    }
+    
+    # ha-card > div > hui-horizontal-stack-card:
+    #   $: |
+    #     #root > hui-grid-card:
+    #       $: |
+    #         #root > hui-entities-card:
+    #           $: |
+    #             #states > div:nth-child(4) > slider-entity-row:
+    #             $: |
+    #               div > ha-slider:
+    #                 $: |
+    #                   #sliderBar:
+    #                     $: | 
+    #                       #progressContainer {
+    #                         border-radius: 14px !important;
+    #                       }
+                         
+    
+#   card-mod-slider-yaml: |
+#     first$second$: |
+#       #progressContainer {
+#         border-radius: 14px !important;
+#       }
+    
+#   card-mod-view-yaml: |
+
+#         hui-sidebar-view {
+#           max-width: 520px;
+#           margin: auto;
+#           width: -webkit-fill-available;
+#         }

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<svg width="800" height="800" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+ <style>
+  <![CDATA[#egei1vwea3mi3_to {animation: egei1vwea3mi3_to__to 9000ms linear infinite normal forwards}@keyframes egei1vwea3mi3_to__to { 0% {transform: translate(51.200000px,0px)} 11.111111% {transform: translate(85.333333px,-1.013862px)} 16.666667% {transform: translate(102.400000px,0px)} 33.333333% {transform: translate(51.200000px,0px)} 50% {transform: translate(51.200000px,0px)} 66.666667% {transform: translate(-0px,0px)} 83.333333% {transform: translate(51.200000px,0px)} 100% {transform: translate(51.200000px,0px)} }]]>
+ </style>
+ <g class="layer">
+  <title>Layer 1</title>
+  <g id="egei1vwea3mi3_to"/>
+  <g id="svg_1">
+   <circle cx="144" cy="144" fill="orange" id="egei1vwea3mi2" r="96" transform="matrix(1 0 0 1 416 176)"/>
+   <path d="m525.491206,336.025603c-11.9552,-59.212801 -63.820801,-102.425602 -125.491202,-102.425602c-51.225601,0 -97.203201,30.4896 -117.350402,76.825601c-48.409601,1.152 -87.449601,40.883201 -87.449601,89.574401c0,49.408001 40.192001,89.600001 89.600001,89.600001l243.200004,0c42.342401,0 76.800001,-34.457601 76.800001,-76.800001c0,-43.187201 -36.428801,-77.875201 -79.308801,-76.774401l0,0.000001z" fill="#57A0EE" id="egei1vwea3mi3"/>
+  </g>
+ </g>
+</svg>

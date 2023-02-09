@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<svg width="800" height="800" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+ <style>
+  <![CDATA[#esic8yxwm7h2_to {animation: esic8yxwm7h2_to__to 6000ms linear infinite normal forwards}@keyframes esic8yxwm7h2_to__to { 0% {transform: translate(0px,0px)} 50% {transform: translate(40.000000px,40.000000px)} 100% {transform: translate(0px,0px)} }#esic8yxwm7h2_ts {animation: esic8yxwm7h2_ts__ts 6000ms linear infinite normal forwards}@keyframes esic8yxwm7h2_ts__ts { 0% {transform: scale(1,1)} 50% {transform: scale(0.900000,0.900000)} 100% {transform: scale(1,1)} }]]>
+ </style>
+ <g class="layer">
+  <title>Layer 1</title>
+  <g id="esic8yxwm7h2_to" transform="translate(0,0)">
+   <g id="esic8yxwm7h2_ts" transform="scale(1,1)">
+    <circle fill="orange" id="esic8yxwm7h2" r="224" transform="translate(400,400)"/>
+   </g>
+  </g>
+ </g>
+</svg>

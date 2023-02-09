@@ -1,0 +1,2248 @@
+default_config:
+ffmpeg:
+python_script:
+media_extractor:
+wake_on_lan:
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+
+homeassistant:
+  external_url: !secret ha_external_url
+  internal_url: http://192.168.0.9:8123
+  customize: !include customize.yaml
+  allowlist_external_dirs:
+    - /config/www
+    - /config/statistics
+    - /config/snapshots/
+    - /config/faces/
+
+browser_mod:  
+  disable:
+    - all
+
+http:
+  use_x_forwarded_for: true
+  trusted_proxies:
+    - 172.30.33.0/24
+
+frontend:
+  themes: !include_dir_merge_named themes
+  extra_module_url:
+    - /hacsfiles/lovelace-card-mod/card-mod.js
+
+zone:
+  - name: Home
+    latitude: !secret latitude
+    longitude: !secret longitude
+    radius: 200
+    icon: mdi:home
+
+tts:
+  - platform: google_translate
+    service_name: google_say
+
+waste_collection_schedule:
+  sources:
+    - name: recycleapp_be
+      args:
+        postcode: !secret postcode
+        street: !secret street
+        house_number: !secret house_number
+      customize:
+        - type: Non-recyclable and non-hazardous waste
+          alias: Collecte déchets résiduelles
+          icon: mdi:trash-can-outline
+        - type: Organic waste
+          alias: Collecte déchets organiques
+          icon: mdi:trash-can-outline
+        - type: PMD
+          alias: Collecte poubelles PMC
+          icon: mdi:trash-can-outline
+        - type: Paper-cardboard
+          alias: Collecte papiers et cartons
+          icon: mdi:trash-can-outline
+      calendar_title: Collecte des déchets
+
+slide:
+  username: !secret mail
+  password: !secret pw1
+  scan_interval: 5
+  
+group:
+  anyone_home:
+    name: Anyone is home
+    entities:
+      - person.quentin
+      - person.geraldine2
+        
+fan:
+  - platform: template
+    fans:
+      hotte_cuisine:
+        unique_id: hotte
+        friendly_name: "Hotte cuisine"
+        value_template: "{{ states('input_boolean.hotte_state') }}"
+        percentage_template: "{{ states('input_text.hotte_fan_speed') | int }}"
+        turn_on:
+          - service: fan.set_percentage
+            target:
+              entity_id: fan.hotte_cuisine
+            data:
+              percentage: 25
+          - service: remote.send_command
+            target:
+              entity_id: remote.broadlink_remote_remote
+            data:
+              device: hote_cuisine
+              command: 'hote_on'
+          - service: input_boolean.turn_on
+            target:
+              entity_id: input_boolean.hotte_state
+        turn_off:
+          - service: remote.send_command
+            target:
+              entity_id: remote.broadlink_remote_remote
+            data:
+              device: hote_cuisine
+              command: 'hote_off'
+          - service: input_boolean.turn_off
+            target:
+              entity_id: input_boolean.hotte_state
+          - service: fan.set_percentage
+            target:
+              entity_id: fan.hotte_cuisine
+            data:
+              percentage: 0
+        set_percentage:
+          - service: python_script.fan_speed_control
+            data_template:
+              fan_speed: "{{ percentage }}"
+              fan_speed_entity_id: 'input_text.hotte_fan_speed'
+              fan_entity_id: 'fan.hotte_cuisine'
+              fan_speed_count: 4
+              service_domain: 'remote'
+              service: 'send_command'
+              service_data_increase:
+                entity_id: remote.broadlink_remote_remote
+                device: hote_cuisine
+                command: hote_less
+              service_data_decrease:
+                entity_id: remote.broadlink_remote_remote
+                device: hote_cuisine
+                command: hote_more
+        speed_count: 4
+
+media_player:
+  - platform: universal
+    name: Musique
+    children:
+      - media_player.youtube
+      - media_player.salon
+    state_template: "{{ states('media_player.salon_2') }}"
+    commands: 
+      turn_off: 
+        service: media_player.turn_off
+        data:
+          entity_id: 
+            - media_player.salon_2
+            - media_player.youtube
+      turn_on: 
+        service: media_player.turn_on
+        data:
+          entity_id: media_player.salon_2
+      volume_up:
+        service: media_player.volume_up
+        data:
+          entity_id: media_player.salon_2
+      volume_down:
+        service: media_player.volume_down
+        data:
+          entity_id: media_player.salon_2
+      select_source:
+        service: media_player.select_source
+        target:
+          entity_id: media_player.salon_2
+        data:
+          source: "{{ source }}"
+      volume_set:
+        service: media_player.volume_set
+        target:
+          entity_id: media_player.salon_2
+        data:
+          volume_level: "{{ volume_level }}"
+    attributes:
+      volume_level: media_player.salon_2|volume_level
+      source: media_player.salon_2|source
+      source_list: media_player.salon_2|source_list
+      sound_mode_list: media_player.salon_2|sound_mode_list
+      state: media_player.salon_2
+
+light:
+#.  My custom integration
+  - platform: philips_ambilight
+    name: Ambilight
+    host: 192.168.0.24
+    username: !secret philips_username
+    password: !secret philips_password
+    
+  - platform: template
+    lights:
+      hotte_cuisine:
+        friendly_name: "Hotte cuisine"
+        value_template: "{{ is_state('input_boolean.lampe_hote_state', 'on') }}"
+        turn_on:
+          service: script.hote_light_toggle
+        turn_off:
+          service: script.hote_light_toggle
+          
+  - platform: group
+    name: Salon
+    entities:
+      - light.ambilight
+      - light.spots_haut_tv
+      - light.spots_canape_salle_a_manger
+      - light.bas_tv
+      - light.led_canape
+
+  - platform: group
+    name: Pièce principale
+    entities:
+      - light.ambilight
+      - light.lampadaire
+      - light.bas_tv
+      - light.table_salle_a_manger_1
+      - light.table_salle_a_manger_2
+      - light.table_salle_a_manger_3
+      - light.bar_cuisine_1
+      - light.bar_cuisine_2
+      - light.led_canape
+      - light.led_salle_a_manger
+      - light.led_cuisine
+      
+  - platform: group
+    name: Toutes les lampes
+    entities:
+      - light.ambilight
+      - light.lampadaire
+      - light.colorikea
+      - light.hue_white_candle_1 #Chambre chevet gauche
+      - light.hue_white_candle_2 #Chambre chevet droite
+      - light.led_lit
+      - light.hue_filament_bulb_1
+      - light.spots_dressing
+      - light.spots_haut_tv
+      - light.spots_canape_salle_a_manger
+      - light.table_salle_a_manger_1
+      - light.table_salle_a_manger_2
+      - light.table_salle_a_manger_3
+      - light.bar_cuisine_1
+      - light.bar_cuisine_2
+      - light.spots_cuisine
+      - light.bas_tv
+      - light.led_canape
+      - light.led_salle_a_manger    
+      - light.led_cuisine
+      
+  - platform: group
+    name: Chambre chevet
+    entities:
+      - light.hue_white_candle_1 #Chambre chevet gauche
+      - light.hue_white_candle_2 #Chambre chevet droite
+
+  - platform: group
+    name: Chambre
+    entities: 
+      - light.hue_white_candle_1 #Chambre chevet gauche
+      - light.hue_white_candle_2 #Chambre chevet droite
+      - light.led_lit
+      - light.hue_filament_bulb_1
+      
+  - platform: group
+    name: Table salle à manger
+    entities:
+      - light.table_salle_a_manger_1
+      - light.table_salle_a_manger_2
+      - light.table_salle_a_manger_3
+      
+  - platform: group
+    name: Salle à manger
+    entities:
+      - light.table_salle_a_manger_1
+      - light.table_salle_a_manger_2
+      - light.table_salle_a_manger_3
+      - light.lampadaire
+      - light.led_salle_a_manger
+      
+  - platform: group
+    name: Bar cuisine
+    entities:
+      - light.bar_cuisine_1
+      - light.bar_cuisine_2
+      
+  - platform: group
+    name: Cuisine
+    entities:
+      - light.bar_cuisine_1
+      - light.bar_cuisine_2
+      - light.spots_cuisine
+      - light.led_cuisine
+      
+  - platform: group
+    name: Détente groupe
+    entities:
+      - light.lampadaire
+      - light.ambilight
+      - light.led_canape
+      - light.bas_tv
+      - light.bar_cuisine_1
+      - light.bar_cuisine_2
+      - light.led_salle_a_manger
+      - light.led_cuisine
+
+switch:
+  - platform: template
+    switches:
+      rf_plug_1:
+        friendly_name: "RF Plug 1"
+        # value_template: '{{ is_state("switch.rf_plug_1", "on") }}'
+        turn_on:
+            service: remote.send_command
+            target:
+              entity_id: remote.broadlink_remote_remote
+            data:
+              device: rf_plug_1
+              command: 'on'
+        turn_off:
+            service: remote.send_command
+            target:
+              entity_id: remote.broadlink_remote_remote
+            data:
+              device: rf_plug_1
+              command: 'off'
+              
+  - platform: wake_on_lan
+    name: PC
+    mac: !secret mac_pc
+    host: 192.168.0.3
+    broadcast_address: 192.168.0.255
+    broadcast_port: 9
+    turn_off: 
+      - service: androidtv.adb_command
+        data:
+          command: HOME
+          entity_id: media_player.android_tv
+      - service: shell_command.turn_off_computer
+    #   - service: hassio.addon_stdin
+    #     data:
+    #       addon: core_rpc_shutdown
+    #       input: shutdown-pc
+    
+  - platform: template
+    switches:
+      light:
+        friendly_name: "Lampes"
+        value_template: '{{ is_state("light.piece_principale", "on") }}'
+        turn_on:
+          service: script.ambiance_detente
+        turn_off:
+          service: script.ambiance_off
+        icon_template: >-
+          {% if is_state("light.piece_principale", "on") %}
+            mdi:lightbulb-outline
+          {% else %}
+            mdi:lightbulb
+          {% endif %}
+
+  - platform: template
+    switches:
+      deezer:
+        friendly_name: "Musique"
+        value_template: '{{ is_state_attr("media_player.salon_2", "source", "HEOS Music") }}' #and is_state("media_player.salon", "playing")
+        turn_on:
+          service: script.1594220687562
+        turn_off:
+          service: script.1594229195146
+        icon_template: >-
+          {% if is_state_attr("media_player.salon_2", "source", "HEOS Music") and is_state_attr("media_player.salon", "source", "Flow") %}
+            mdi:music-box
+          {% else %}
+            mdi:music-box
+          {% endif %}
+          
+  - platform: template
+    switches:
+      television:
+        friendly_name: "Télévision"
+        value_template: '{{ not ((is_state("media_player.android_tv", "off") or is_state("media_player.android_tv", "unknown") or is_state("media_player.android_tv", "unavailable"))) }}'
+        turn_on:
+          service: media_player.turn_on
+          data:
+            entity_id: media_player.android_tv
+        turn_off:
+          service: media_player.turn_off
+          data:
+            entity_id: media_player.android_tv
+        icon_template: >-
+          {% if is_state("media_player.android_tv", "off") and is_state("media_player.android_tv2", "off") or is_state("media_player.android_tv", "unknown") and is_state("media_player.android_tv2", "unknown") %}
+            mdi:television
+          {% else %}
+            mdi:television
+          {% endif %}
+          
+  - platform: template
+    switches:
+      ambiance_auto:
+        friendly_name: "Ambiance automatique"
+        value_template: '{{ (not is_state("input_select.ambiances", "off") and not is_state("input_select.ambiances_ambilight", "off")) or (not is_state("input_select.ambiances", "Custom") and not is_state("input_select.ambiances_ambilight", "off")) }}'
+        turn_off:
+          - service: input_select.select_option
+            target:
+              entity_id:
+                - input_select.ambiances
+                - input_select.ambiances_ambilight
+            data:
+              option: 'off'
+        turn_on:
+          - service: input_select.select_option
+            target:
+              entity_id:
+                - input_select.ambiances
+            data:
+              option: 'Détente'
+          - service: input_select.select_option
+            target:
+              entity_id:
+                - input_select.ambiances_ambilight
+            data:
+              option: 'Vidéo'
+        icon_template: >-
+          {% if is_state("automation.ambilight_auto_video_mode_off", "on") %}
+            mdi:auto-fix
+          {% else %}
+            mdi:auto-fix
+          {% endif %}
+          
+  - platform: template
+    switches:
+      bedroom_motion:
+        friendly_name: "Capteur de mouvement"
+        value_template: '{{ is_state("automation.allume_progressivement_la_chambre", "on") }}'
+        turn_on:
+          - service: automation.turn_on
+            data:
+              entity_id: automation.allume_progressivement_la_chambre, automation.eteint_le_couloir_apres_x_secondes #Mauvais nom mais ok
+        turn_off:
+          service: automation.turn_off
+          data:
+            entity_id: automation.allume_progressivement_la_chambre, automation.eteint_le_couloir_apres_x_secondes #Mauvais nom mais ok
+        icon_template: >-
+          {% if is_state("automation.allume_progressivement_la_chambre", "on") %}
+            mdi:motion-sensor
+          {% else %}
+            mdi:motion-sensor-off
+          {% endif %}
+          
+  - platform: template
+    switches:
+      aspire_la_cuisine:
+        friendly_name: "Aspire la cuisine"
+        turn_on:
+          - service: vacuum.send_command
+            data:
+              command: app_segment_clean
+              params: 18 #ok
+              entity_id: vacuum.xiaomi_vacuum_cleaner
+        turn_off:              
+          - service: switch.turn_off
+            data:
+              entity_id: switch.aspire_la_cuisine
+              
+  - platform: template
+    switches:
+      aspire_la_chambre:
+        friendly_name: "Aspire la chambre"
+        turn_on:
+          - service: vacuum.send_command
+            data:
+              command: app_segment_clean
+              params: 3 #ok
+              entity_id: vacuum.xiaomi_vacuum_cleaner
+        turn_off:              
+          - service: switch.turn_off
+            data:
+              entity_id: switch.aspire_la_chambre
+              
+  - platform: template
+    switches:
+      aspire_la_salle_de_bain:
+        friendly_name: "Aspire la salle de bain"
+        turn_on:
+          - service: vacuum.send_command
+            data:
+              command: app_segment_clean
+              params: 19 #ok
+              entity_id: vacuum.xiaomi_vacuum_cleaner
+        turn_off:              
+          - service: switch.turn_off
+            data:
+              entity_id: switch.aspire_la_salle_de_bain
+              
+  - platform: template
+    switches:
+      aspire_le_couloir:
+        friendly_name: "Aspire le couloir"
+        turn_on:
+          - service: vacuum.send_command
+            data:
+              command: app_segment_clean
+              params: 17 #ok
+              entity_id: vacuum.xiaomi_vacuum_cleaner
+        turn_off:              
+          - service: switch.turn_off
+            data:
+              entity_id: switch.aspire_le_couloir
+              
+  - platform: template
+    switches:
+      aspire_le_bureau:
+        friendly_name: "Aspire le bureau"
+        turn_on:
+          - service: vacuum.send_command
+            data:
+              command: app_segment_clean
+              params: 1 #ok
+              entity_id: vacuum.xiaomi_vacuum_cleaner
+        turn_off:              
+          - service: switch.turn_off
+            data:
+              entity_id: switch.aspire_le_bureau
+              
+  - platform: template
+    switches:
+      aspire_le_salon:
+        friendly_name: "Aspire le salon"
+        turn_on:
+          - service: vacuum.send_command
+            data:
+              command: app_segment_clean
+              params: 4 #ok
+              entity_id: vacuum.xiaomi_vacuum_cleaner
+        turn_off:              
+          - service: switch.turn_off
+            data:
+              entity_id: switch.aspire_le_salon
+              
+  - platform: template
+    switches:
+      aspire_la_salle_a_manger:
+        friendly_name: "Aspire la salle à manger"
+        turn_on:
+          - service: vacuum.send_command
+            data:
+              command: app_segment_clean
+              params: 16 #ok
+              entity_id: vacuum.xiaomi_vacuum_cleaner
+        turn_off:              
+          - service: switch.turn_off
+            data:
+              entity_id: switch.aspire_la_salle_a_manger
+              
+  - platform: template
+    switches:
+      aspire_la_buanderie:
+        friendly_name: "Aspire la buanderie"
+        turn_on:
+          - service: vacuum.send_command
+            data:
+              command: app_segment_clean
+              params: 2 #ok
+              entity_id: vacuum.xiaomi_vacuum_cleaner
+        turn_off:              
+          - service: switch.turn_off
+            data:
+              entity_id: switch.aspire_la_buanderie
+              
+  - platform: template
+    switches:
+      turn_off_all_devices:
+        friendly_name: "Éteins tous les appareils"
+        value_template: '{{ is_state("light.toutes_les_lampes", "on") or is_state("switch.television", "on") or is_state("switch.pc", "on") or is_state("switch.megaboom_3", "on") or is_state("light.ambilight", "on")}}'
+        turn_on:
+        turn_off:
+          service: script.eteint_tous_les_appareils
+          
+  - platform: template
+    switches:
+      demarre_aspirateur:
+        friendly_name: "Démarre l'aspirateur"
+        turn_on:
+          - service: vacuum.start
+            data:
+              entity_id: vacuum.xiaomi_vacuum_cleaner
+          - service: vacuum.set_fan_speed
+            data:
+              entity_id: vacuum.xiaomi_vacuum_cleaner
+              fan_speed: Turbo
+        turn_off:              
+          - service: switch.turn_off
+            data:
+              entity_id: switch.demarre_aspirateur
+              
+  - platform: template
+    switches:
+      recharge_aspirateur:
+        friendly_name: "Recharge l'aspirateur"
+        turn_on:
+          - service: vacuum.pause
+            data:
+              entity_id: vacuum.xiaomi_vacuum_cleaner
+          - delay: 00:00:02
+          - service: vacuum.return_to_base
+            data:
+              entity_id: vacuum.xiaomi_vacuum_cleaner
+        turn_off:              
+          - service: switch.turn_off
+            data:
+              entity_id: switch.recharge_aspirateur
+              
+  - platform: template
+    switches:
+      pause_aspirateur:
+        friendly_name: "Mets l'aspirateur en pause"
+        turn_on:
+          - service: vacuum.pause
+            data:
+              entity_id: vacuum.xiaomi_vacuum_cleaner
+        turn_off:              
+          - service: switch.turn_off
+            data:
+              entity_id: switch.recharge_aspirateur
+          
+  - platform: template
+    switches:
+      main_room_devices:
+        friendly_name: "Tous les appareils de la pièce principale"
+        value_template: '{{ is_state("light.piece_principale", "on") }}'
+        turn_on:
+          service: light.turn_on
+          data:
+            entity_id: light.piece_principale
+        turn_off:
+          service: script.eteins_la_piece_principale
+        icon_template: >-
+          {% if is_state("light.piece_principale", "on") %}
+            mdi:light-bulb
+          {% else %}
+            mdi:light-bulb
+          {% endif %}
+          
+  - platform: template
+    switches:
+      ventilateur:
+        friendly_name: "Ventilateur"
+        value_template: '{{ is_state("light.ventilateur_salon", "on") }}'
+        turn_on:
+          service: light.turn_on
+          data:
+            entity_id: light.ventilateur_salon
+        turn_off:
+          service: light.turn_off
+          data:
+            entity_id: light.ventilateur_salon
+        icon_template: >-
+          {% if is_state("light.ventilateur_salon", "on") %}
+            mdi:fan
+          {% else %}
+            mdi:fan-off
+          {% endif %}
+          
+  - platform: template
+    switches:
+      bonne_nuit:
+        friendly_name: "Bonne Nuit"
+        value_template: '{{ is_state("input_boolean.mode_nuit", "on") }}'
+        turn_on:
+          service: script.bonne_nuit
+        turn_off:
+          service: input_boolean.turn_off
+          data:
+            entity_id: input_boolean.mode_nuit
+        icon_template: >-
+          {% if is_state("input_boolean.mode_nuit", "on") %}
+            mdi:bed-outline
+          {% else %}
+            mdi:bed
+          {% endif %}
+          
+  - platform: template
+    switches:
+      fake_heater:
+        friendly_name: "Fake heater"
+        value_template: 'off'
+        turn_on:
+          
+        turn_off:
+
+        icon_template: >-
+          {% if is_state("light.ventilateur", "on") %}
+            mdi:fan
+          {% else %}
+            mdi:fan-off
+          {% endif %}
+          
+#  - platform: template
+#    switches:
+#      ambilight_hue:
+#        friendly_name: "Ambilight+Hue"
+#        value_template: "{{ is_state('binary_sensor.ambilight_hue', 'on') }}"
+#        turn_on:
+#          service: switch.turn_on
+#          data:
+#            entity_id: switch.ambihue
+#        turn_off:
+#          service: switch.turn_off
+#          data:
+#            entity_id: switch.ambihue
+#        icon_template: >-
+#          {% if is_state('binary_sensor.ambilight_hue', 'on') %}
+#            mdi:television-ambient-light
+#          {% else %}
+#            mdi:television-ambient-light
+#          {% endif %}
+
+  - platform: command_line
+    switches:   
+      ambihue:
+         friendly_name: "Ambilight+Hue Video"
+         command_on: !secret ambihue_command_on
+         command_off: !secret ambihue_command_off
+
+  - platform: command_line
+    switches:   
+      megaboom_3_cmd:
+         command_on: sudo systemctl restart bluetooth ; gatttool -i hci0 -b ec:81:93:2d:47:cc --char-write-req -a 0x0003 -n 0006784ADDA101
+         command_off: sudo systemctl restart bluetooth ; gatttool -i hci0 -b ec:81:93:2d:47:cc --char-write-req -a 0x0003 -n 0006784ADDA102
+         
+  - platform: template
+    switches:
+      megaboom_3:
+        friendly_name: "MEGABOOM 3"
+        value_template: >-
+          {% if is_state('device_tracker.megaboom3', 'home') %}
+            on
+          {% elif is_state('device_tracker.megaboom3', 'not_home') %}
+            off
+          {% else %}
+            unknown
+          {% endif %}
+        turn_on:
+          service: script.megaboom_3_turn_on
+        turn_off:
+          service: script.megaboom_3_turn_off
+        icon_template: >-
+          {% if is_state('device_tracker.megaboom3', 'home') %}
+            mdi:speaker-wireless
+          {% else %}
+            mdi:speaker-wireless
+          {% endif %}      
+
+#   SENSORS   ##################################################################
+
+template:
+  - trigger:
+    - platform: state
+      entity_id:
+        - input_boolean.mode_nuit
+      from: "on"
+      to: "off"
+    - platform: time
+      at: "12:00:00"
+    binary_sensor:
+      - name: "Morning state"
+        state: "{{ ('00:00' <= states('sensor.time') < '11:59') and (is_state('input_boolean.mode_nuit','off')) }}"
+        
+  - trigger:
+    - platform: state
+      entity_id:
+        - input_number.electricite_jour_semaine
+        - input_number.electricite_nuit_semaine
+    sensor:
+      - name: Électricité total - Semaine
+        state: "{{ (states('input_number.electricite_jour_semaine')|float) + (states('input_number.electricite_nuit_semaine')|float)}}"
+        unit_of_measurement: kWh
+        device_class: energy
+        state_class: measurement
+        
+  - trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.hue_motion_sensor_1_motion
+        - binary_sensor.salle_a_manger_person_motion
+        - binary_sensor.salon_person_motion
+        - binary_sensor.hall_entree_person
+        - binary_sensor.hue_motion_sensor_2_motion
+        - binary_sensor.hue_motion_sensor_3_motion
+        - input_boolean.mode_nuit
+      from: "off"
+      to: "on"
+    - platform: state
+      entity_id:
+        - input_boolean.quentin_is_home
+        - input_boolean.geraldine_is_home
+      from: "on"
+      to: "off"
+    - platform: state
+      entity_id: 
+        - binary_sensor.salon_person_motion
+        - switch.television
+      from: "on"
+      to: "off"
+      for:
+        hours: 1
+        minutes: 0
+        seconds: 0
+    binary_sensor:
+      - name: "Salon presence off state"
+        state: >-
+            {% if is_state("binary_sensor.salon_person_motion", "on") and is_state("binary_sensor.presence_maison", "on") %}
+                on
+            {% else %}
+                off
+            {% endif %}
+        delay_on: 0:00:10
+        delay_off: 0:00:10
+        
+  - trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.hue_motion_sensor_1_motion
+        - binary_sensor.salle_a_manger_person_motion
+        - binary_sensor.salon_person_motion
+        - binary_sensor.hall_entree_person
+        - binary_sensor.hue_motion_sensor_2_motion
+        - binary_sensor.hue_motion_sensor_3_motion
+        - input_boolean.mode_nuit
+      from: "off"
+      to: "on"
+    - platform: state
+      entity_id:
+        - input_boolean.quentin_is_home
+        - input_boolean.geraldine_is_home
+      from: "on"
+      to: "off"
+    - platform: state
+      entity_id: 
+        - binary_sensor.salle_a_manger_person_motion
+      from: "on"
+      to: "off"
+      for:
+        hours: 1
+        minutes: 0
+        seconds: 0
+    binary_sensor:
+      - name: "Salle à manger presence off state"
+        state: >-
+            {% if is_state("binary_sensor.salle_a_manger_person_motion", "on") and is_state("binary_sensor.presence_maison", "on") %}
+                on
+            {% else %}
+                off
+            {% endif %}
+        delay_off: 0:00:10
+        delay_on: 0:00:10
+        
+  - trigger:
+    - platform: calendar
+      event: start
+      entity_id: calendar.personal
+      offset: -72:00:00
+    - platform: calendar
+      event: start
+      entity_id: calendar.calendrier_google
+      offset: -72:00:00
+    - platform: calendar
+      event: start
+      entity_id: calendar.jours_feries_en_belgique
+      offset: -72:00:00
+    - platform: calendar
+      event: start
+      entity_id: calendar.geraldine_et_quentin
+      offset: -72:00:00
+    binary_sensor:
+      - name: "Upcoming calendar event"
+        state: on
+        delay_off: 73:00:00
+        
+  - trigger:
+    - platform: state
+      entity_id:
+        - cover.store_salon
+        - cover.haut_canape
+        - cover.baie_vitree_2
+        - cover.cuisine
+        - sensor.envoy_122227015952_current_power_production
+        - light.piece_principale
+    - platform: homeassistant
+      event: start
+    sensor:
+      - name: "Luminosité pièce principale"
+        state: >-
+            {% if (is_state("cover.stores_salon", "closed") and is_state("cover.haut_canape", "closed") and is_state("cover.baie_vitree_2", "closed") and is_state("cover.cuisine", "closed")) and ( states("sensor.envoy_122227015952_current_power_production") | int >= 1000 ) %}
+              40
+            {% elif (is_state("cover.stores_salon", "closed") and is_state("cover.haut_canape", "closed") and is_state("cover.baie_vitree_2", "closed") and is_state("cover.cuisine", "closed")) and ( states("sensor.envoy_122227015952_current_power_production") | int > 0 and states("sensor.envoy_122227015952_current_power_production") | int <= 1000 ) %}
+              10
+            {% elif states("sensor.envoy_122227015952_current_power_production") | int == 0 %}
+              0
+            {% elif is_state("light.piece_principale", "off") %}
+              {{ states("sensor.hue_motion_sensor_1_light_level") }}
+            {% elif is_state("light.piece_principale", "on") and (states("sensor.envoy_122227015952_current_power_production") | int <= 120) %}
+              {{ (states("sensor.envoy_122227015952_current_power_production") | int / 5) | round }}
+            {% else %}
+              {{ (states("sensor.envoy_122227015952_current_power_production") | int / 5) | round }}
+            {% endif %}
+        device_class: illuminance
+        unit_of_measurement: "lx"
+            
+  - trigger:
+    - platform: state
+      entity_id:
+        - binary_sensor.darkness_sensor_2
+        - sensor.luminosite_piece_principale
+    - platform: homeassistant
+      event: start
+    sensor:
+      - name: "Luminosité lampes pièce principale"
+        state: >-
+            {% if is_state("binary_sensor.darkness_sensor_2", "on") %}
+                {{ (255 - (states("sensor.luminosite_piece_principale") | int )) | round }}
+            {% else %}
+                0
+            {% endif %}
+            
+  - trigger:
+      - platform: event
+        event_type: amcrest
+        event_data:
+          event: "CallNoAnswered"
+          payload:
+            action: "Start"
+    binary_sensor:
+      - name: "Sonnette Button Pressed"
+        state: on
+        auto_off: 00:00:20
+            
+
+sensor:
+  - platform: time_date
+    display_options:
+      - 'time'
+      - 'date'
+      - 'date_time'
+      - 'date_time_utc'
+      - 'date_time_iso'
+      - 'time_date'
+      - 'time_utc'
+      - 'beat'
+  - platform: template
+    sensors:
+       jour_fr:
+         value_template: "{{ ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'][now().weekday()] }}"
+         
+       date_fr:
+         value_template: "{% set months = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'] %} {{ now().day | string + ' ' + months[now().month-1]}}"
+  - platform: waste_collection_schedule
+    name: Collecte des déchets
+  - platform: history_stats
+    name: Temps de sommeil journalier
+    entity_id: sensor.day_part
+    state: 'Nuit'
+    type: time
+    end: "{{ (now().replace(minute=0,second=0) + timedelta(hours=8)).replace(hour=16) }}"
+    duration:
+        hours: 24
+
+  - platform: template
+    sensors:
+      daily_sleep_time_rounded:
+        value_template: >
+          {{ timedelta(hours=states('sensor.temps_de_sommeil_journalier') | float(0)) }}
+
+#   - platform: random
+#     maximum: 10
+#     minimum: 1
+
+  - platform: template
+    sensors:
+      mebaboom_3_battery:
+        friendly_name: "UE Boom 3 Batterie"
+        value_template: '{{ state_attr("device_tracker.ble_megaboom","battery") }}'
+  - platform: template
+    sensors:
+      media_state:
+        friendly_name: "État des médias"
+        value_template: >-
+          {% if 
+             (
+                 (
+                     (
+                            is_state_attr("media_player.android_tv", "app_name", "Kodi") 
+                         or is_state_attr("media_player.android_tv", "app_name", "Netflix") 
+                         or is_state_attr("media_player.android_tv", "app_name", "com.disney.disneyplus") 
+                         or is_state_attr("media_player.android_tv", "app_name", "YouTube") 
+                         or is_state_attr("media_player.android_tv", "app_name", "com.liskovsoft.smarttubetv.beta") 
+                         or is_state_attr("media_player.android_tv", "app_name", "com.retroarch") 
+                     ) 
+                     or 
+                     (
+                            (is_state_attr("media_player.android_tv", "source", "org.droidtv.playtv") and is_state_attr("media_player.salon_2", "source", "PS4"))
+                         or (is_state_attr("media_player.android_tv", "source", "org.droidtv.playtv") and is_state_attr("media_player.salon_2", "source", "NintendoSwitch"))
+                         or (is_state_attr("media_player.android_tv", "source", "org.droidtv.playtv") and is_state_attr("media_player.salon_2", "source", "PC"))
+                         or (is_state_attr("media_player.android_tv", "source", "org.droidtv.playtv") and is_state_attr("media_player.salon_2", "source", "WiiU"))
+                    )
+                 )
+                 and 
+                 (
+                        is_state("media_player.android_tv", "playing") 
+                 ) 
+             )
+          %}
+            video_playing
+          {% elif 
+             (
+                 (
+                     (
+                            is_state_attr("media_player.android_tv", "app_name", "Kodi") 
+                         or is_state_attr("media_player.android_tv", "app_name", "Netflix") 
+                         or is_state_attr("media_player.android_tv", "app_name", "com.disney.disneyplus") 
+                         or is_state_attr("media_player.android_tv", "app_name", "YouTube") 
+                         or is_state_attr("media_player.android_tv", "app_name", "com.liskovsoft.smarttubetv.beta") 
+                         or is_state_attr("media_player.android_tv", "app_id", "com.google.android.tvlauncher") 
+                     ) 
+                     or 
+                     (
+                            (is_state_attr("media_player.android_tv", "source", "org.droidtv.playtv") and is_state_attr("media_player.salon_2", "source", "PS4"))
+                         or (is_state_attr("media_player.android_tv", "source", "org.droidtv.playtv") and is_state_attr("media_player.salon_2", "source", "NintendoSwitch"))
+                         or (is_state_attr("media_player.android_tv", "source", "org.droidtv.playtv") and is_state_attr("media_player.salon_2", "source", "PC"))
+                         or (is_state_attr("media_player.android_tv", "source", "org.droidtv.playtv") and is_state_attr("media_player.salon_2", "source", "WiiU"))
+                    )
+                 )
+                 and 
+                 (
+                        is_state("media_player.android_tv", "paused") 
+                 ) 
+             )
+          %}
+            video_paused
+          {% elif 
+             (
+                    is_state_attr("media_player.android_tv", "app_name", "Spotify") 
+                 or is_state_attr("media_player.android_tv", "app_name", "Deezer") 
+                 or is_state_attr("media_player.android_tv", "app_name", "Google Cast") 
+             ) 
+            and 
+            (
+                    is_state("media_player.android_tv", "playing") 
+            ) 
+          %}
+            tv_music_playing
+          {% elif 
+             is_state_attr("media_player.salon_2", "source", "HEOS Music") 
+             and 
+             (
+                (
+                      is_state("media_player.salon_2", "playing") 
+                    or is_state("media_player.salon", "playing")
+                ) 
+                and not 
+                (
+                      is_state("media_player.android_tv", "playing") 
+                    or is_state("media_player.android_tv2", "playing")
+                )
+             )
+          %}
+            denon_music_playing
+          {% else %}
+            unknown
+          {% endif %}
+          
+#   - platform: template
+#     sensors:
+#      media_state_old:
+#         friendly_name: "État du média"
+#         value_template: >-
+#          {% if is_state("media_player.android_tv", "playing") or is_state("media_player.android_tv2", "playing") or is_state("media_player.tv", "playing") %}
+#             tv_playing
+#          {% elif is_state("media_player.android_tv", "paused") or is_state("media_player.android_tv2", "paused") or is_state("media_player.tv", "paused") %}
+#             tv_paused
+#          {% elif is_state("media_player.salon", "playing") %}
+#             denon_playing
+#          {% elif is_state("media_player.salon", "paused") %}
+#             denon_paused
+#          {% else %}
+#             unknown
+#          {% endif %}
+          
+  - platform: template
+    sensors:
+      day_part:
+        friendly_name: "Période de la journée"
+        value_template: >-
+          {% set state = states('sensor.time') %}
+          {% if ('00:00' <= state < '05:00') and is_state('input_boolean.mode_nuit','off') and is_state('binary_sensor.morning_state','off') %}
+            Soir
+          {% elif ('05:00' <= state < '12:00') and (is_state('input_boolean.mode_nuit','off')) %}
+            Matin
+          {% elif ('12:00' <= state < '18:00') and (is_state('input_boolean.mode_nuit','off')) %}
+            Après-midi 
+          {% elif is_state('input_boolean.mode_nuit','on') %}
+            Nuit
+          {% elif is_state('binary_sensor.morning_state','on') %}
+            Matin
+          {% else %}
+            Soir
+          {% endif %}         
+         
+  - platform: template
+    sensors:
+      ambient_light:
+        friendly_name: "Luminosité ambiante"
+        value_template: >-
+          {% if is_state("binary_sensor.darkness_sensor", "on") %}
+            Sombre
+          {% else %}
+            Clair
+          {% endif %}
+        icon_template: >-
+          {% if is_state("binary_sensor.darkness_sensor", "on") %}
+            mdi:brightness-4
+          {% else %}
+            mdi:brightness-5
+          {% endif %}
+          
+  - platform: template
+    sensors:
+      geraldine_presence:
+        friendly_name: "Géraldine"
+        value_template: >-
+          {% if is_state("input_boolean.geraldine_is_home", "on") %}
+            Présente
+          {% else %}
+            Absente
+          {% endif %}
+          
+  - platform: template
+    sensors:
+      quentin_presence:
+        friendly_name: "Quentin"
+        value_template: >-
+          {% if is_state("input_boolean.quentin_is_home", "on") %}
+            Présent
+          {% else %}
+            Absent
+          {% endif %}
+          
+#   - platform: template
+#     sensors:
+#       guest_presence:
+#         friendly_name: "Invité"
+#         value_template: >-
+#           {% if is_state("input_boolean.guest_is_home", "on") %}
+#             Présent
+#           {% else %}
+#             Absent
+#           {% endif %}
+
+  - platform: history_stats
+    name: Géraldine - Temps à domicile
+    entity_id: input_boolean.geraldine_is_home
+    state: 'on'
+    type: time
+    start: '{{ now().replace(hour=0, minute=0, second=0) }}'
+    end: '{{ now() }}'
+    
+  - platform: history_stats
+    name: Quentin - Temps à domicile
+    entity_id: input_boolean.quentin_is_home
+    state: 'on'
+    type: time
+    start: '{{ now().replace(hour=0, minute=0, second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: history_stats
+    name: Quentin - Temps d'absence
+    entity_id: input_boolean.quentin_is_home
+    state: 'off'
+    type: time
+    start: '{{ now().replace(hour=0, minute=0, second=0) }}'
+    end: '{{ now() }}'
+    
+  - platform: history_stats
+    name: Géraldine - Temps d'absence
+    entity_id: input_boolean.geraldine_is_home
+    state: 'off'
+    type: time
+    start: '{{ now().replace(hour=0, minute=0, second=0) }}'
+    end: '{{ now() }}'
+
+  - platform: template
+    sensors:
+      temperature_interieure:
+        friendly_name: "Température intérieure"    
+        unit_of_measurement: "°C"
+        value_template: "{{ (states('sensor.hue_motion_sensor_1_temperature') | round(1)) }}"
+        icon_template: mdi:thermometer
+            
+#   - platform: template
+#     sensors:
+#       climate_feeling:
+#         friendly_name: "Climate feeling"
+#         value_template: >-
+#             {% if states("sensor.temperature_interieure") >= '21' %}
+#               chaud
+#             {% elif states("sensor.temperature_interieure") <= '18' %}
+#               froid
+#             {% else %}
+#               tempéré
+#             {% endif %}
+  - platform: template
+    sensors:
+      electricite_jour_semaine:
+        friendly_name: "Électricité jour - Semaine"
+        value_template: '{{ states("input_number.electricite_jour_semaine") }}'
+  
+  - platform: template
+    sensors:
+      electricite_nuit_semaine:
+        friendly_name: "Électricité nuit - Semaine"
+        value_template: '{{ states("input_number.electricite_nuit_semaine") }}'
+      
+# - platform: template
+#    sensors:
+#      ambilight_brightness:
+#        friendly_name: "Ambilight Brightness"    
+#        value_template: >-
+#          {%- if ([state_attr("sensor.ambilight_colors", "r"), state_attr("sensor.ambilight_colors", "g"), state_attr("sensor.ambilight_colors", "b")]|max)|float >= 0 and ([state_attr("sensor.ambilight_colors", "r"), state_attr("sensor.ambilight_colors", "g"), state_attr("sensor.ambilight_colors", "b")]|max)|float <= 20 -%}
+#            60
+#          {%- elif ([state_attr("sensor.ambilight_colors", "r"), state_attr("sensor.ambilight_colors", "g"), state_attr("sensor.ambilight_colors", "b")]|max)|float >= 21 and ([state_attr("sensor.ambilight_colors", "r"), state_attr("sensor.ambilight_colors", "g"), state_attr("sensor.ambilight_colors", "b")]|max)|float <= 40 -%}
+#            60
+#          {%- elif ([state_attr("sensor.ambilight_colors", "r"), state_attr("sensor.ambilight_colors", "g"), state_attr("sensor.ambilight_colors", "b")]|max)|float >= 41 and ([state_attr("sensor.ambilight_colors", "r"), state_attr("sensor.ambilight_colors", "g"), state_attr("sensor.ambilight_colors", "b")]|max)|float <= 60 -%}
+#            160
+#          {% else %}
+#            200
+#          {%- endif -%}
+
+binary_sensor:
+  - platform: template
+    sensors:
+      sonnette_motion:
+        friendly_name: "Sonnette motion"
+        device_class: motion
+        delay_off: 00:02:00
+        value_template: >-
+          {{ 
+             is_state("binary_sensor.sonnette_pir_person_motion", "on") or 
+             is_state("binary_sensor.entering_cars_car_motion", "on") or 
+             is_state("binary_sensor.sonnette_button_pressed", "on")
+          }}
+          
+  - platform: template
+    sensors:
+      presence_maison:
+        friendly_name: "Présence Maison"
+        delay_off: 00:05:00
+        device_class: motion
+        value_template: >-
+          {{ 
+             is_state("input_boolean.quentin_is_home", "on") or 
+             is_state("input_boolean.geraldine_is_home", "on") or 
+             is_state("binary_sensor.presence_cuisine", "on") or 
+             is_state("binary_sensor.presence_salle_a_manger", "on") or 
+             is_state("binary_sensor.presence_salon", "on") or 
+             is_state("binary_sensor.presence_chambre_parentale", "on") or
+             is_state("device_tracker.a70_de_coline", "home") or
+             is_state("device_tracker.telephone_mi", "home") or
+             is_state("device_tracker.s8", "home") or
+             is_state("device_tracker.poco_x3_pro", "home") or
+             is_state("device_tracker.iphone", "home")
+          }}
+          
+  - platform: ping
+    host: 192.168.0.13
+    count: 1
+    scan_interval: 30
+    name: geraldine
+    
+  - platform: template
+    sensors:
+      darkness_sensor:
+        friendly_name: "Darkness sensor - Chambre"
+        delay_off: 00:25:00
+        value_template: >-
+          {{ ( state_attr("sensor.hue_motion_sensor_2_light_level", "light_level") | float(0) < 10000 ) or ( state_attr('sun.sun', 'elevation') < -6 ) or ( state_attr("sensor.hue_motion_sensor_1_light_level", "light_level") | float(0) < 3000 ) or ( is_state( "cover.chambre_1_droite", "closed") and is_state( "cover.chambre_1_gauche", "closed")) or ( states("sensor.envoy_122227015952_current_power_production") | float(0) < 120 ) }}
+        icon_template: >-
+          {% if ( state_attr("sensor.hue_motion_sensor_2_light_level", "light_level") | float(0) < 10000 ) or ( state_attr('sun.sun', 'elevation') < -6 ) or ( state_attr("sensor.hue_motion_sensor_1_light_level", "light_level") | float(0) < 3000 ) or ( states("sensor.envoy_122227015952_current_power_production") | float(0) < 120 ) %}
+            mdi:brightness-4
+          {% else %}
+            mdi:brightness-5
+          {% endif %}
+          
+  - platform: template
+    sensors:
+      darkness_sensor_2:
+        friendly_name: "Darkness sensor - Cuisine"
+        delay_off: 00:25:00
+        value_template: >-
+          {{ ( state_attr('sun.sun', 'elevation') < -6 ) or ( state_attr("sensor.hue_motion_sensor_1_light_level", "light_level") | float(0) < 12000 ) or ( states("sensor.envoy_122227015952_current_power_production") | float(0) < 120 ) }}
+        icon_template: >-
+          {% if ( state_attr('sun.sun', 'elevation') < -6 ) or ( state_attr("sensor.hue_motion_sensor_1_light_level", "light_level") | float(0) < 12000 ) or ( states("sensor.envoy_122227015952_current_power_production") | float(0) < 120 ) %}
+            mdi:brightness-4
+          {% else %}
+            mdi:brightness-5
+          {% endif %}
+          
+  - platform: template
+    sensors:
+      presence_piece_principale:
+        friendly_name: "Présence Pièce principale"
+        device_class: motion
+        delay_off: 00:03:30
+        value_template: >-
+          {{ 
+            is_state("binary_sensor.cuisine_pir_person_motion", "on") 
+            or 
+            is_state("binary_sensor.presence_salon", "on")
+            or
+            is_state("binary_sensor.hue_motion_sensor_1_motion", "on")
+            or
+            is_state("binary_sensor.salon_presence_off_state", "on")
+          }}
+          
+  - platform: template
+    sensors:
+      presence_cuisine:
+        friendly_name: "Présence Cuisine"
+        device_class: motion
+        delay_off: 00:02:00
+        value_template: >-
+          {{ 
+            is_state("binary_sensor.cuisine_person_motion", "on") 
+            or 
+            is_state("binary_sensor.hue_motion_sensor_1_motion", "on")
+          }}
+          
+  - platform: template
+    sensors:
+      presence_salon:
+        friendly_name: "Présence Salon"
+        device_class: motion
+        delay_off: 00:03:30
+        value_template: >-
+          {{
+            (
+                is_state("binary_sensor.salon_person_motion", "on") 
+                or 
+                is_state("switch.television", "on") 
+                or
+                is_state("binary_sensor.salon_presence_off_state", "on")
+            )
+            and is_state("binary_sensor.presence_maison", "on")
+          }}
+          
+  - platform: template
+    sensors:
+      presence_salle_a_manger:
+        friendly_name: "Présence Salle à manger"
+        device_class: motion
+        delay_off: 00:00:30
+        #delay_on: 00:00:02
+        value_template: >-
+          {{ 
+            (
+                is_state("binary_sensor.salle_a_manger_person_motion", "on") 
+               
+                
+            )
+            and is_state("binary_sensor.presence_maison", "on")
+          }}
+          
+  - platform: template
+    sensors:
+      presence_hall_entree:
+        friendly_name: "Présence Hall d'entrée"
+        device_class: motion
+        delay_off: 00:00:30
+        value_template: >-
+          {{ 
+            is_state("binary_sensor.hall_entree_person_motion", "on") 
+          }}
+          
+  - platform: template
+    sensors:
+      presence_couloir:
+        friendly_name: "Présence Couloir"
+        device_class: motion
+        delay_off: 00:00:30
+        value_template: >-
+          {{ 
+            is_state("light.couloir_etage", "on") 
+          }}
+          
+  - platform: template
+    sensors:
+      presence_chambre_parentale:
+        friendly_name: "Présence Chambre parentale"
+        device_class: motion
+        delay_off: 00:01:30
+        value_template: >-
+          {{ 
+            is_state("binary_sensor.hue_motion_sensor_2_motion", "on") 
+            or
+            is_state("binary_sensor.hue_motion_sensor_3_motion", "on") 
+          }}
+          
+  - platform: template
+    sensors:
+      presence_devant_maison:
+        friendly_name: "Présence Devant la maison"
+        device_class: motion
+        delay_off: 00:01:30
+        value_template: >-
+          {{ 
+            is_state("binary_sensor.sonnette_pir_person_motion", "on") 
+            or
+            is_state("binary_sensor.entering_cars_car_motion", "on") 
+          }}
+
+device_tracker:
+  - platform: ping
+    consider_home: 600
+    count: 10
+    hosts:
+      geraldine: 192.168.0.13
+      quentin: 192.168.0.5
+      
+  - platform: bluetooth_tracker
+    interval_seconds: 10
+    
+  - platform: bluetooth_le_tracker
+    track_battery: true
+    
+  - platform: ping
+    consider_home: 1
+    count: 10
+    hosts:
+      playstation_4: 192.168.0.59
+      
+  - platform: synology_srm
+    host: 192.168.0.1
+    password: !secret pw1
+    interval_seconds: 10
+    consider_home: 180
+    new_device_defaults:
+      track_new_devices: true
+
+#   - platform: template
+#     sensors:
+#       quentin_next_alarm:
+#         friendly_name: "Quentin Next Alarm"
+#         value_template: >-
+#           {{now().strftime("%a %h %d %H:%M %Z %Y") == (((state_attr('sensor.mi_9_prochaine_alarme', 'Time in Milliseconds') | int / 1000) + 0*60 ) | timestamp_custom('%a %h %d %H:%M %Z %Y'))}}
+#  - platform: rest
+#    name: "Ambilight+Hue"
+#    resource: http://192.168.0.24:1925/6/ambilight/currentconfiguration
+#    value_template: '{{ value_json.styleName == "FOLLOW_VIDEO" }}'
+#    method: GET
+      
+shopping_list:
+
+shell_command:
+  stream_camera_to_tv: bash /config/scripts/stream_camera_to_tv.sh
+  turn_off_computer: 'curl -k http://192.168.0.3/?shutdown'
+
+rest_command:
+  entertainment_area_hue_fix_1:
+    url: !secret entertainment_area_hue_fix_1
+    method: delete
+  entertainment_area_hue_fix_2:
+    url: !secret entertainment_area_hue_fix_2
+    method: delete
+  entertainment_area_hue_fix_3:
+    url: !secret entertainment_area_hue_fix_3
+    method: delete
+  entertainment_area_hue_fix_4:
+    url: !secret entertainment_area_hue_fix_4
+    method: delete
+  entertainment_area_hue_fix_5:
+    url: !secret entertainment_area_hue_fix_5
+    method: delete
+  entertainment_area_create:
+    url: !secret entertainment_area_create
+    method: post
+    payload: '{"name": "Entertainment area","lights": ["6","9"],"sensors": [],"type": "Entertainment","class": "TV","stream": {"proxymode": "auto"},"locations": {"6": [0,0,0],"9": [0,0,0]}}'
+
+cover:
+  - platform: template
+    covers:
+      cuisine:
+        device_class: shutter
+        friendly_name: "Cuisine"
+        optimistic: false
+        #value_template: "{{ states('sensor.garage_door')|float > 0 }}"
+        open_cover:
+          - service: cover.open_cover
+            data: {}
+            target:
+              entity_id: cover.rfy_030408_1
+          - delay:
+              hours: 0
+              minutes: 0
+              seconds: 0
+              milliseconds: 50
+          - choose:
+              - conditions:
+                  - condition: state
+                    entity_id: cover.haut_canape
+                    state: closed
+                  - condition: state
+                    entity_id: cover.baie_vitree
+                    state: open
+                sequence:
+                  - service: cover.close_cover
+                    data: {}
+                    target:
+                      entity_id: cover.haut_canape
+              - conditions:
+                  - condition: state
+                    entity_id: cover.haut_canape
+                    state: open
+                  - condition: state
+                    entity_id: cover.baie_vitree
+                    state: closed
+                sequence:
+                  - service: cover.close_cover
+                    data: {}
+                    target:
+                      entity_id: cover.baie_vitree
+              - conditions:
+                  - condition: state
+                    entity_id: cover.haut_canape
+                    state: closed
+                  - condition: state
+                    entity_id: cover.baie_vitree
+                    state: closed
+                sequence:
+                  - service: cover.close_cover
+                    data: {}
+                    target:
+                      entity_id:
+                        - cover.haut_canape
+                        - cover.baie_vitree
+            default: []
+        close_cover:
+          - service: cover.close_cover
+            data: {}
+            target:
+              entity_id: cover.rfy_030408_1
+          - choose:
+              - conditions:
+                  - condition: state
+                    entity_id: cover.haut_canape
+                    state: closed
+                  - condition: state
+                    entity_id: cover.baie_vitree
+                    state: open
+                sequence:
+                  - repeat:
+                      count: '5'
+                      sequence:
+                        - service: cover.open_cover
+                          data: {}
+                          target:
+                            entity_id: cover.baie_vitree
+              - conditions:
+                  - condition: state
+                    entity_id: cover.haut_canape
+                    state: open
+                  - condition: state
+                    entity_id: cover.baie_vitree
+                    state: closed
+                sequence:
+                  - service: cover.open_cover
+                    data: {}
+                    target:
+                      entity_id: cover.haut_canape
+              - conditions:
+                  - condition: state
+                    entity_id: cover.haut_canape
+                    state: open
+                  - condition: state
+                    entity_id: cover.baie_vitree
+                    state: open
+                sequence:
+                  - repeat:
+                      count: '3'
+                      sequence:
+                        - service: cover.open_cover
+                          data: {}
+                          target:
+                            entity_id:
+                              - cover.baie_vitree
+                              - cover.haut_canape
+            default: []
+        stop_cover:
+          service: cover.stop_cover
+          data: {}
+          target:
+            entity_id: cover.rfy_030408_1
+            
+  - platform: template
+    covers:
+      salon_droite:
+        device_class: shutter
+        friendly_name: "Salon droite"
+        optimistic: true
+        #value_template: "{{ states('sensor.garage_door')|float > 0 }}"
+        open_cover:
+          - service: remote.send_command
+            data:
+              device: volet_salon_droite
+              command: open
+            target:
+              entity_id: remote.broadlink_remote_remote
+        close_cover:
+          - service: remote.send_command
+            data:
+              device: volet_salon_droite
+              command: close
+            target:
+              entity_id: remote.broadlink_remote_remote
+        stop_cover:
+          - service: remote.send_command
+            data:
+              device: volet_salon_droite
+              command: stop
+            target:
+              entity_id: remote.broadlink_remote_remote
+              
+  - platform: template
+    covers:
+      salon_gauche:
+        device_class: shutter
+        friendly_name: "Salon gauche"
+        optimistic: true
+        #value_template: "{{ states('sensor.garage_door')|float > 0 }}"
+        open_cover:
+          - delay:
+              hours: 0
+              minutes: 0
+              seconds: 0
+              milliseconds: 50
+          - service: remote.send_command
+            data:
+              device: volet_salon_gauche
+              command: open
+            target:
+              entity_id: remote.broadlink_remote_remote
+        close_cover:
+          - delay:
+              hours: 0
+              minutes: 0
+              seconds: 0
+              milliseconds: 50
+          - service: remote.send_command
+            data:
+              device: volet_salon_gauche
+              command: close
+            target:
+              entity_id: remote.broadlink_remote_remote
+        stop_cover:
+          - delay:
+              hours: 0
+              minutes: 0
+              seconds: 0
+              milliseconds: 50
+          - service: remote.send_command
+            data:
+              device: volet_salon_gauche
+              command: stop
+            target:
+              entity_id: remote.broadlink_remote_remote
+              
+  - platform: cover_rf_time_based
+    devices:
+      stores_salon:
+        name: Stores salon
+        travelling_time_up: 66
+        travelling_time_down: 65
+        close_script_entity_id: script.volets_salon_close
+        stop_script_entity_id: script.volets_salon_stop
+        open_script_entity_id: script.volets_salon_open
+        send_stop_at_ends: False #optional
+        always_confident: False #optional
+        device_class: shutter
+        availability_template: "{{ not (is_state('remote.broadlink_remote_remote', 'unavailable') or is_state('remote.broadlink_remote_remote', 'unknown')) }}"
+
+      volet_chambre_voisin:
+        name: Volet chambre parentale - Voisin
+        travelling_time_up: 16
+        travelling_time_down: 15
+        close_script_entity_id: script.volets_chambre_voisin_close
+        stop_script_entity_id: script.volets_chambre_voisin_stop
+        open_script_entity_id: script.volets_chambre_voisin_open
+        send_stop_at_ends: False #optional
+        always_confident: False #optional
+        device_class: shutter
+        availability_template: "{{ not (is_state('remote.broadlink_remote_remote', 'unavailable') or is_state('remote.broadlink_remote_remote', 'unknown')) }}"
+      volet_chambre_jardin:
+        name: Volet chambre parentale - Jardin
+        travelling_time_up: 16
+        travelling_time_down: 15
+        close_script_entity_id: script.volets_chambre_jardin_close
+        stop_script_entity_id: script.volets_chambre_jardin_stop
+        open_script_entity_id: script.volets_chambre_jardin_open
+        send_stop_at_ends: False #optional
+        always_confident: False #optional
+        device_class: shutter
+        availability_template: "{{ not (is_state('remote.broadlink_remote_remote', 'unavailable') or is_state('remote.broadlink_remote_remote', 'unknown')) }}"
+
+  - platform: template
+    covers:
+      garage_door:
+        device_class: garage
+        friendly_name: "Porte du garage"
+        value_template: "{{ is_state('binary_sensor.garage_door', 'on') }}"
+        open_cover:
+            choose:
+              - conditions:
+                  - condition: state
+                    entity_id: binary_sensor.garage_door
+                    state: 'off'
+                sequence:
+                  - service: switch.turn_on
+                    data: {}
+                    target:
+                      entity_id: switch.garage_door
+                  - delay:
+                      hours: 0
+                      minutes: 0
+                      seconds: 0
+                      milliseconds: 800
+                  - service: switch.turn_off
+                    data: {}
+                    target:
+                      entity_id: switch.garage_door
+            default: []
+        close_cover:
+            service: script.garage_off
+
+firmata:
+  serial_port: /dev/serial/by-id/usb-1a86_USB_Serial-if00-port0
+  serial_baud_rate: 57600
+  switches:
+    - name: garage_door
+      pin_mode: OUTPUT
+      pin: 13
+      
+notify:
+  - platform: file
+    name: weekly_sleep_time
+    filename: statistics/weekly_sleep_time.txt
+    timestamp: False
+    
+  - platform: smtp
+    name: mail_to_quentin
+    sender: !secret second_mail
+    recipient: !secret mail
+    username: !secret second_mail
+    password: !secret pw2
+    sender_name: "Home Assistant"
+    server: !secret server1
+    port: 465
+    encryption: tls
+    
+recorder:
+  purge_keep_days: 2
+  exclude:
+    domains:
+      - device_tracker
+      - media_player
+      - uptime
+      - time_date
+      - worldclock
+    entity_globs:
+      - sensor.clock*
+      - sensor.date*
+    entities:
+      - sensor.random_sensor
+      - weather.maison_2
+      - sensor.maison_pressure_tendency
+      - automation.securite_notification_en_cas_de_mouvements
+      - automation.securite_notification_google_home_en_cas_de_presence_sur_une_camera
+      - camera.front_door
+      - sensor.time
+      - sensor.time_utc
+      - sensor.time_date
+      - sensor.internet_time
+      - sensor.home_assistant_v2_db
+      - sensor.memory_free
+      - sensor.memory_use
+      - sensor.memory_use_percent
+      - sensor.processor_use
+      - weather.openweathermap
+      
+google_assistant:
+  project_id: home-assistant-574a4
+  service_account: !include SERVICE_ACCOUNT.JSON
+  secure_devices_pin: '!secret iot_pin'
+  report_state: true
+  expose_by_default: false
+  entity_config:
+    switch.television:
+      name: La télévision
+      expose: true
+      aliases:
+        - TV
+        - Télévision
+        - La TV
+        - La télé
+        - Télé
+      room: Divers
+    switch.pc:
+      name: Ordinateur
+      expose: true
+      aliases:
+        - PC
+        - Ordinateur
+        - Windows
+        - Le PC
+      room: Divers
+    light.led_canape:
+      name: LED canapé
+      expose: true
+      aliases:
+        - LED fauteuil
+        - Lampe fauteuil
+        - Lampe du fauteuil
+        - LED du fauteuil
+        - LED du canapé
+        - LED du salon
+      room: Salon
+    light.led_salle_a_manger:
+      name: LED Salle à manger
+      expose: true
+      aliases:
+        - LED de la salle à manger
+        - Lampe Salle à manger
+        - Lampe de la Salle à manger
+        - LED du plafond
+        - Lampe du plafond
+      room: Salle à manger
+    light.led_cuisine:
+      name: LED Cuisine
+      expose: true
+      aliases:
+        - LED de la cuisine
+        - LED du frigo
+        - Lampe du frigo
+      room: Cuisine
+    switch.deezer:
+      name: Deezer
+      expose: true
+      aliases:
+        - Mets Deezer
+        - Lance Deezer
+        - La musique
+        - Mets de la musique
+      room: Divers
+    input_boolean.mode_nuit:
+      name: Mode nuit
+      expose: true
+      aliases:
+        - Bonne nuit
+        - Dodo
+      room: Divers
+    light.ambilight:
+      name: Ambilight
+      expose: true
+      aliases: 
+        - Lampe de la TV
+        - Lampe de la télévision
+        - LED de la TV
+        - LED de la télévision
+        - Ambilight de la TV
+        - Ambilight de la télévision
+      room: Salon
+    switch.turn_off_all_devices:
+      name: Éteins tous les appareils
+      expose: true
+      room: Divers   
+    script.1594471788888:
+      name: Pause
+      expose: true
+      room: Divers
+    script.1594471593916:
+      name: Lecture
+      expose: true
+      room: Divers
+    script.1594204346433:
+      name: Morceau suivant
+      expose: true
+      room: Divers
+    script.megaboom_deezer:
+      name: Mets de la musique dans la salle de bain
+      expose: true
+      room: Divers
+      aliases:
+        - Mets la musique dans la salle de bain
+        - Mets Deezer dans la salle de bain
+        - Allume l'enceinte de la salle de bain
+        - Allume le haut-parleur de la salle de bain
+        - À la douche
+        - On va se laver
+        - Je vais me laver
+    script.megaboom_stop:
+      name: Arrête la musique dans la salle de bain
+      expose: true
+      room: Divers
+      aliases:
+        - Arrête Deezer dans la salle de bain
+        - Éteins l'enceinte de la salle de bain
+        - Éteins Deezer de la salle de bain
+        - Éteins le haut-parleur de la salle de bain
+        - Je suis propre
+        - Je suis lavé
+        - Coupe la musique dans la salle de bain
+    # input_boolean.morning:
+    #   name: Ambiance lumineuse
+    #   room: Ambiances
+    #   expose: true
+    #   aliases:
+    #     - Ambiance matin
+    #     - Ambiance claire
+    light.piece_principale:
+      name: La pièce principale
+      expose: true
+      room: La pièce principale
+      aliases:
+        - Pièce
+        - Toutes les lumières
+        - La pièce
+        - Pièce principale
+        - Toutes les lampes
+    script.ouvre_tous_les_volets:
+      name: Ouvre les volets et rideaux
+      expose: true
+      aliases: 
+        - Ouvre tous les volets
+        - Ouvre tous les stores
+        - Ouvre tous les rideaux
+    script.ferme_tous_les_volets:
+      name: Ferme les volets
+      expose: true
+      aliases:
+        - Ferme tous les volets
+        - Ferme tous les stores
+        - Fermes tous les rideaux
+    cover.baie_vitree:
+      name: Le volet de la salle à manger
+      expose: true
+      room: Salle à manger
+      aliases:
+        - Le volet pare-soleil
+        - Le volet de la baie vitrée
+        - Volet salle à manger
+        - Volet pare-soleil
+        - Volet de la baie vitrée
+        - Le store pare-soleil
+        - Le store de la baie vitrée
+        - Le store de la salle à manger
+        - Store pare-soleil
+        - Store de la baie vitrée
+    cover.baie_vitree_2:
+      name: Les rideaux de la salle à manger
+      expose: true
+      room: Salle à manger
+      aliases:
+        - Le rideau de la baie vitrée
+        - Le rideau de la salle à manger
+        - Rideau salle à manger
+        - Rideaux salle à manger
+        - Rideau de la baie vitrée
+        - Rideaux de la baie vitrée
+    cover.cuisine:
+      name: Le volet de la cuisine
+      expose: true
+      room: Cuisine
+      aliases:
+        - Volet cuisine
+        - Volet de la cuisine
+        - Le store de la cuisine
+        - Store cuisine
+    cover.chambre_2_droite:
+      name: Le volet droit de la chambre
+      expose: true
+      room: Chambre 2
+      aliases:
+        - Le volet droit de la chambre d'ami
+        - Le volet droit de la chambre des enfants
+        - Volet droit chambre d'ami
+        - Volet droit du bureau
+        - Le volet droit du bureau
+        - Le store droit de la chambre d'ami
+        - Le store droit de la chambre des enfants
+        - Store droit chambre d'ami
+        - Store droit du bureau
+        - Le store droit du bureau
+    cover.chambre_2_gauche:
+      name: Le volet gauche de la chambre
+      expose: true
+      room: Chambre 2
+      aliases:
+        - Le volet gauche de la chambre d'ami
+        - Le volet gauche de la chambre des enfants
+        - Volet gauche chambre d'ami
+        - Volet gauche du bureau
+        - Le volet gauche du bureau
+        - Le store gauche de la chambre d'ami
+        - Le store gauche de la chambre des enfants
+        - Store gauche chambre d'ami
+        - Store gauche du bureau
+        - Le store gauche du bureau
+    cover.chambre_1:
+      name: Les volets de la chambre
+      expose: true
+      room: Chambre
+      aliases:
+        - Les volet de la chambre parentale
+        - Volets suite parentale
+        - Volets chambre parentale
+        - Les stores de la chambre parentale
+        - Stores de la suite parentale
+        - Stores de la chambre parentale
+    cover.couloir:
+      name: Le volet du couloir
+      expose: true
+      room: Couloir étage
+      aliases:
+        - Le store du couloir
+        - Store couloir
+        - Volet couloir
+    cover.haut_canape:
+      name: Le volet du salon
+      expose: true
+      room: Salon
+      aliases:
+        - Le volet du canapé
+        - Le volet en haut du canapé
+        - Le volet en haut du fauteuil
+        - Le volet au-dessus du fauteuil
+        - Le volet au-dessus du canapé
+        - Le volet en face de la TV
+        - Le store du canapé
+        - Le store en haut du canapé
+        - Le store en haut du fauteuil
+        - Le store au-dessus du fauteuil
+        - Le store au-dessus du canapé
+        - Le store en face de la TV
+    cover.stores_salon:
+      name: Les stores du salon
+      expose: true
+      room: Salon
+      aliases:
+        - Volets salon
+        - Volets du salon
+        - Les stores du salon
+        - Stores salon
+        - Stores du salon
+    cover.piece_principale:
+      name: Tous les volets de la pièce principale
+      expose: true
+      room: Pièce principale
+      aliases:
+        - Tous les stores de la pièce principale
+        - Tous les rideaux de la pièce principale
+    cover.salle_de_bain:
+      name: Le volet de la salle de bain
+      expose: true
+      room: Salle de bain
+      aliases:
+        - Le store de la salle de bain
+    cover.garage_door:
+      name: La porte du garage
+      expose: true
+      room: Garage
+      aliases:
+        - Le garage
+    light.hotte_cuisine:
+      name: Les lampes de la hotte
+      expose: true
+      room: Cuisine
+      aliases:
+        - La lampe de la hotte
+        - La lumière de la hotte
+        - Les lumières de la hotte
+    fan.hotte_cuisine:
+      name: La hotte
+      expose: true
+      room: Cuisine
+    switch.ventilateur:
+      name: Le ventilateur
+      expose: true
+      room: Salon
+      aliases:
+        - Le ventilateur du salon
+    vacuum.aspirateur_rez_de_chaussee:
+      name: L'aspirateur du rez-de-chaussée
+      expose: true
+      room: Salon
+      aliases:
+        - L'aspirateur du salon
+        - L'aspirateur
+        - L'aspirateur de la pièce principale
+    vacuum.xiaomi_vacuum_cleaner:
+      name: L'aspirateur de l'étage
+      expose: true
+      room: Chambre
+      aliases:
+        - L'aspirateur du haut
+        - L'aspirateur d'en haut
+        - L'aspirateur
+        - L'aspirateur de la chambre
+    input_boolean.mode_silencieux:
+      name: Le mode silencieux
+      expose: true
+      room: Divers
+      aliases:
+        - Mets le mode silencieux
+        - Silence
+        - Mode silencieux
+    switch.ambiance_auto:
+      name: Le mode automatique
+      expose: true
+      room: Divers
+      aliases:
+        - Le mode automatique des lumières
+        - Le mode automatique des lampes
+    script.ambiance_clair:
+      name: L'ambiance claire
+      expose: true
+      room: Divers
+      aliases:
+        - Ambiance claire
+        - L'ambiance lumineuse
+        - L'ambiance matin
+    script.ambiance_detente:
+      name: L'ambiance détente
+      expose: true
+      room: Divers
+      aliases:
+        - Détente
+        - Ambiance détente
+        - L'ambiance relax
+        - L'ambiance soir
+    script.ambiance_musique:
+      name: L'ambiance musique
+      expose: true
+      room: Divers
+      aliases:
+        - Ambiance musique
+        - L'ambiance fête
+        - L'ambiance festive
+    
+# climate:
+#   - platform: generic_thermostat
+#     name: Le ventilateur du salon
+#     heater: switch.fake_heater
+#     target_sensor: sensor.temperature_interieure
+#     ac_mode: true
+#     initial_hvac_mode: "heat"
+#     max_temp: 24
+#     min_temp: 18
+#     target_temp: 20
+    
+#   - platform: harmony_ac
+#     name: Climatiseur - Salon
+#     remote_entity: remote.harmony
+#     device_id: 75466625
+#     min_temp: 17
+#     max_temp: 23
+#     target_temp: 20
+#     target_temp_step: 1
+#     temp_sensor: sensor.temperature_interieure
+#     customize:
+#       operations:
+#         - cool
+#         - fan_only
+#       no_temp_operations:
+#         - fan_only
+#       fan_modes:
+#         - auto
+#         - low
+#         - high
+
+camera:
+  - platform: xiaomi_cloud_map_extractor
+    name: Map Roborock Etage
+    host: 192.168.0.18
+    token: !secret xiaomi_token
+    username: !secret xiaomi_username
+    password: !secret pw3
+    country: de
+    scan_interval: 120
+    draw: ['all']
+    colors:
+      color_map_outside: [32, 41, 60]
+      color_path: [32, 41, 60]
+      color_robo: [32, 41, 60]
+    map_transformation:
+        trim: 
+          left: 8
+          right: 8
+          top: 8
+          bottom: 21
+    attributes:
+      - calibration_points
+      
+  - platform: xiaomi_cloud_map_extractor
+    name: Map Roborock Rez-de-chaussée
+    host: 192.168.0.42
+    token: !secret xiaomi2_token
+    username: !secret xiaomi_username
+    password: !secret pw3
+    country: de
+    scan_interval: 60
+    draw: ['all']
+    colors:
+      color_map_outside: [32, 41, 60]
+      color_path: [32, 41, 60]
+      color_robo: [32, 41, 60]
+    # map_transformation:
+    #     trim: 
+    #       left: 8
+    #       right: 8
+    #       top: 8
+    #       bottom: 21
+    attributes:
+      - calibration_points
+      
+amcrest:
+  - host: 192.168.2.83
+    name: Sonnette
+    username: !secret amcrest_username
+    password: !secret pw1
+
+# image_processing:
+#   - platform: deepstack_face
+#     ip_address: localhost
+#     port: 5001
+#     #api_key: mysecretkey
+#     timeout: 30
+#     detect_only: False
+#     save_file_folder: /config/snapshots/
+#     save_timestamped_file: True
+#     save_faces: True
+#     save_faces_folder: /config/faces/
+#     show_boxes: False
+#     source:
+#       - entity_id: camera.cuisine_pir_person
+#         name: face_cuisine

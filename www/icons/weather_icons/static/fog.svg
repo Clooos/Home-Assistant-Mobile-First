@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<svg width="800" height="800" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+ <style>
+  <![CDATA[#e4vknhyk86994_to {animation: e4vknhyk86994_to__to 8000ms linear infinite normal forwards}@keyframes e4vknhyk86994_to__to { 0% {transform: translate(0px,0px)} 8.750000% {transform: translate(32px,0px)} 18.750000% {transform: translate(0px,0px)} 28.750000% {transform: translate(-32px,0px)} 37.500000% {transform: translate(0px,0px)} 46.250000% {transform: translate(32px,0px)} 56.250000% {transform: translate(0px,0px)} 66.250000% {transform: translate(-32px,0px)} 75% {transform: translate(0px,0px)} 100% {transform: translate(0px,0px)} }#e4vknhyk86995_to {animation: e4vknhyk86995_to__to 8000ms linear infinite normal forwards}@keyframes e4vknhyk86995_to__to { 0% {transform: translate(0px,-1.013862px)} 18.750000% {transform: translate(32px,-1.013862px)} 37.500000% {transform: translate(0px,-1.013862px)} 56.250000% {transform: translate(-32px,-1.013862px)} 75% {transform: translate(0px,-1.013862px)} 100% {transform: translate(0px,-1.013862px)} }]]>
+ </style>
+ <g class="layer">
+  <title>Layer 1</title>
+  <g id="e4vknhyk86993">
+   <g id="e4vknhyk86994_to" transform="translate(0 0)"/>
+   <g id="e4vknhyk86995_to" transform="translate(0 -1.01386)"/>
+  </g>
+  <g id="svg_1">
+   <path d="m560,368c-1.024,0 -2.048,0 -3.136,0.032c-14.912,-74.016 -79.776,-128.032 -156.864,-128.032c-64.032,0 -121.504,38.112 -146.688,96.032c-60.512,1.44 -109.312,51.104 -109.312,111.968c0,61.76 50.24,112 112,112l304,0c52.928,0 96,-43.072 96,-96c0,-52.928 -43.072,-96 -96,-96z" fill="#57A0EE" id="e4vknhyk86992"/>
+   <path d="m625.84297,591.50693l-416,0c-8.832,0 -16,7.168 -16,16c0,8.832 7.168,16 16,16l416,0c8.832,0 16,-7.168 16,-16c0,-8.832 -7.168,-16 -16,-16z" fill="rgb(96,125,139)" id="e4vknhyk86994"/>
+   <path d="m625.84297,655.50693l-416,0c-8.832,0 -16,7.168 -16,16c0,8.832 7.168,16 16,16l416,0c8.832,0 16,-7.168 16,-16c0,-8.832 -7.168,-16 -16,-16z" fill="rgb(96,125,139)" id="e4vknhyk86995"/>
+  </g>
+ </g>
+</svg>

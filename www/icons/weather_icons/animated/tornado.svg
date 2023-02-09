@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- (c) ammap.com | SVG weather icons -->
+<!-- Tornado | Contributed by hsoJ95 on GitHub: https://github.com/hsoj95 -->
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="64" height="64" viewbox="0 0 64 64">
+    <defs>
+        <filter id="blur" width="200%" height="200%">
+            <feGaussianBlur in="SourceAlpha" stdDeviation="3" />
+            <feOffset dx="0" dy="4" result="offsetblur" />
+            <feComponentTransfer>
+                <feFuncA type="linear" slope="0.05" />
+            </feComponentTransfer>
+            <feMerge>
+                <feMergeNode/>
+                <feMergeNode in="SourceGraphic" />
+            </feMerge>
+        </filter>
+        <style type="text/css">
+            <![CDATA[
+            /*
+** CLOUDS
+*/
+
+            @keyframes am-weather-cloud-1 {
+                0% {
+                    -webkit-transform: translate(-5px, 0px);
+                    -moz-transform: translate(-5px, 0px);
+                    -ms-transform: translate(-5px, 0px);
+                    transform: translate(-5px, 0px);
+                }
+
+                50% {
+                    -webkit-transform: translate(10px, 0px);
+                    -moz-transform: translate(10px, 0px);
+                    -ms-transform: translate(10px, 0px);
+                    transform: translate(10px, 0px);
+                }
+
+                100% {
+                    -webkit-transform: translate(-5px, 0px);
+                    -moz-transform: translate(-5px, 0px);
+                    -ms-transform: translate(-5px, 0px);
+                    transform: translate(-5px, 0px);
+                }
+            }
+
+            .am-weather-cloud-1 {
+                -webkit-animation-name: am-weather-cloud-1;
+                -moz-animation-name: am-weather-cloud-1;
+                animation-name: am-weather-cloud-1;
+                -webkit-animation-duration: 7s;
+                -moz-animation-duration: 7s;
+                animation-duration: 7s;
+                -webkit-animation-timing-function: linear;
+                -moz-animation-timing-function: linear;
+                animation-timing-function: linear;
+                -webkit-animation-iteration-count: infinite;
+                -moz-animation-iteration-count: infinite;
+                animation-iteration-count: infinite;
+            }
+
+            @keyframes am-weather-cloud-2 {
+                0% {
+                    -webkit-transform: translate(0px, 0px);
+                    -moz-transform: translate(0px, 0px);
+                    -ms-transform: translate(0px, 0px);
+                    transform: translate(0px, 0px);
+                }
+
+                50% {
+                    -webkit-transform: translate(2px, 0px);
+                    -moz-transform: translate(2px, 0px);
+                    -ms-transform: translate(2px, 0px);
+                    transform: translate(2px, 0px);
+                }
+
+                100% {
+                    -webkit-transform: translate(0px, 0px);
+                    -moz-transform: translate(0px, 0px);
+                    -ms-transform: translate(0px, 0px);
+                    transform: translate(0px, 0px);
+                }
+            }
+
+            .am-weather-cloud-2 {
+                -webkit-animation-name: am-weather-cloud-2;
+                -moz-animation-name: am-weather-cloud-2;
+                animation-name: am-weather-cloud-2;
+                -webkit-animation-duration: 3s;
+                -moz-animation-duration: 3s;
+                animation-duration: 3s;
+                -webkit-animation-timing-function: linear;
+                -moz-animation-timing-function: linear;
+                animation-timing-function: linear;
+                -webkit-animation-iteration-count: infinite;
+                -moz-animation-iteration-count: infinite;
+                animation-iteration-count: infinite;
+            }
+            /*
+** STROKE
+*/
+
+            @keyframes am-weather-stroke {
+                0% {
+                    -webkit-transform: translate(0.0px, 0.0px);
+                    -moz-transform: translate(0.0px, 0.0px);
+                    -ms-transform: translate(0.0px, 0.0px);
+                    transform: translate(0.0px, 0.0px);
+                }
+
+                2% {
+                    -webkit-transform: translate(0.3px, 0.0px);
+                    -moz-transform: translate(0.3px, 0.0px);
+                    -ms-transform: translate(0.3px, 0.0px);
+                    transform: translate(0.3px, 0.0px);
+                }
+
+                4% {
+                    -webkit-transform: translate(0.0px, 0.0px);
+                    -moz-transform: translate(0.0px, 0.0px);
+                    -ms-transform: translate(0.0px, 0.0px);
+                    transform: translate(0.0px, 0.0px);
+                }
+
+                6% {
+                    -webkit-transform: translate(0.5px, 0.4px);
+                    -moz-transform: translate(0.5px, 0.4px);
+                    -ms-transform: translate(0.5px, 0.4px);
+                    transform: translate(0.5px, 0.4px);
+                }
+
+                8% {
+                    -webkit-transform: translate(0.0px, 0.0px);
+                    -moz-transform: translate(0.0px, 0.0px);
+                    -ms-transform: translate(0.0px, 0.0px);
+                    transform: translate(0.0px, 0.0px);
+                }
+
+                10% {
+                    -webkit-transform: translate(0.3px, 0.0px);
+                    -moz-transform: translate(0.3px, 0.0px);
+                    -ms-transform: translate(0.3px, 0.0px);
+                    transform: translate(0.3px, 0.0px);
+                }
+
+                12% {
+                    -webkit-transform: translate(0.0px, 0.0px);
+                    -moz-transform: translate(0.0px, 0.0px);
+                    -ms-transform: translate(0.0px, 0.0px);
+                    transform: translate(0.0px, 0.0px);
+                }
+
+                14% {
+                    -webkit-transform: translate(0.3px, 0.0px);
+                    -moz-transform: translate(0.3px, 0.0px);
+                    -ms-transform: translate(0.3px, 0.0px);
+                    transform: translate(0.3px, 0.0px);
+                }
+
+                16% {
+                    -webkit-transform: translate(0.0px, 0.0px);
+                    -moz-transform: translate(0.0px, 0.0px);
+                    -ms-transform: translate(0.0px, 0.0px);
+                    transform: translate(0.0px, 0.0px);
+                }
+
+                18% {
+                    -webkit-transform: translate(0.3px, 0.0px);
+                    -moz-transform: translate(0.3px, 0.0px);
+                    -ms-transform: translate(0.3px, 0.0px);
+                    transform: translate(0.3px, 0.0px);
+                }
+
+                20% {
+                    -webkit-transform: translate(0.0px, 0.0px);
+                    -moz-transform: translate(0.0px, 0.0px);
+                    -ms-transform: translate(0.0px, 0.0px);
+                    transform: translate(0.0px, 0.0px);
+                }
+
+                22% {
+                    -webkit-transform: translate(1px, 0.0px);
+                    -moz-transform: translate(1px, 0.0px);
+                    -ms-transform: translate(1px, 0.0px);
+                    transform: translate(1px, 0.0px);
+                }
+
+                24% {
+                    -webkit-transform: translate(0.0px, 0.0px);
+                    -moz-transform: translate(0.0px, 0.0px);
+                    -ms-transform: translate(0.0px, 0.0px);
+                    transform: translate(0.0px, 0.0px);
+                }
+
+                26% {
+                    -webkit-transform: translate(-1px, 0.0px);
+                    -moz-transform: translate(-1px, 0.0px);
+                    -ms-transform: translate(-1px, 0.0px);
+                    transform: translate(-1px, 0.0px);
+                }
+
+                28% {
+                    -webkit-transform: translate(0.0px, 0.0px);
+                    -moz-transform: translate(0.0px, 0.0px);
+                    -ms-transform: translate(0.0px, 0.0px);
+                    transform: translate(0.0px, 0.0px);
+                }
+
+                40% {
+                    fill: orange;
+                    -webkit-transform: translate(0.0px, 0.0px);
+                    -moz-transform: translate(0.0px, 0.0px);
+                    -ms-transform: translate(0.0px, 0.0px);
+                    transform: translate(0.0px, 0.0px);
+                }
+
+                65% {
+                    fill: white;
+                    -webkit-transform: translate(-1px, 5.0px);
+                    -moz-transform: translate(-1px, 5.0px);
+                    -ms-transform: translate(-1px, 5.0px);
+                    transform: translate(-1px, 5.0px);
+                }
+                61% {
+                    fill: orange;
+                }
+
+                100% {
+                    -webkit-transform: translate(0.0px, 0.0px);
+                    -moz-transform: translate(0.0px, 0.0px);
+                    -ms-transform: translate(0.0px, 0.0px);
+                    transform: translate(0.0px, 0.0px);
+                }
+            }
+
+            .am-weather-stroke {
+                -webkit-animation-name: am-weather-stroke;
+                -moz-animation-name: am-weather-stroke;
+                animation-name: am-weather-stroke;
+                -webkit-animation-duration: 1.11s;
+                -moz-animation-duration: 1.11s;
+                animation-duration: 1.11s;
+                -webkit-animation-timing-function: linear;
+                -moz-animation-timing-function: linear;
+                animation-timing-function: linear;
+                -webkit-animation-iteration-count: infinite;
+                -moz-animation-iteration-count: infinite;
+                animation-iteration-count: infinite;
+            }
+            /*
+            ** Tornado
+            */
+
+            @keyframes tornado {
+                0% {
+                    -webkit-transform: translate(-5px, 30px) scale(1.0);
+                    -moz-transform: translate(-5px, 30px) scale(1.0);
+                    -ms-transform: translate(-5px, 30px) scale(1.0);
+                    transform: translate(-5px, 30px) scale(1.0);
+                }
+
+                33% {
+                    -webkit-transform: translate(-4px, 30px) scale(1.1);
+                    -moz-transform: translate(-4px, 30px) scale(1.1);
+                    -ms-transform: translate(-4px, 30px) scale(1.1);
+                    transform: translate(-4px, 30px) scale(1.1);
+                }
+
+                66% {
+                    -webkit-transform: translate(-6px, 30px) scale(1.1);
+                    -moz-transform: translate(-6px, 30px) scale(1.1);
+                    -ms-transform: translate(-6px, 30px) scale(1.1);
+                    transform: translate(-6px, 30px) scale(1.1);
+                }
+
+                100% {
+                    -webkit-transform: translate(-5px, 30px) scale(1.0);
+                    -moz-transform: translate(-5px, 30px) scale(1.0);
+                    -ms-transform: translate(-5px, 30px) scale(1.0);
+                    transform: translate(-5px, 30px) scale(1.0);
+                }
+            }
+
+            #tornado {
+                -webkit-animation-name: tornado;
+                -moz-animation-name: tornado;
+                animation-name: tornado;
+                -webkit-animation-duration: 3s;
+                -moz-animation-duration: 3s;
+                animation-duration: 3s;
+                -webkit-animation-timing-function: linear;
+                -moz-animation-timing-function: linear;
+                animation-timing-function: linear;
+                -webkit-animation-iteration-count: infinite;
+                -moz-animation-iteration-count: infinite;
+                animation-iteration-count: infinite;
+            }
+            /*
+            ** Warning Symbol
+            */
+
+            @keyframes error {
+                0% {
+                    fill: #cc0000;
+                }
+
+                50% {
+                    fill: #ff0000;
+                }
+
+                100% {
+                    fill: #cc0000;
+                }
+            }
+
+            #Shape {
+                -webkit-animation-name: error;
+                -moz-animation-name: error;
+                animation-name: error;
+                -webkit-animation-duration: 1s;
+                -moz-animation-duration: 1s;
+                animation-duration: 1s;
+                -webkit-animation-timing-function: linear;
+                -moz-animation-timing-function: linear;
+                animation-timing-function: linear;
+                -webkit-animation-iteration-count: infinite;
+                -moz-animation-iteration-count: infinite;
+                animation-iteration-count: infinite;
+            }
+
+            ]]>
+        </style>
+    </defs>
+    <g filter="url(#blur)" id="thunder">
+        <g transform="translate(20,5)">
+            <g id="tornado" transform="translate(-5, 30)" stroke="white" fill="#1D1D1D">
+                <path d="M9.23901158,-9.49386371e-16 L11.3987309,-1.21779583e-14 L11.3987309,-1.24344979e-14 C12.801779,-2.01691758e-14 14.1681534,0.448121973 15.298688,1.27904649 L15.3736083,1.33411168 L15.3736083,1.33411168 C16.2215292,1.95731981 16.403695,3.14990558 15.7804869,3.99782654 C15.7177587,4.08317284 15.6480233,4.16314 15.5720054,4.23689693 L12.745452,6.97937995 L12.745452,6.97937995 C11.6541171,8.03825523 10.885777,9.38516771 10.5297692,10.8635071 L10.5297692,10.8635071 L10.5297692,10.8635071 C10.1747403,12.3377821 9.38247153,13.6703547 8.25685398,14.6864835 L5.13650434,17.5033166 L3.17681819,18.8770141 L3.17681819,18.8770141 C2.32003764,19.4775987 1.13860975,19.2699109 0.538025154,18.4131303 C-0.00307248108,17.6412126 0.105676138,16.5889015 0.793196559,15.9439523 L0.793196559,15.9439523 L1.87126735,14.947348 L1.87126735,14.947348 C3.12686588,13.7866312 3.84080575,12.154378 3.84080575,10.4444683 L3.84080575,10.4444683 L3.84080575,10.4444683 C3.84080575,8.67208707 3.50831427,6.91543543 2.86058207,5.2656542 L1.35008427,1.41839928 L1.35008427,1.41839928 C1.1404215,0.884385832 1.40335967,0.281517137 1.93737312,0.0718543636 C2.05830876,0.0243729712 2.18707844,-2.12924157e-14 2.31700115,-2.13162821e-14 L3.84080575,-2.08721929e-14 L9.23901158,-9.49386371e-16 Z"
+                    id="Polygon"></path>
+            </g>
+            <g class="am-weather-cloud-1">
+                <path d="M47.7,35.4     c0-4.6-3.7-8.2-8.2-8.2c-1,0-1.9,0.2-2.8,0.5c-0.3-3.4-3.1-6.2-6.6-6.2c-3.7,0-6.7,3-6.7,6.7c0,0.8,0.2,1.6,0.4,2.3     c-0.3-0.1-0.7-0.1-1-0.1c-3.7,0-6.7,3-6.7,6.7c0,3.6,2.9,6.6,6.5,6.7l17.2,0C44.2,43.3,47.7,39.8,47.7,35.4z"
+                    fill="#666" stroke="white" stroke-linejoin="round" stroke-width="1.2" transform="translate(-10,-6), scale(0.6)"
+                />
+            </g>
+            <g>
+                <path d="M47.7,35.4     c0-4.6-3.7-8.2-8.2-8.2c-1,0-1.9,0.2-2.8,0.5c-0.3-3.4-3.1-6.2-6.6-6.2c-3.7,0-6.7,3-6.7,6.7c0,0.8,0.2,1.6,0.4,2.3     c-0.3-0.1-0.7-0.1-1-0.1c-3.7,0-6.7,3-6.7,6.7c0,3.6,2.9,6.6,6.5,6.7l17.2,0C44.2,43.3,47.7,39.8,47.7,35.4z"
+                    fill="#333" stroke="white" stroke-linejoin="round" stroke-width="1.2" transform="translate(-20,-11)" />
+            </g>
+            <g transform="translate(1,28), scale(1)">
+                <polygon class="am-weather-stroke" fill="orange" stroke="white" stroke-width="1" points="14.3,-2.9 20.5,-2.9 16.4,4.3 20.3,4.3 11.5,14.6 14.9,6.9 11.1,6.9"
+                />
+            </g>
+            <g id="error" transform="translate(23, 25)">
+                <path d="M7.77911118,2.90598694 L1.78786622,13.0231308 L1.78786622,13.0231308 C1.2250391,13.9735514 1.53924574,15.2002811 2.48966639,15.7631082 C2.79820001,15.9458179 3.15018031,16.0422194 3.50875504,16.0422194 L15.491245,16.0422194 L15.491245,16.0422194 C16.5958145,16.0422194 17.491245,15.1467889 17.491245,14.0422194 C17.491245,13.6836447 17.3948435,13.3316644 17.2121338,13.0231308 L11.2208888,2.90598694 L11.2208888,2.90598694 C10.6580617,1.95556629 9.431332,1.64135966 8.48091135,2.20418678 C8.19172737,2.37543789 7.95036229,2.61680296 7.77911118,2.90598694 Z"
+                    id="Shape" fill="#CC0000" fill-rule="nonzero"></path>
+                <path d="M9.5,10.5 L9.5,5.5" id="Line" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round"></path>
+                <circle id="Oval" fill="#FFFFFF" cx="9.5" cy="13" r="1"></circle>
+            </g>
+        </g>
+    </g>
+</svg>

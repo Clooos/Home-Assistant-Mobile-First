@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<svg width="800" height="800" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+ <style>
+  <![CDATA[#e8jzlygv3knn3_ts {animation: e8jzlygv3knn3_ts__ts 5000ms linear infinite normal forwards}@keyframes e8jzlygv3knn3_ts__ts { 0% {transform: translate(0px,0px) scale(0.800000,1)} 20% {transform: translate(0px,0px) scale(0.800000,1)} 30% {transform: translate(0px,0px) scale(1.090000,1)} 38% {transform: translate(0px,0px) scale(1,1)} 44% {transform: translate(0px,0px) scale(1.110000,1)} 64% {transform: translate(0px,0px) scale(1.110000,1)} 80% {transform: translate(0px,0px) scale(1,1)} 100% {transform: translate(0px,0px) scale(0.800000,1)} }#e8jzlygv3knn4_ts {animation: e8jzlygv3knn4_ts__ts 5000ms linear infinite normal forwards}@keyframes e8jzlygv3knn4_ts__ts { 0% {transform: translate(0px,0px) scale(0.800000,1)} 20% {transform: translate(0px,0px) scale(0.800000,1)} 30% {transform: translate(0px,0px) scale(1.090000,1)} 38% {transform: translate(0px,0px) scale(1,1)} 44% {transform: translate(0px,0px) scale(1.110000,1)} 64% {transform: translate(0px,0px) scale(1.110000,1)} 80% {transform: translate(0px,0px) scale(1,1)} 100% {transform: translate(0px,0px) scale(0.800000,1)} }#e8jzlygv3knn5_ts {animation: e8jzlygv3knn5_ts__ts 5000ms linear infinite normal forwards}@keyframes e8jzlygv3knn5_ts__ts { 0% {transform: translate(0px,0px) scale(0.800000,1)} 20% {transform: translate(0px,0px) scale(0.800000,1)} 30% {transform: translate(0px,0px) scale(1.090000,1)} 38% {transform: translate(0px,0px) scale(1,1)} 44% {transform: translate(0px,0px) scale(1.110000,1)} 64% {transform: translate(0px,0px) scale(1.110000,1)} 80% {transform: translate(0px,0px) scale(1,1)} 100% {transform: translate(0px,0px) scale(0.800000,1)} }]]>
+ </style>
+ <g class="layer">
+  <title>Layer 1</title>
+  <g id="e8jzlygv3knn2" transform="matrix(0.9 0 0 1 0 0)">
+   <g id="e8jzlygv3knn3_ts" transform="translate(0 0) scale(0.8 1)">
+    <path d="m410.991425,502.666672l-192,0c-8.832,0 -16,7.168 -16,16c0,8.832 7.168,16 16,16l192,0c8.832,0 16,7.2 16,16c0,8.8 -7.168,16 -16,16c-8.832,0 -16,7.168 -16,16c0,8.832 7.168,16 16,16c26.464,0 48,-21.536 48,-48c0,-26.464 -21.536,-48 -48,-48z" fill="#57A0EE" id="e8jzlygv3knn3"/>
+   </g>
+   <g id="e8jzlygv3knn4_ts" transform="translate(0 0) scale(0.8 1)">
+    <path d="m218.991425,342.666672l288,0c26.464,0 48,-21.536 48,-48c0,-26.464 -21.536,-48 -48,-48c-8.832,0 -16,7.168 -16,16c0,8.832 7.168,16 16,16c8.832,0 16,7.2 16,16c0,8.8 -7.168,16 -16,16l-288,0c-8.832,0 -16,7.168 -16,16c0,8.832 7.168,16 16,16z" fill="#57A0EE" id="e8jzlygv3knn4"/>
+   </g>
+   <g id="e8jzlygv3knn5_ts" transform="translate(0 0) scale(0.8 1)">
+    <path d="m634.991425,278.666672c-8.832,0 -16,7.168 -16,16c0,8.832 7.168,16 16,16c26.464,0 48,21.536 48,48c0,26.464 -21.536,48 -48,48l-416,0c-8.832,0 -16,7.168 -16,16c0,8.832 7.168,16 16,16l416,0c44.096,0 80,-35.872 80,-80c0,-44.128 -35.904,-80 -80,-80z" fill="#57A0EE" id="e8jzlygv3knn5"/>
+   </g>
+  </g>
+ </g>
+</svg>

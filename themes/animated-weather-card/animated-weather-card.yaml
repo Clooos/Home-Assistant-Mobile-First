@@ -1,0 +1,21 @@
+# Animated icons for default Home Assistant weather card
+#
+# Creator: Anton Averkiev - @wowgamr
+# Repo: https://github.com/wowgamr/animated-weather-card
+
+Animated Weather Card:
+    weather-icon-clear-night: url("/hacsfiles/themes/animated-weather-card/icons/clear-night.svg")
+    weather-icon-cloudy: url("/hacsfiles/themes/animated-weather-card/icons/cloudy.svg")
+    weather-icon-fog: url("/hacsfiles/themes/animated-weather-card/icons/fog.svg")
+    weather-icon-lightning: url("/hacsfiles/themes/animated-weather-card/icons/lightning.svg")
+    weather-icon-lightning-rainy: url("/hacsfiles/themes/animated-weather-card/icons/lightning.svg")
+    weather-icon-partlycloudy: url("/hacsfiles/themes/animated-weather-card/icons/partlycloudy.svg")
+    weather-icon-pouring: url("/hacsfiles/themes/animated-weather-card/icons/pouring.svg")
+    weather-icon-rainy: url("/hacsfiles/themes/animated-weather-card/icons/rainy.svg")
+    weather-icon-hail: url("/hacsfiles/themes/animated-weather-card/icons/hail.svg")
+    weather-icon-snowy: url("/hacsfiles/themes/animated-weather-card/icons/snowy.svg")
+    weather-icon-snowy-rainy: url("/hacsfiles/themes/animated-weather-card/icons/hail.svg")
+    weather-icon-sunny: url("/hacsfiles/themes/animated-weather-card/icons/sunny.svg")
+    weather-icon-windy: url("/hacsfiles/themes/animated-weather-card/icons/cloudy.svg")
+    weather-icon-windy-variant: url("/hacsfiles/themes/animated-weather-card/icons/partlycloudy.svg")
+    weather-icon-exceptional: url("/hacsfiles/themes/animated-weather-card/icons/exceptional.svg")

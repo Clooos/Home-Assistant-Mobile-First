@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="40" height="40" viewbox="0 0 17 17">
+	<style><![CDATA[
+	#warning {
+		-webkit-animation-name: warning_animation;
+		-moz-animation-name: warning_animation;
+		-ms-animation-name: warning_animation;
+		animation-name: warning_animation;
+		-webkit-animation-duration: 15s;
+		-moz-animation-duration: 15s;
+		-ms-animation-duration: 15s;
+		animation-duration: 15s;
+		-webkit-animation-timing-function: linear;
+		-moz-animation-timing-function: linear;
+		-ms-animation-timing-function: linear;
+		animation-timing-function: linear;
+		-webkit-animation-iteration-count: infinite;
+		-moz-animation-iteration-count: infinite;
+		-ms-animation-iteration-count: infinite;
+		animation-iteration-count: infinite;
+	}
+	@keyframes warning_animation {
+		0% {
+			opacity: 1;
+		}
+		5% {
+			opacity: 0;
+		}
+		10% {
+			opacity: 1;
+		}
+		15% {
+			opacity: 0;
+		}
+		20% {
+			opacity: 1;
+		}
+		100% {
+			opacity: 1;
+		}
+	}]]></style>
+	<g transform="translate(4,3)">
+		<g>
+			<path d="M14.42,6.14 C15.29,4.74 16.70,4.74 17.57,6.14 L28.36,23.59 C29.52,25.47 28.67,27 26.47,27 L5.52,27 C3.32,27 2.47,25.48 3.63,23.59 Z" fill="red" stroke="white" stroke-linejoin="round" stroke-width="1"/>
+		</g>
+		<g id="warning">
+			<path d="M16,20 C16.55,20 17,19.54 17,19 L17,12.99 C17,12.44 16.55,12 16,12 C15.44,12 15,12.45 15,12.99 L15,19 C15,19.55 15.44,20 16,20 Z M16,24 C16.55,24 17,23.55 17,23 C17,22.44 16.55,22 16,22 C15.44,22 15,22.44 15,23 C15,23.55 15.44,24 16,24 Z" fill="white"/>
+		</g>
+	</g>
+</svg>

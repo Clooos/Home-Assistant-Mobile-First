@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<svg width="64" height="64" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+ <g class="layer">
+  <title>Layer 1</title>
+  <g id="rainy-6">
+   <g id="svg_220" transform="translate(20,10)">
+    <g id="svg_221">
+     <path d="m47.7,35.4c0,-4.6 -3.7,-8.2 -8.2,-8.2c-1,0 -1.9,0.2 -2.8,0.5c-0.3,-3.4 -3.1,-6.2 -6.6,-6.2c-3.7,0 -6.7,3 -6.7,6.7c0,0.8 0.2,1.6 0.4,2.3c-0.3,-0.1 -0.7,-0.1 -1,-0.1c-3.7,0 -6.7,3 -6.7,6.7c0,3.6 2.9,6.6 6.5,6.7l17.2,0c4.4,-0.5 7.9,-4 7.9,-8.4z" fill="#57A0EE" id="svg_222" stroke="#FFFFFF" stroke-linejoin="round" stroke-width="1.2" transform="translate(-20,-11)"/>
+    </g>
+   </g>
+   <g id="svg_223" transform="translate(31,46), rotate(10)">
+    <line class="am-weather-rain-1" fill="none" id="svg_224" stroke="#91C0F8" stroke-dasharray="4,4" stroke-linecap="round" stroke-width="2" transform="translate(-4,1)" y2="8"/>
+    <line class="am-weather-rain-2" fill="none" id="svg_225" stroke="#91C0F8" stroke-dasharray="4,4" stroke-linecap="round" stroke-width="2" transform="translate(0,-1)" y2="8"/>
+    <line class="am-weather-rain-1" fill="none" id="svg_226" stroke="#91C0F8" stroke-dasharray="4,4" stroke-linecap="round" stroke-width="2" transform="translate(4,0)" y2="8"/>
+   </g>
+  </g>
+  <g id="cloudy-night-1">
+   <g id="svg_56" transform="translate(20,10)">
+    <g id="svg_57" transform="translate(16,4), scale(0.8)">
+     <g class="am-weather-moon-star-1" id="svg_58">
+      <polygon fill="orange" id="svg_59" points="3.3,1.5 4,2.7 5.2,3.3 4,4 3.3,5.2 2.7,4 1.5,3.3 2.7,2.7" stroke-miterlimit="10"/>
+     </g>
+     <g class="am-weather-moon-star-2" id="svg_60">
+      <polygon fill="orange" id="svg_61" points="3.3,1.5 4,2.7 5.2,3.3 4,4 3.3,5.2 2.7,4 1.5,3.3 2.7,2.7" stroke-miterlimit="10" transform="translate(20,10)"/>
+     </g>
+     <g class="am-weather-moon" id="svg_62">
+      <path d="m14.5,13.2c0,-3.7 2,-6.9 5,-8.7c-1.5,-0.9 -3.2,-1.3 -5,-1.3c-5.5,0 -10,4.5 -10,10s4.5,10 10,10c1.8,0 3.5,-0.5 5,-1.3c-3,-1.7 -5,-5 -5,-8.7z" fill="orange" id="svg_63" stroke="orange" stroke-linejoin="round" stroke-width="2"/>
+     </g>
+    </g>
+    <g class="am-weather-cloud-2" id="svg_64">
+     <path d="m47.7,35.4c0,-4.6 -3.7,-8.2 -8.2,-8.2c-1,0 -1.9,0.2 -2.8,0.5c-0.3,-3.4 -3.1,-6.2 -6.6,-6.2c-3.7,0 -6.7,3 -6.7,6.7c0,0.8 0.2,1.6 0.4,2.3c-0.3,-0.1 -0.7,-0.1 -1,-0.1c-3.7,0 -6.7,3 -6.7,6.7c0,3.6 2.9,6.6 6.5,6.7l17.2,0c4.4,-0.5 7.9,-4 7.9,-8.4z" fill="#C6DEFF" id="svg_65" stroke="white" stroke-linejoin="round" stroke-width="1.2" transform="translate(-20,-11)"/>
+    </g>
+   </g>
+  </g>
+  <g id="cloudy-night-2">
+   <g id="svg_88" transform="translate(20,10)">
+    <g id="svg_89" transform="translate(16,4), scale(0.8)">
+     <g class="am-weather-moon-star-1" id="svg_90">
+      <polygon fill="orange" id="svg_91" points="3.3,1.5 4,2.7 5.2,3.3 4,4 3.3,5.2 2.7,4 1.5,3.3 2.7,2.7" stroke-miterlimit="10"/>
+     </g>
+     <g class="am-weather-moon-star-2" id="svg_92">
+      <polygon fill="orange" id="svg_93" points="3.3,1.5 4,2.7 5.2,3.3 4,4 3.3,5.2 2.7,4 1.5,3.3 2.7,2.7" stroke-miterlimit="10" transform="translate(20,10)"/>
+     </g>
+     <g class="am-weather-moon" id="svg_94">
+      <path d="m14.5,13.2c0,-3.7 2,-6.9 5,-8.7c-1.5,-0.9 -3.2,-1.3 -5,-1.3c-5.5,0 -10,4.5 -10,10s4.5,10 10,10c1.8,0 3.5,-0.5 5,-1.3c-3,-1.7 -5,-5 -5,-8.7z" fill="orange" id="svg_95" stroke="orange" stroke-linejoin="round" stroke-width="2"/>
+     </g>
+    </g>
+    <g class="am-weather-cloud-2" id="svg_96">
+     <path d="m47.7,35.4c0,-4.6 -3.7,-8.2 -8.2,-8.2c-1,0 -1.9,0.2 -2.8,0.5c-0.3,-3.4 -3.1,-6.2 -6.6,-6.2c-3.7,0 -6.7,3 -6.7,6.7c0,0.8 0.2,1.6 0.4,2.3c-0.3,-0.1 -0.7,-0.1 -1,-0.1c-3.7,0 -6.7,3 -6.7,6.7c0,3.6 2.9,6.6 6.5,6.7l17.2,0c4.4,-0.5 7.9,-4 7.9,-8.4z" fill="#91C0F8" id="svg_97" stroke="white" stroke-linejoin="round" stroke-width="1.2" transform="translate(-20,-11)"/>
+    </g>
+   </g>
+  </g>
+  <g id="cloudy-night-3">
+   <g id="svg_120" transform="translate(20,10)">
+    <g id="svg_121" transform="translate(16,4), scale(0.8)">
+     <g class="am-weather-moon-star-1" id="svg_122">
+      <polygon fill="orange" id="svg_123" points="3.3,1.5 4,2.7 5.2,3.3 4,4 3.3,5.2 2.7,4 1.5,3.3 2.7,2.7" stroke-miterlimit="10"/>
+     </g>
+     <g class="am-weather-moon-star-2" id="svg_124">
+      <polygon fill="orange" id="svg_125" points="3.3,1.5 4,2.7 5.2,3.3 4,4 3.3,5.2 2.7,4 1.5,3.3 2.7,2.7" stroke-miterlimit="10" transform="translate(20,10)"/>
+     </g>
+     <g class="am-weather-moon" id="svg_126">
+      <path d="m14.5,13.2c0,-3.7 2,-6.9 5,-8.7c-1.5,-0.9 -3.2,-1.3 -5,-1.3c-5.5,0 -10,4.5 -10,10s4.5,10 10,10c1.8,0 3.5,-0.5 5,-1.3c-3,-1.7 -5,-5 -5,-8.7z" fill="orange" id="svg_127" stroke="orange" stroke-linejoin="round" stroke-width="2"/>
+     </g>
+    </g>
+    <g class="am-weather-cloud-2" id="svg_128">
+     <path d="m47.7,35.4c0,-4.6 -3.7,-8.2 -8.2,-8.2c-1,0 -1.9,0.2 -2.8,0.5c-0.3,-3.4 -3.1,-6.2 -6.6,-6.2c-3.7,0 -6.7,3 -6.7,6.7c0,0.8 0.2,1.6 0.4,2.3c-0.3,-0.1 -0.7,-0.1 -1,-0.1c-3.7,0 -6.7,3 -6.7,6.7c0,3.6 2.9,6.6 6.5,6.7l17.2,0c4.4,-0.5 7.9,-4 7.9,-8.4z" fill="#57A0EE" id="svg_129" stroke="#FFFFFF" stroke-linejoin="round" stroke-width="1.2" transform="translate(-20,-11)"/>
+    </g>
+   </g>
+  </g>
+  <g id="rainy-4">
+   <g id="svg_209" transform="translate(20,10)">
+    <g id="svg_210">
+     <path d="m47.7,35.4c0,-4.6 -3.7,-8.2 -8.2,-8.2c-1,0 -1.9,0.2 -2.8,0.5c-0.3,-3.4 -3.1,-6.2 -6.6,-6.2c-3.7,0 -6.7,3 -6.7,6.7c0,0.8 0.2,1.6 0.4,2.3c-0.3,-0.1 -0.7,-0.1 -1,-0.1c-3.7,0 -6.7,3 -6.7,6.7c0,3.6 2.9,6.6 6.5,6.7l17.2,0c4.4,-0.5 7.9,-4 7.9,-8.4z" fill="#57A0EE" id="svg_211" stroke="#FFFFFF" stroke-linejoin="round" stroke-width="1.2" transform="translate(-20,-11)"/>
+    </g>
+   </g>
+   <g id="svg_212" transform="translate(37,45), rotate(10)">
+    <line class="am-weather-rain-1" fill="none" id="svg_213" stroke="#91C0F8" stroke-dasharray="4,7" stroke-linecap="round" stroke-width="2" transform="translate(-6,1)" x1="0" x2="0" y1="0" y2="8"/>
+   </g>
+  </g>
+ </g>
+</svg>
