@@ -6,7 +6,6 @@ views:
     title: HOME
     visible:
       - user: a27a825440914ad7a919367c2e53793e
-      - user: e2a141ef12bd46559fda002013e88714
       - user: aadd52d881af46bca495e279bee867bf
       - user: 10a78a75e63f4c5ba22a81742f59b925
     type: sidebar
@@ -1554,7 +1553,7 @@ views:
                             font-size: 17px;
                             font-weight: 600
                           }
-                      - entity: sensor.mi_9_lieu_geocode
+                      - entity: sensor.mi_9_geocoded_location
                         name: ‎
                         icon: none
                         style: |
@@ -1585,8 +1584,8 @@ views:
                         margin-bottom: 0px;
                         filter: drop-shadow(0px 2px 2px rgba(0,0,0,0.5));
                       buttons:
-                        - name: '{{ states("sensor.mi_9_niveau_de_batterie") }}%'
-                          entity: sensor.mi_9_niveau_de_batterie
+                        - name: '{{ states("sensor.mi_9_battery_level") }}%'
+                          entity: sensor.mi_9_battery_level
                         - name: false
                           icon: mdi:plus
                           tap_action:
@@ -1629,11 +1628,11 @@ views:
 
 
                     <ha-icon icon="mdi:wifi"></ha-icon><ha-icon
-                    icon="mdi:none"></ha-icon>**WiFish**
+                    icon="mdi:none"></ha-icon>**WiFi**
 
 
                     <ha-icon icon="mdi:lock"></ha-icon><ha-icon
-                    icon="mdi:none"></ha-icon>**ImYwTtQg**
+                    icon="mdi:none"></ha-icon>**Password**
                   style: |
                     ha-card { 
                       box-shadow: none;
@@ -1681,6 +1680,10 @@ views:
     path: musique
     subview: true
     type: sidebar
+    visible:
+      - user: a27a825440914ad7a919367c2e53793e
+      - user: 10a78a75e63f4c5ba22a81742f59b925
+      - user: aadd52d881af46bca495e279bee867bf
     badges: []
     cards:
       - type: horizontal-stack
@@ -1839,6 +1842,10 @@ views:
     path: recherche
     type: sidebar
     subview: true
+    visible:
+      - user: a27a825440914ad7a919367c2e53793e
+      - user: aadd52d881af46bca495e279bee867bf
+      - user: 10a78a75e63f4c5ba22a81742f59b925
     badges: []
     cards:
       - type: iframe
@@ -1850,10 +1857,10 @@ views:
     title: Pièce principale
     visible:
       - user: a27a825440914ad7a919367c2e53793e
-      - user: e2a141ef12bd46559fda002013e88714
       - user: aadd52d881af46bca495e279bee867bf
       - user: 10a78a75e63f4c5ba22a81742f59b925
     type: sidebar
+    subview: true
     badges: []
     cards:
       - type: custom:mini-graph-card
@@ -2267,10 +2274,10 @@ views:
     title: Cuisine
     visible:
       - user: a27a825440914ad7a919367c2e53793e
-      - user: e2a141ef12bd46559fda002013e88714
       - user: aadd52d881af46bca495e279bee867bf
       - user: 10a78a75e63f4c5ba22a81742f59b925
     type: sidebar
+    subview: true
     badges: []
     cards:
       - type: custom:mini-graph-card
@@ -2683,10 +2690,10 @@ views:
     title: Salon
     visible:
       - user: a27a825440914ad7a919367c2e53793e
-      - user: e2a141ef12bd46559fda002013e88714
       - user: aadd52d881af46bca495e279bee867bf
       - user: 10a78a75e63f4c5ba22a81742f59b925
     type: sidebar
+    subview: true
     badges: []
     cards:
       - type: custom:mini-graph-card
@@ -3155,10 +3162,10 @@ views:
     title: Salle à manger
     visible:
       - user: a27a825440914ad7a919367c2e53793e
-      - user: e2a141ef12bd46559fda002013e88714
       - user: aadd52d881af46bca495e279bee867bf
       - user: 10a78a75e63f4c5ba22a81742f59b925
     type: sidebar
+    subview: true
     badges: []
     cards:
       - type: custom:mini-graph-card
@@ -3512,10 +3519,10 @@ views:
     title: Chambre
     visible:
       - user: a27a825440914ad7a919367c2e53793e
-      - user: e2a141ef12bd46559fda002013e88714
       - user: aadd52d881af46bca495e279bee867bf
       - user: 10a78a75e63f4c5ba22a81742f59b925
     type: sidebar
+    subview: true
     badges: []
     cards:
       - type: custom:mini-graph-card
@@ -3933,10 +3940,10 @@ views:
     title: Volets
     visible:
       - user: a27a825440914ad7a919367c2e53793e
-      - user: e2a141ef12bd46559fda002013e88714
       - user: aadd52d881af46bca495e279bee867bf
       - user: 10a78a75e63f4c5ba22a81742f59b925
     type: sidebar
+    subview: true
     badges: []
     cards:
       - type: custom:mini-graph-card
@@ -4234,10 +4241,10 @@ views:
     title: Liste
     visible:
       - user: a27a825440914ad7a919367c2e53793e
-      - user: e2a141ef12bd46559fda002013e88714
       - user: aadd52d881af46bca495e279bee867bf
       - user: 10a78a75e63f4c5ba22a81742f59b925
     type: sidebar
+    subview: true
     badges: []
     cards:
       - type: custom:mini-graph-card
@@ -4501,10 +4508,10 @@ views:
     title: Sécurité
     visible:
       - user: a27a825440914ad7a919367c2e53793e
-      - user: e2a141ef12bd46559fda002013e88714
       - user: aadd52d881af46bca495e279bee867bf
       - user: 10a78a75e63f4c5ba22a81742f59b925
     type: sidebar
+    subview: true
     badges: []
     cards:
       - type: custom:mini-graph-card
@@ -4908,10 +4915,10 @@ views:
     title: Réglages
     visible:
       - user: a27a825440914ad7a919367c2e53793e
-      - user: e2a141ef12bd46559fda002013e88714
       - user: aadd52d881af46bca495e279bee867bf
       - user: 10a78a75e63f4c5ba22a81742f59b925
     type: sidebar
+    subview: true
     badges: []
     cards:
       - type: custom:mini-graph-card
@@ -5247,10 +5254,10 @@ views:
     title: Aspirateur rez-de-chaussée
     visible:
       - user: a27a825440914ad7a919367c2e53793e
-      - user: e2a141ef12bd46559fda002013e88714
       - user: aadd52d881af46bca495e279bee867bf
       - user: 10a78a75e63f4c5ba22a81742f59b925
     type: sidebar
+    subview: true
     badges: []
     cards:
       - type: custom:mini-graph-card
@@ -5527,10 +5534,10 @@ views:
     title: Aspirateur étage
     visible:
       - user: a27a825440914ad7a919367c2e53793e
-      - user: e2a141ef12bd46559fda002013e88714
       - user: aadd52d881af46bca495e279bee867bf
       - user: 10a78a75e63f4c5ba22a81742f59b925
     type: sidebar
+    subview: true
     badges: []
     cards:
       - type: custom:mini-graph-card
@@ -5807,10 +5814,10 @@ views:
     title: Quentin
     visible:
       - user: a27a825440914ad7a919367c2e53793e
-      - user: e2a141ef12bd46559fda002013e88714
       - user: aadd52d881af46bca495e279bee867bf
       - user: 10a78a75e63f4c5ba22a81742f59b925
     type: sidebar
+    subview: true
     badges: []
     cards:
       - type: custom:mini-graph-card
@@ -6066,12 +6073,12 @@ views:
               - entity: sensor.quentin_temps_a_domicile
                 name: Domicile
           - type: section
-          - entity: sensor.mi_9_niveau_de_batterie
+          - entity: sensor.mi_9_battery_level
             type: custom:multiple-entity-row
             name: État du téléphone
             state_header: Batterie
           - type: section
-          - entity: sensor.mi_9_lieu_geocode
+          - entity: sensor.mi_9_geocoded_location
             type: custom:multiple-entity-row
             name: Localisation
             styles:
@@ -6107,10 +6114,10 @@ views:
     title: Géraldine
     visible:
       - user: a27a825440914ad7a919367c2e53793e
-      - user: e2a141ef12bd46559fda002013e88714
       - user: aadd52d881af46bca495e279bee867bf
       - user: 10a78a75e63f4c5ba22a81742f59b925
     type: sidebar
+    subview: true
     badges: []
     cards:
       - type: custom:mini-graph-card
