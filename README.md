@@ -1,7 +1,7 @@
 # Home Assistant - Mobile First Dashboard
 About three years ago, a friend introduced me to Home Assistant. I was drawn to the idea and its open-source nature, so I purchased a Raspberry Pi 4 and quickly became enamored with the platform. I'm sharing this project to inspire the community.
 
-There is no installation process, as this is my personal setup uploaded as is. It's meant for you to learn from, copy, and experiment with. If you have specific questions, feel free to open an issue.
+There is no installation process, as this is my personal setup uploaded as is. It's meant for you to learn from, copy, and experiment with. If you have specific questions, feel free to ask [here](https://community.home-assistant.io/t/a-minimalist-and-user-friendly-dashboard-with-an-mobile-first-approach-now-on-github/535580).
 
 Thank you all for your support and motivation!
 
