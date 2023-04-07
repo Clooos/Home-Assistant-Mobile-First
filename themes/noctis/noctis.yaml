@@ -4,9 +4,13 @@ noctis:
   card-mod-root-yaml: |
     .: |
       @media only screen and (max-width: 600px) {
-          app-header {
+          .header {
             display: none;
             opacity: 0;
+          }
+          #view {
+            margin-top: 0 !important;
+            height: auto !important;
           }
       }
 
