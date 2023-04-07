@@ -17,7 +17,7 @@ homeassistant:
     - /config/snapshots/
     - /config/faces/
 
-browser_mod:  
+browser_mod:
   disable:
     - all
 
@@ -41,6 +41,11 @@ zone:
 tts:
   - platform: google_translate
     service_name: google_say
+
+logger:
+  default: warning
+  logs:
+    homeassistant.components.light: debug
 
 waste_collection_schedule:
   sources:
@@ -68,14 +73,14 @@ slide:
   username: !secret mail
   password: !secret pw1
   scan_interval: 5
-  
+
 group:
   anyone_home:
     name: Anyone is home
     entities:
       - person.quentin
       - person.geraldine2
-        
+
 fan:
   - platform: template
     fans:
@@ -95,7 +100,7 @@ fan:
               entity_id: remote.broadlink_remote_remote
             data:
               device: hote_cuisine
-              command: 'hote_on'
+              command: "hote_on"
           - service: input_boolean.turn_on
             target:
               entity_id: input_boolean.hotte_state
@@ -105,7 +110,7 @@ fan:
               entity_id: remote.broadlink_remote_remote
             data:
               device: hote_cuisine
-              command: 'hote_off'
+              command: "hote_off"
           - service: input_boolean.turn_off
             target:
               entity_id: input_boolean.hotte_state
@@ -118,11 +123,11 @@ fan:
           - service: python_script.fan_speed_control
             data_template:
               fan_speed: "{{ percentage }}"
-              fan_speed_entity_id: 'input_text.hotte_fan_speed'
-              fan_entity_id: 'fan.hotte_cuisine'
+              fan_speed_entity_id: "input_text.hotte_fan_speed"
+              fan_entity_id: "fan.hotte_cuisine"
               fan_speed_count: 4
-              service_domain: 'remote'
-              service: 'send_command'
+              service_domain: "remote"
+              service: "send_command"
               service_data_increase:
                 entity_id: remote.broadlink_remote_remote
                 device: hote_cuisine
@@ -140,14 +145,14 @@ media_player:
       - media_player.youtube
       - media_player.salon
     state_template: "{{ states('media_player.salon_2') }}"
-    commands: 
-      turn_off: 
+    commands:
+      turn_off:
         service: media_player.turn_off
         data:
-          entity_id: 
+          entity_id:
             - media_player.salon_2
             - media_player.youtube
-      turn_on: 
+      turn_on:
         service: media_player.turn_on
         data:
           entity_id: media_player.salon_2
@@ -179,13 +184,13 @@ media_player:
       state: media_player.salon_2
 
 light:
-#.  My custom integration
+  #.  My custom integration
   - platform: philips_ambilight
     name: Ambilight
     host: 192.168.0.24
     username: !secret philips_username
     password: !secret philips_password
-    
+
   - platform: template
     lights:
       hotte_cuisine:
@@ -195,7 +200,203 @@ light:
           service: script.hote_light_toggle
         turn_off:
           service: script.hote_light_toggle
-          
+      led_cuisine:
+        friendly_name: "LED Cuisine"
+        icon_template: mdi:led-strip-variant
+        value_template: "{{ is_state('light.led_cuisine_local', 'on') }}"
+        level_template: "{{ state_attr('light.led_cuisine_local', 'brightness') }}"
+        color_template: "{{ state_attr('light.led_cuisine_local', 'hs_color') }}"
+        effect_list_template: "{{ state_attr('light.led_cuisine_local', 'effect_list') }}"
+        effect_template: "{{ state_attr('light.led_cuisine_local', 'effect') }}"
+        #min_mireds_template: "385"
+        #max_mireds_template: "385"
+        turn_on:
+          - service: light.turn_on
+            target:
+              entity_id: light.led_cuisine_local
+            data:
+              brightness: 1
+          - delay:
+              hours: 0
+              minutes: 0
+              seconds: 0
+              milliseconds: 100
+          - service: light.turn_on
+            target:
+              entity_id: light.led_cuisine_local
+            data:
+              brightness: 255
+        turn_off:
+          - condition: state
+            entity_id: light.led_cuisine_local
+            state: "on"
+          - service: light.turn_on
+            target:
+              entity_id: light.led_cuisine_local
+            data:
+              brightness: 1
+          - delay:
+              hours: 0
+              minutes: 0
+              seconds: 0
+              milliseconds: 500
+          - service: light.turn_on
+            target:
+              entity_id: light.led_cuisine_local
+            data:
+              brightness: 0
+          - service: light.turn_off
+            target:
+              entity_id: light.led_cuisine_local
+        set_color:
+          - if:
+              - condition: template
+                value_template: "{{ brightness is defined }}"
+            then:
+              - service: light.turn_on
+                data:
+                  hs_color: "[{{h}}, {{s}}]"
+                  brightness: "{{ brightness }}"
+                target:
+                  entity_id: light.led_cuisine_local
+            else:
+              - service: light.turn_on
+                data:
+                  hs_color: "[{{h}}, {{s}}]"
+                target:
+                  entity_id: light.led_cuisine_local
+        set_temperature:
+          - if:
+              - condition: template
+                value_template: "{{ brightness is defined }}"
+            then:
+              - service: light.turn_on
+                data:
+                  hs_color:
+                    - 0
+                    - 0
+                  brightness: "{{ brightness }}"
+                target:
+                  entity_id: light.led_cuisine_local
+            else:
+              - service: light.turn_on
+                data:
+                  hs_color:
+                    - 0
+                    - 0
+                target:
+                  entity_id: light.led_cuisine_local
+        set_level:
+          - service: light.turn_on
+            data_template:
+              brightness: "{{ brightness }}"
+            target:
+              entity_id: light.led_cuisine_local
+        set_effect:
+          - service: light.turn_on
+            data_template:
+              effect: "{{ effect }}"
+            target:
+              entity_id: light.led_cuisine_local
+      led_salle_de_douche:
+        friendly_name: "LED Salle de douche"
+        icon_template: mdi:led-strip-variant
+        value_template: "{{ is_state('light.led_salle_de_douche_local', 'on') }}"
+        level_template: "{{ state_attr('light.led_salle_de_douche_local', 'brightness') }}"
+        color_template: "{{ state_attr('light.led_salle_de_douchee_local', 'hs_color') }}"
+        effect_list_template: "{{ state_attr('light.led_salle_de_douche_local', 'effect_list') }}"
+        effect_template: "{{ state_attr('light.led_salle_de_douche_local', 'effect') }}"
+        #min_mireds_template: "385"
+        #max_mireds_template: "385"
+        turn_on:
+          - service: light.turn_on
+            target:
+              entity_id: light.led_salle_de_douche_local
+            data:
+              brightness: 1
+          - delay:
+              hours: 0
+              minutes: 0
+              seconds: 0
+              milliseconds: 100
+          - service: light.turn_on
+            target:
+              entity_id: light.led_salle_de_douche_local
+            data:
+              brightness: 255
+        turn_off:
+          - condition: state
+            entity_id: light.led_salle_de_douche_local
+            state: "on"
+          - service: light.turn_on
+            target:
+              entity_id: light.led_salle_de_douche_local
+            data:
+              brightness: 1
+          - delay:
+              hours: 0
+              minutes: 0
+              seconds: 0
+              milliseconds: 500
+          - service: light.turn_on
+            target:
+              entity_id: light.led_salle_de_douche_local
+            data:
+              brightness: 0
+          - service: light.turn_off
+            target:
+              entity_id: light.led_salle_de_douche_local
+        set_color:
+          - if:
+              - condition: template
+                value_template: "{{ brightness is defined }}"
+            then:
+              - service: light.turn_on
+                data:
+                  hs_color: "[{{h}}, {{s}}]"
+                  brightness: "{{ brightness }}"
+                target:
+                  entity_id: light.led_salle_de_douche_local
+            else:
+              - service: light.turn_on
+                data:
+                  hs_color: "[{{h}}, {{s}}]"
+                target:
+                  entity_id: light.led_salle_de_douche_local
+        set_temperature:
+          - if:
+              - condition: template
+                value_template: "{{ brightness is defined }}"
+            then:
+              - service: light.turn_on
+                data:
+                  hs_color:
+                    - 0
+                    - 0
+                  brightness: "{{ brightness }}"
+                target:
+                  entity_id: light.led_salle_de_douche_local
+            else:
+              - service: light.turn_on
+                data:
+                  hs_color:
+                    - 0
+                    - 0
+                target:
+                  entity_id: light.led_salle_de_douche_local
+        set_level:
+          - service: light.turn_on
+            data_template:
+              brightness: "{{ brightness }}"
+            target:
+              entity_id: light.led_salle_de_douche_local
+        set_effect:
+          - service: light.turn_on
+            data_template:
+              effect: "{{ effect }}"
+            target:
+              entity_id: light.led_salle_de_douche_local
+
   - platform: group
     name: Salon
     entities:
@@ -219,7 +420,25 @@ light:
       - light.led_canape
       - light.led_salle_a_manger
       - light.led_cuisine
-      
+
+  - platform: group
+    name: Rez-de-chaussée
+    entities:
+      - light.ambilight
+      - light.lampadaire
+      - light.bas_tv
+      - light.table_salle_a_manger_1
+      - light.table_salle_a_manger_2
+      - light.table_salle_a_manger_3
+      - light.bar_cuisine_1
+      - light.bar_cuisine_2
+      - light.spots_cuisine
+      - light.led_canape
+      - light.led_salle_a_manger
+      - light.led_cuisine
+      - light.spots_haut_tv
+      - light.spots_canape_salle_a_manger
+
   - platform: group
     name: Toutes les lampes
     entities:
@@ -241,9 +460,10 @@ light:
       - light.spots_cuisine
       - light.bas_tv
       - light.led_canape
-      - light.led_salle_a_manger    
+      - light.led_salle_a_manger
       - light.led_cuisine
-      
+      - light.salle_de_bain
+
   - platform: group
     name: Chambre chevet
     entities:
@@ -252,19 +472,19 @@ light:
 
   - platform: group
     name: Chambre
-    entities: 
+    entities:
       - light.hue_white_candle_1 #Chambre chevet gauche
       - light.hue_white_candle_2 #Chambre chevet droite
       - light.led_lit
       - light.hue_filament_bulb_1
-      
+
   - platform: group
     name: Table salle à manger
     entities:
       - light.table_salle_a_manger_1
       - light.table_salle_a_manger_2
       - light.table_salle_a_manger_3
-      
+
   - platform: group
     name: Salle à manger
     entities:
@@ -273,13 +493,13 @@ light:
       - light.table_salle_a_manger_3
       - light.lampadaire
       - light.led_salle_a_manger
-      
+
   - platform: group
     name: Bar cuisine
     entities:
       - light.bar_cuisine_1
       - light.bar_cuisine_2
-      
+
   - platform: group
     name: Cuisine
     entities:
@@ -288,6 +508,12 @@ light:
       - light.spots_cuisine
       - light.led_cuisine
       
+  - platform: group
+    name: Salle de bain
+    entities:
+      - light.salle_de_bain_hue_group
+      - light.led_salle_de_douche
+
   - platform: group
     name: Détente groupe
     entities:
@@ -307,27 +533,27 @@ switch:
         friendly_name: "RF Plug 1"
         # value_template: '{{ is_state("switch.rf_plug_1", "on") }}'
         turn_on:
-            service: remote.send_command
-            target:
-              entity_id: remote.broadlink_remote_remote
-            data:
-              device: rf_plug_1
-              command: 'on'
+          service: remote.send_command
+          target:
+            entity_id: remote.broadlink_remote_remote
+          data:
+            device: rf_plug_1
+            command: "on"
         turn_off:
-            service: remote.send_command
-            target:
-              entity_id: remote.broadlink_remote_remote
-            data:
-              device: rf_plug_1
-              command: 'off'
-              
+          service: remote.send_command
+          target:
+            entity_id: remote.broadlink_remote_remote
+          data:
+            device: rf_plug_1
+            command: "off"
+
   - platform: wake_on_lan
     name: PC
     mac: !secret mac_pc
     host: 192.168.0.3
     broadcast_address: 192.168.0.255
     broadcast_port: 9
-    turn_off: 
+    turn_off:
       - service: androidtv.adb_command
         data:
           command: HOME
@@ -337,7 +563,7 @@ switch:
     #     data:
     #       addon: core_rpc_shutdown
     #       input: shutdown-pc
-    
+
   - platform: template
     switches:
       light:
@@ -353,7 +579,21 @@ switch:
           {% else %}
             mdi:lightbulb
           {% endif %}
-
+  - platform: template
+    switches:
+      musique_salle_de_douche:
+        friendly_name: "Musique - Salle de bain"
+        value_template: '{{ is_state("input_boolean.bathroom_music", "on") }}'
+        turn_on:
+          service: script.salle_de_bain_musique
+        turn_off:
+          service: script.salle_de_bain_musique_stop
+        icon_template: >-
+          {% if is_state("input_boolean.bathroom_music", "on") %}
+            mdi:music-circle
+          {% else %}
+            mdi:music-circle-outline
+          {% endif %}
   - platform: template
     switches:
       deezer:
@@ -369,7 +609,7 @@ switch:
           {% else %}
             mdi:music-box
           {% endif %}
-          
+
   - platform: template
     switches:
       television:
@@ -389,60 +629,31 @@ switch:
           {% else %}
             mdi:television
           {% endif %}
-          
+
   - platform: template
     switches:
       ambiance_auto:
         friendly_name: "Ambiance automatique"
-        value_template: '{{ (not is_state("input_select.ambiances", "off") and not is_state("input_select.ambiances_ambilight", "off")) or (not is_state("input_select.ambiances", "Custom") and not is_state("input_select.ambiances_ambilight", "off")) }}'
+        value_template: '{{ not is_state("input_select.ambiances", "Custom")  }}'
         turn_off:
           - service: input_select.select_option
             target:
               entity_id:
                 - input_select.ambiances
-                - input_select.ambiances_ambilight
             data:
-              option: 'off'
+              option: "Custom"
         turn_on:
-          - service: input_select.select_option
+          - service: automation.trigger
             target:
               entity_id:
-                - input_select.ambiances
-            data:
-              option: 'Détente'
-          - service: input_select.select_option
-            target:
-              entity_id:
-                - input_select.ambiances_ambilight
-            data:
-              option: 'Vidéo'
+                - automation.ambiances_selection_automatique
         icon_template: >-
-          {% if is_state("automation.ambilight_auto_video_mode_off", "on") %}
+          {% if not is_state("input_select.ambiances", "Custom") %}
             mdi:auto-fix
           {% else %}
             mdi:auto-fix
           {% endif %}
-          
-  - platform: template
-    switches:
-      bedroom_motion:
-        friendly_name: "Capteur de mouvement"
-        value_template: '{{ is_state("automation.allume_progressivement_la_chambre", "on") }}'
-        turn_on:
-          - service: automation.turn_on
-            data:
-              entity_id: automation.allume_progressivement_la_chambre, automation.eteint_le_couloir_apres_x_secondes #Mauvais nom mais ok
-        turn_off:
-          service: automation.turn_off
-          data:
-            entity_id: automation.allume_progressivement_la_chambre, automation.eteint_le_couloir_apres_x_secondes #Mauvais nom mais ok
-        icon_template: >-
-          {% if is_state("automation.allume_progressivement_la_chambre", "on") %}
-            mdi:motion-sensor
-          {% else %}
-            mdi:motion-sensor-off
-          {% endif %}
-          
+
   - platform: template
     switches:
       aspire_la_cuisine:
@@ -453,11 +664,11 @@ switch:
               command: app_segment_clean
               params: 18 #ok
               entity_id: vacuum.xiaomi_vacuum_cleaner
-        turn_off:              
+        turn_off:
           - service: switch.turn_off
             data:
               entity_id: switch.aspire_la_cuisine
-              
+
   - platform: template
     switches:
       aspire_la_chambre:
@@ -468,11 +679,11 @@ switch:
               command: app_segment_clean
               params: 3 #ok
               entity_id: vacuum.xiaomi_vacuum_cleaner
-        turn_off:              
+        turn_off:
           - service: switch.turn_off
             data:
               entity_id: switch.aspire_la_chambre
-              
+
   - platform: template
     switches:
       aspire_la_salle_de_bain:
@@ -483,11 +694,11 @@ switch:
               command: app_segment_clean
               params: 19 #ok
               entity_id: vacuum.xiaomi_vacuum_cleaner
-        turn_off:              
+        turn_off:
           - service: switch.turn_off
             data:
               entity_id: switch.aspire_la_salle_de_bain
-              
+
   - platform: template
     switches:
       aspire_le_couloir:
@@ -498,11 +709,11 @@ switch:
               command: app_segment_clean
               params: 17 #ok
               entity_id: vacuum.xiaomi_vacuum_cleaner
-        turn_off:              
+        turn_off:
           - service: switch.turn_off
             data:
               entity_id: switch.aspire_le_couloir
-              
+
   - platform: template
     switches:
       aspire_le_bureau:
@@ -513,11 +724,11 @@ switch:
               command: app_segment_clean
               params: 1 #ok
               entity_id: vacuum.xiaomi_vacuum_cleaner
-        turn_off:              
+        turn_off:
           - service: switch.turn_off
             data:
               entity_id: switch.aspire_le_bureau
-              
+
   - platform: template
     switches:
       aspire_le_salon:
@@ -528,11 +739,11 @@ switch:
               command: app_segment_clean
               params: 4 #ok
               entity_id: vacuum.xiaomi_vacuum_cleaner
-        turn_off:              
+        turn_off:
           - service: switch.turn_off
             data:
               entity_id: switch.aspire_le_salon
-              
+
   - platform: template
     switches:
       aspire_la_salle_a_manger:
@@ -543,11 +754,11 @@ switch:
               command: app_segment_clean
               params: 16 #ok
               entity_id: vacuum.xiaomi_vacuum_cleaner
-        turn_off:              
+        turn_off:
           - service: switch.turn_off
             data:
               entity_id: switch.aspire_la_salle_a_manger
-              
+
   - platform: template
     switches:
       aspire_la_buanderie:
@@ -558,11 +769,11 @@ switch:
               command: app_segment_clean
               params: 2 #ok
               entity_id: vacuum.xiaomi_vacuum_cleaner
-        turn_off:              
+        turn_off:
           - service: switch.turn_off
             data:
               entity_id: switch.aspire_la_buanderie
-              
+
   - platform: template
     switches:
       turn_off_all_devices:
@@ -571,7 +782,7 @@ switch:
         turn_on:
         turn_off:
           service: script.eteint_tous_les_appareils
-          
+
   - platform: template
     switches:
       demarre_aspirateur:
@@ -584,11 +795,11 @@ switch:
             data:
               entity_id: vacuum.xiaomi_vacuum_cleaner
               fan_speed: Turbo
-        turn_off:              
+        turn_off:
           - service: switch.turn_off
             data:
               entity_id: switch.demarre_aspirateur
-              
+
   - platform: template
     switches:
       recharge_aspirateur:
@@ -601,11 +812,11 @@ switch:
           - service: vacuum.return_to_base
             data:
               entity_id: vacuum.xiaomi_vacuum_cleaner
-        turn_off:              
+        turn_off:
           - service: switch.turn_off
             data:
               entity_id: switch.recharge_aspirateur
-              
+
   - platform: template
     switches:
       pause_aspirateur:
@@ -614,11 +825,11 @@ switch:
           - service: vacuum.pause
             data:
               entity_id: vacuum.xiaomi_vacuum_cleaner
-        turn_off:              
+        turn_off:
           - service: switch.turn_off
             data:
               entity_id: switch.recharge_aspirateur
-          
+
   - platform: template
     switches:
       main_room_devices:
@@ -636,7 +847,7 @@ switch:
           {% else %}
             mdi:light-bulb
           {% endif %}
-          
+
   - platform: template
     switches:
       ventilateur:
@@ -656,7 +867,7 @@ switch:
           {% else %}
             mdi:fan-off
           {% endif %}
-          
+
   - platform: template
     switches:
       bonne_nuit:
@@ -674,14 +885,14 @@ switch:
           {% else %}
             mdi:bed
           {% endif %}
-          
+
   - platform: template
     switches:
       fake_heater:
         friendly_name: "Fake heater"
-        value_template: 'off'
+        value_template: "off"
         turn_on:
-          
+
         turn_off:
 
         icon_template: >-
@@ -690,40 +901,40 @@ switch:
           {% else %}
             mdi:fan-off
           {% endif %}
-          
-#  - platform: template
-#    switches:
-#      ambilight_hue:
-#        friendly_name: "Ambilight+Hue"
-#        value_template: "{{ is_state('binary_sensor.ambilight_hue', 'on') }}"
-#        turn_on:
-#          service: switch.turn_on
-#          data:
-#            entity_id: switch.ambihue
-#        turn_off:
-#          service: switch.turn_off
-#          data:
-#            entity_id: switch.ambihue
-#        icon_template: >-
-#          {% if is_state('binary_sensor.ambilight_hue', 'on') %}
-#            mdi:television-ambient-light
-#          {% else %}
-#            mdi:television-ambient-light
-#          {% endif %}
+
+  #  - platform: template
+  #    switches:
+  #      ambilight_hue:
+  #        friendly_name: "Ambilight+Hue"
+  #        value_template: "{{ is_state('binary_sensor.ambilight_hue', 'on') }}"
+  #        turn_on:
+  #          service: switch.turn_on
+  #          data:
+  #            entity_id: switch.ambihue
+  #        turn_off:
+  #          service: switch.turn_off
+  #          data:
+  #            entity_id: switch.ambihue
+  #        icon_template: >-
+  #          {% if is_state('binary_sensor.ambilight_hue', 'on') %}
+  #            mdi:television-ambient-light
+  #          {% else %}
+  #            mdi:television-ambient-light
+  #          {% endif %}
 
   - platform: command_line
-    switches:   
+    switches:
       ambihue:
-         friendly_name: "Ambilight+Hue Video"
-         command_on: !secret ambihue_command_on
-         command_off: !secret ambihue_command_off
+        friendly_name: "Ambilight+Hue Video"
+        command_on: !secret ambihue_command_on
+        command_off: !secret ambihue_command_off
 
   - platform: command_line
-    switches:   
+    switches:
       megaboom_3_cmd:
-         command_on: sudo systemctl restart bluetooth ; gatttool -i hci0 -b ec:81:93:2d:47:cc --char-write-req -a 0x0003 -n 0006784ADDA101
-         command_off: sudo systemctl restart bluetooth ; gatttool -i hci0 -b ec:81:93:2d:47:cc --char-write-req -a 0x0003 -n 0006784ADDA102
-         
+        command_on: sudo systemctl restart bluetooth ; gatttool -i hci0 -b ec:81:93:2d:47:cc --char-write-req -a 0x0003 -n 0006784ADDA101
+        command_off: sudo systemctl restart bluetooth ; gatttool -i hci0 -b ec:81:93:2d:47:cc --char-write-req -a 0x0003 -n 0006784ADDA102
+
   - platform: template
     switches:
       megaboom_3:
@@ -745,180 +956,202 @@ switch:
             mdi:speaker-wireless
           {% else %}
             mdi:speaker-wireless
-          {% endif %}      
+          {% endif %}
 
 #   SENSORS   ##################################################################
 
 template:
   - trigger:
-    - platform: state
-      entity_id:
-        - input_boolean.mode_nuit
-      from: "on"
-      to: "off"
-    - platform: time
-      at: "12:00:00"
+      - platform: state
+        entity_id:
+          - input_boolean.mode_nuit
+        from: "on"
+        to: "off"
+      - platform: time
+        at: "12:00:00"
     binary_sensor:
       - name: "Morning state"
         state: "{{ ('00:00' <= states('sensor.time') < '11:59') and (is_state('input_boolean.mode_nuit','off')) }}"
-        
+
   - trigger:
-    - platform: state
-      entity_id:
-        - input_number.electricite_jour_semaine
-        - input_number.electricite_nuit_semaine
+      - platform: state
+        entity_id:
+          - input_number.electricite_jour_semaine
+          - input_number.electricite_nuit_semaine
     sensor:
       - name: Électricité total - Semaine
         state: "{{ (states('input_number.electricite_jour_semaine')|float) + (states('input_number.electricite_nuit_semaine')|float)}}"
         unit_of_measurement: kWh
         device_class: energy
         state_class: measurement
-        
+
   - trigger:
-    - platform: state
-      entity_id:
-        - binary_sensor.hue_motion_sensor_1_motion
-        - binary_sensor.salle_a_manger_person_motion
-        - binary_sensor.salon_person_motion
-        - binary_sensor.hall_entree_person
-        - binary_sensor.hue_motion_sensor_2_motion
-        - binary_sensor.hue_motion_sensor_3_motion
-        - input_boolean.mode_nuit
-      from: "off"
-      to: "on"
-    - platform: state
-      entity_id:
-        - input_boolean.quentin_is_home
-        - input_boolean.geraldine_is_home
-      from: "on"
-      to: "off"
-    - platform: state
-      entity_id: 
-        - binary_sensor.salon_person_motion
-        - switch.television
-      from: "on"
-      to: "off"
-      for:
-        hours: 1
-        minutes: 0
-        seconds: 0
+      - platform: state
+        entity_id:
+          - sensor.envoy_122227015952_current_power_production
+      - platform: homeassistant
+        event: start
+    sensor:
+      - name: "Luminosité extérieure"
+        state: >-
+          {% set l = states('sensor.envoy_122227015952_current_power_production') | float %}
+          {% if l < 1 %} 
+            Obscure
+          {% elif 1 <= l < 90 %}
+            Sombre
+          {% elif 90 <= l < 1000 %}
+            Modéré
+          {% elif 1000 <= l < 2850 %}
+            Lumineux
+          {% else %}
+            Très lumineux
+          {% endif %}
+
+  - trigger:
+      - platform: state
+        entity_id:
+          - binary_sensor.hue_motion_sensor_1_motion
+          - binary_sensor.salle_a_manger_person_motion
+          - binary_sensor.salon_person_motion
+          - binary_sensor.hall_entree_person
+          - binary_sensor.hue_motion_sensor_2_motion
+          - binary_sensor.hue_motion_sensor_3_motion
+          - input_boolean.mode_nuit
+        from: "off"
+        to: "on"
+      - platform: state
+        entity_id:
+          - input_boolean.quentin_is_home
+          - input_boolean.geraldine_is_home
+        from: "on"
+        to: "off"
+      - platform: state
+        entity_id:
+          - binary_sensor.salon_person_motion
+          - switch.television
+        from: "on"
+        to: "off"
+        for:
+          hours: 1
+          minutes: 0
+          seconds: 0
     binary_sensor:
       - name: "Salon presence off state"
         state: >-
-            {% if is_state("binary_sensor.salon_person_motion", "on") and is_state("binary_sensor.presence_maison", "on") %}
-                on
-            {% else %}
-                off
-            {% endif %}
+          {% if is_state("binary_sensor.salon_person_motion", "on") and is_state("binary_sensor.presence_maison", "on") %}
+              on
+          {% else %}
+              off
+          {% endif %}
         delay_on: 0:00:10
         delay_off: 0:00:10
-        
+
   - trigger:
-    - platform: state
-      entity_id:
-        - binary_sensor.hue_motion_sensor_1_motion
-        - binary_sensor.salle_a_manger_person_motion
-        - binary_sensor.salon_person_motion
-        - binary_sensor.hall_entree_person
-        - binary_sensor.hue_motion_sensor_2_motion
-        - binary_sensor.hue_motion_sensor_3_motion
-        - input_boolean.mode_nuit
-      from: "off"
-      to: "on"
-    - platform: state
-      entity_id:
-        - input_boolean.quentin_is_home
-        - input_boolean.geraldine_is_home
-      from: "on"
-      to: "off"
-    - platform: state
-      entity_id: 
-        - binary_sensor.salle_a_manger_person_motion
-      from: "on"
-      to: "off"
-      for:
-        hours: 1
-        minutes: 0
-        seconds: 0
+      - platform: state
+        entity_id:
+          - binary_sensor.hue_motion_sensor_1_motion
+          - binary_sensor.salle_a_manger_person_motion
+          - binary_sensor.salon_person_motion
+          - binary_sensor.hall_entree_person
+          - binary_sensor.hue_motion_sensor_2_motion
+          - binary_sensor.hue_motion_sensor_3_motion
+          - input_boolean.mode_nuit
+        from: "off"
+        to: "on"
+      - platform: state
+        entity_id:
+          - input_boolean.quentin_is_home
+          - input_boolean.geraldine_is_home
+        from: "on"
+        to: "off"
+      - platform: state
+        entity_id:
+          - binary_sensor.salle_a_manger_person_motion
+        from: "on"
+        to: "off"
+        for:
+          hours: 1
+          minutes: 0
+          seconds: 0
     binary_sensor:
       - name: "Salle à manger presence off state"
         state: >-
-            {% if is_state("binary_sensor.salle_a_manger_person_motion", "on") and is_state("binary_sensor.presence_maison", "on") %}
-                on
-            {% else %}
-                off
-            {% endif %}
+          {% if is_state("binary_sensor.salle_a_manger_person_motion", "on") and is_state("binary_sensor.presence_maison", "on") %}
+              on
+          {% else %}
+              off
+          {% endif %}
         delay_off: 0:00:10
         delay_on: 0:00:10
-        
+
   - trigger:
-    - platform: calendar
-      event: start
-      entity_id: calendar.personal
-      offset: -72:00:00
-    - platform: calendar
-      event: start
-      entity_id: calendar.calendrier_google
-      offset: -72:00:00
-    - platform: calendar
-      event: start
-      entity_id: calendar.jours_feries_en_belgique
-      offset: -72:00:00
-    - platform: calendar
-      event: start
-      entity_id: calendar.geraldine_et_quentin
-      offset: -72:00:00
+      - platform: calendar
+        event: start
+        entity_id: calendar.personal
+        offset: -72:00:00
+      - platform: calendar
+        event: start
+        entity_id: calendar.calendrier_google
+        offset: -72:00:00
+      - platform: calendar
+        event: start
+        entity_id: calendar.jours_feries
+        offset: -72:00:00
+      - platform: calendar
+        event: start
+        entity_id: calendar.geraldine_et_quentin
+        offset: -72:00:00
     binary_sensor:
       - name: "Upcoming calendar event"
         state: on
         delay_off: 73:00:00
-        
+
   - trigger:
-    - platform: state
-      entity_id:
-        - cover.store_salon
-        - cover.haut_canape
-        - cover.baie_vitree_2
-        - cover.cuisine
-        - sensor.envoy_122227015952_current_power_production
-        - light.piece_principale
-    - platform: homeassistant
-      event: start
+      - platform: state
+        entity_id:
+          - cover.store_salon
+          - cover.haut_canape
+          - cover.baie_vitree_2
+          - cover.cuisine
+          - sensor.envoy_122227015952_current_power_production
+          - light.piece_principale
+      - platform: homeassistant
+        event: start
     sensor:
       - name: "Luminosité pièce principale"
         state: >-
-            {% if (is_state("cover.stores_salon", "closed") and is_state("cover.haut_canape", "closed") and is_state("cover.baie_vitree_2", "closed") and is_state("cover.cuisine", "closed")) and ( states("sensor.envoy_122227015952_current_power_production") | int >= 1000 ) %}
-              40
-            {% elif (is_state("cover.stores_salon", "closed") and is_state("cover.haut_canape", "closed") and is_state("cover.baie_vitree_2", "closed") and is_state("cover.cuisine", "closed")) and ( states("sensor.envoy_122227015952_current_power_production") | int > 0 and states("sensor.envoy_122227015952_current_power_production") | int <= 1000 ) %}
-              10
-            {% elif states("sensor.envoy_122227015952_current_power_production") | int == 0 %}
-              0
-            {% elif is_state("light.piece_principale", "off") %}
-              {{ states("sensor.hue_motion_sensor_1_light_level") }}
-            {% elif is_state("light.piece_principale", "on") and (states("sensor.envoy_122227015952_current_power_production") | int <= 120) %}
-              {{ (states("sensor.envoy_122227015952_current_power_production") | int / 5) | round }}
-            {% else %}
-              {{ (states("sensor.envoy_122227015952_current_power_production") | int / 5) | round }}
-            {% endif %}
+          {% if (is_state("cover.stores_salon", "closed") and is_state("cover.haut_canape", "closed") and is_state("cover.baie_vitree_2", "closed") and is_state("cover.cuisine", "closed")) and ( states("sensor.envoy_122227015952_current_power_production") | int >= 1000 ) %}
+            40
+          {% elif (is_state("cover.stores_salon", "closed") and is_state("cover.haut_canape", "closed") and is_state("cover.baie_vitree_2", "closed") and is_state("cover.cuisine", "closed")) and ( states("sensor.envoy_122227015952_current_power_production") | int > 0 and states("sensor.envoy_122227015952_current_power_production") | int <= 1000 ) %}
+            10
+          {% elif states("sensor.envoy_122227015952_current_power_production") | int == 0 %}
+            0
+          {% elif is_state("light.piece_principale", "off") %}
+            {{ states("sensor.hue_motion_sensor_1_light_level") }}
+          {% elif is_state("light.piece_principale", "on") and (states("sensor.envoy_122227015952_current_power_production") | int <= 120) %}
+            {{ (states("sensor.envoy_122227015952_current_power_production") | int / 5) | round }}
+          {% else %}
+            {{ (states("sensor.envoy_122227015952_current_power_production") | int / 5) | round }}
+          {% endif %}
         device_class: illuminance
         unit_of_measurement: "lx"
-            
+
   - trigger:
-    - platform: state
-      entity_id:
-        - binary_sensor.darkness_sensor_2
-        - sensor.luminosite_piece_principale
-    - platform: homeassistant
-      event: start
+      - platform: state
+        entity_id:
+          - binary_sensor.darkness_sensor_2
+          - sensor.luminosite_piece_principale
+      - platform: homeassistant
+        event: start
     sensor:
       - name: "Luminosité lampes pièce principale"
         state: >-
-            {% if is_state("binary_sensor.darkness_sensor_2", "on") %}
-                {{ (255 - (states("sensor.luminosite_piece_principale") | int )) | round }}
-            {% else %}
-                0
-            {% endif %}
-            
+          {% if is_state("binary_sensor.darkness_sensor_2", "on") %}
+              {{ (255 - (states("sensor.luminosite_piece_principale") | int )) | round }}
+          {% else %}
+              0
+          {% endif %}
+
   - trigger:
       - platform: event
         event_type: amcrest
@@ -930,36 +1163,35 @@ template:
       - name: "Sonnette Button Pressed"
         state: on
         auto_off: 00:00:20
-            
 
 sensor:
   - platform: time_date
     display_options:
-      - 'time'
-      - 'date'
-      - 'date_time'
-      - 'date_time_utc'
-      - 'date_time_iso'
-      - 'time_date'
-      - 'time_utc'
-      - 'beat'
+      - "time"
+      - "date"
+      - "date_time"
+      - "date_time_utc"
+      - "date_time_iso"
+      - "time_date"
+      - "time_utc"
+      - "beat"
   - platform: template
     sensors:
-       jour_fr:
-         value_template: "{{ ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'][now().weekday()] }}"
-         
-       date_fr:
-         value_template: "{% set months = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'] %} {{ now().day | string + ' ' + months[now().month-1]}}"
+      jour_fr:
+        value_template: "{{ ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'][now().weekday()] }}"
+
+      date_fr:
+        value_template: "{% set months = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'] %} {{ now().day | string + ' ' + months[now().month-1]}}"
   - platform: waste_collection_schedule
     name: Collecte des déchets
   - platform: history_stats
     name: Temps de sommeil journalier
     entity_id: sensor.day_part
-    state: 'Nuit'
+    state: "Nuit"
     type: time
     end: "{{ (now().replace(minute=0,second=0) + timedelta(hours=8)).replace(hour=16) }}"
     duration:
-        hours: 24
+      hours: 24
 
   - platform: template
     sensors:
@@ -967,9 +1199,9 @@ sensor:
         value_template: >
           {{ timedelta(hours=states('sensor.temps_de_sommeil_journalier') | float(0)) }}
 
-#   - platform: random
-#     maximum: 10
-#     minimum: 1
+  #   - platform: random
+  #     maximum: 10
+  #     minimum: 1
 
   - platform: template
     sensors:
@@ -1064,24 +1296,24 @@ sensor:
           {% else %}
             unknown
           {% endif %}
-          
-#   - platform: template
-#     sensors:
-#      media_state_old:
-#         friendly_name: "État du média"
-#         value_template: >-
-#          {% if is_state("media_player.android_tv", "playing") or is_state("media_player.android_tv2", "playing") or is_state("media_player.tv", "playing") %}
-#             tv_playing
-#          {% elif is_state("media_player.android_tv", "paused") or is_state("media_player.android_tv2", "paused") or is_state("media_player.tv", "paused") %}
-#             tv_paused
-#          {% elif is_state("media_player.salon", "playing") %}
-#             denon_playing
-#          {% elif is_state("media_player.salon", "paused") %}
-#             denon_paused
-#          {% else %}
-#             unknown
-#          {% endif %}
-          
+
+  #   - platform: template
+  #     sensors:
+  #      media_state_old:
+  #         friendly_name: "État du média"
+  #         value_template: >-
+  #          {% if is_state("media_player.android_tv", "playing") or is_state("media_player.android_tv2", "playing") or is_state("media_player.tv", "playing") %}
+  #             tv_playing
+  #          {% elif is_state("media_player.android_tv", "paused") or is_state("media_player.android_tv2", "paused") or is_state("media_player.tv", "paused") %}
+  #             tv_paused
+  #          {% elif is_state("media_player.salon", "playing") %}
+  #             denon_playing
+  #          {% elif is_state("media_player.salon", "paused") %}
+  #             denon_paused
+  #          {% else %}
+  #             unknown
+  #          {% endif %}
+
   - platform: template
     sensors:
       day_part:
@@ -1100,8 +1332,8 @@ sensor:
             Matin
           {% else %}
             Soir
-          {% endif %}         
-         
+          {% endif %}
+
   - platform: template
     sensors:
       ambient_light:
@@ -1118,7 +1350,7 @@ sensor:
           {% else %}
             mdi:brightness-5
           {% endif %}
-          
+
   - platform: template
     sensors:
       geraldine_presence:
@@ -1129,7 +1361,7 @@ sensor:
           {% else %}
             Absente
           {% endif %}
-          
+
   - platform: template
     sensors:
       quentin_presence:
@@ -1140,86 +1372,86 @@ sensor:
           {% else %}
             Absent
           {% endif %}
-          
-#   - platform: template
-#     sensors:
-#       guest_presence:
-#         friendly_name: "Invité"
-#         value_template: >-
-#           {% if is_state("input_boolean.guest_is_home", "on") %}
-#             Présent
-#           {% else %}
-#             Absent
-#           {% endif %}
+
+  #   - platform: template
+  #     sensors:
+  #       guest_presence:
+  #         friendly_name: "Invité"
+  #         value_template: >-
+  #           {% if is_state("input_boolean.guest_is_home", "on") %}
+  #             Présent
+  #           {% else %}
+  #             Absent
+  #           {% endif %}
 
   - platform: history_stats
     name: Géraldine - Temps à domicile
     entity_id: input_boolean.geraldine_is_home
-    state: 'on'
+    state: "on"
     type: time
-    start: '{{ now().replace(hour=0, minute=0, second=0) }}'
-    end: '{{ now() }}'
-    
+    start: "{{ now().replace(hour=0, minute=0, second=0) }}"
+    end: "{{ now() }}"
+
   - platform: history_stats
     name: Quentin - Temps à domicile
     entity_id: input_boolean.quentin_is_home
-    state: 'on'
+    state: "on"
     type: time
-    start: '{{ now().replace(hour=0, minute=0, second=0) }}'
-    end: '{{ now() }}'
+    start: "{{ now().replace(hour=0, minute=0, second=0) }}"
+    end: "{{ now() }}"
 
   - platform: history_stats
     name: Quentin - Temps d'absence
     entity_id: input_boolean.quentin_is_home
-    state: 'off'
+    state: "off"
     type: time
-    start: '{{ now().replace(hour=0, minute=0, second=0) }}'
-    end: '{{ now() }}'
-    
+    start: "{{ now().replace(hour=0, minute=0, second=0) }}"
+    end: "{{ now() }}"
+
   - platform: history_stats
     name: Géraldine - Temps d'absence
     entity_id: input_boolean.geraldine_is_home
-    state: 'off'
+    state: "off"
     type: time
-    start: '{{ now().replace(hour=0, minute=0, second=0) }}'
-    end: '{{ now() }}'
+    start: "{{ now().replace(hour=0, minute=0, second=0) }}"
+    end: "{{ now() }}"
 
   - platform: template
     sensors:
       temperature_interieure:
-        friendly_name: "Température intérieure"    
+        friendly_name: "Température intérieure"
         unit_of_measurement: "°C"
         value_template: "{{ (states('sensor.hue_motion_sensor_1_temperature') | round(1)) }}"
         icon_template: mdi:thermometer
-            
-#   - platform: template
-#     sensors:
-#       climate_feeling:
-#         friendly_name: "Climate feeling"
-#         value_template: >-
-#             {% if states("sensor.temperature_interieure") >= '21' %}
-#               chaud
-#             {% elif states("sensor.temperature_interieure") <= '18' %}
-#               froid
-#             {% else %}
-#               tempéré
-#             {% endif %}
+
+  #   - platform: template
+  #     sensors:
+  #       climate_feeling:
+  #         friendly_name: "Climate feeling"
+  #         value_template: >-
+  #             {% if states("sensor.temperature_interieure") >= '21' %}
+  #               chaud
+  #             {% elif states("sensor.temperature_interieure") <= '18' %}
+  #               froid
+  #             {% else %}
+  #               tempéré
+  #             {% endif %}
   - platform: template
     sensors:
       electricite_jour_semaine:
         friendly_name: "Électricité jour - Semaine"
         value_template: '{{ states("input_number.electricite_jour_semaine") }}'
-  
+
   - platform: template
     sensors:
       electricite_nuit_semaine:
         friendly_name: "Électricité nuit - Semaine"
         value_template: '{{ states("input_number.electricite_nuit_semaine") }}'
-      
+
 # - platform: template
 #    sensors:
 #      ambilight_brightness:
-#        friendly_name: "Ambilight Brightness"    
+#        friendly_name: "Ambilight Brightness"
 #        value_template: >-
 #          {%- if ([state_attr("sensor.ambilight_colors", "r"), state_attr("sensor.ambilight_colors", "g"), state_attr("sensor.ambilight_colors", "b")]|max)|float >= 0 and ([state_attr("sensor.ambilight_colors", "r"), state_attr("sensor.ambilight_colors", "g"), state_attr("sensor.ambilight_colors", "b")]|max)|float <= 20 -%}
 #            60
@@ -1244,7 +1476,7 @@ binary_sensor:
              is_state("binary_sensor.entering_cars_car_motion", "on") or 
              is_state("binary_sensor.sonnette_button_pressed", "on")
           }}
-          
+
   - platform: template
     sensors:
       presence_maison:
@@ -1265,18 +1497,24 @@ binary_sensor:
              is_state("device_tracker.poco_x3_pro", "home") or
              is_state("device_tracker.iphone", "home")
           }}
-          
+
   - platform: ping
     host: 192.168.0.13
     count: 1
     scan_interval: 30
     name: geraldine
-    
+
+#   - platform: ping
+#     host: 192.168.0.16
+#     count: 1
+#     scan_interval: 1
+#     name: garage_door_ping
+
   - platform: template
     sensors:
       darkness_sensor:
         friendly_name: "Darkness sensor - Chambre"
-        delay_off: 00:25:00
+        #delay_off: 00:00:00
         value_template: >-
           {{ ( state_attr("sensor.hue_motion_sensor_2_light_level", "light_level") | float(0) < 10000 ) or ( state_attr('sun.sun', 'elevation') < -6 ) or ( state_attr("sensor.hue_motion_sensor_1_light_level", "light_level") | float(0) < 3000 ) or ( is_state( "cover.chambre_1_droite", "closed") and is_state( "cover.chambre_1_gauche", "closed")) or ( states("sensor.envoy_122227015952_current_power_production") | float(0) < 120 ) }}
         icon_template: >-
@@ -1285,21 +1523,35 @@ binary_sensor:
           {% else %}
             mdi:brightness-5
           {% endif %}
-          
+
   - platform: template
     sensors:
       darkness_sensor_2:
         friendly_name: "Darkness sensor - Cuisine"
-        delay_off: 00:25:00
+        delay_off: 00:20:00
         value_template: >-
-          {{ ( state_attr('sun.sun', 'elevation') < -6 ) or ( state_attr("sensor.hue_motion_sensor_1_light_level", "light_level") | float(0) < 12000 ) or ( states("sensor.envoy_122227015952_current_power_production") | float(0) < 120 ) }}
+          {{ ( state_attr('sun.sun', 'elevation') < -6 ) or ( state_attr("sensor.hue_motion_sensor_1_light_level", "light_level") | float(0) < 12000 ) or ( states("sensor.envoy_122227015952_current_power_production") | float(0) < 120 ) or (is_state("cover.stores_salon", "closed") and is_state("cover.haut_canape", "closed") and is_state("cover.baie_vitree_2", "closed") and is_state("cover.cuisine", "closed")) }}
+        icon_template: >-
+          {% if ( state_attr('sun.sun', 'elevation') < -6 ) or ( state_attr("sensor.hue_motion_sensor_1_light_level", "light_level") | float(0) < 12000 ) or ( states("sensor.envoy_122227015952_current_power_production") | float(0) < 120 ) or (is_state("cover.stores_salon", "closed") and is_state("cover.haut_canape", "closed") and is_state("cover.baie_vitree_2", "closed") and is_state("cover.cuisine", "closed")) %}
+            mdi:brightness-4
+          {% else %}
+            mdi:brightness-5
+          {% endif %}
+
+  - platform: template
+    sensors:
+      darkness_sensor_salle_de_douche:
+        friendly_name: "Darkness sensor - Salle de douche"
+        delay_off: 00:10:00
+        value_template: >-
+          {{ ( state_attr('sun.sun', 'elevation') < -6 ) or ( state_attr("sensor.salle_de_bain_illuminance", "light_level") | float(0) < 12000 ) or ( states("sensor.envoy_122227015952_current_power_production") | float(0) < 120 ) }}
         icon_template: >-
           {% if ( state_attr('sun.sun', 'elevation') < -6 ) or ( state_attr("sensor.hue_motion_sensor_1_light_level", "light_level") | float(0) < 12000 ) or ( states("sensor.envoy_122227015952_current_power_production") | float(0) < 120 ) %}
             mdi:brightness-4
           {% else %}
             mdi:brightness-5
           {% endif %}
-          
+
   - platform: template
     sensors:
       presence_piece_principale:
@@ -1316,7 +1568,7 @@ binary_sensor:
             or
             is_state("binary_sensor.salon_presence_off_state", "on")
           }}
-          
+
   - platform: template
     sensors:
       presence_cuisine:
@@ -1329,13 +1581,24 @@ binary_sensor:
             or 
             is_state("binary_sensor.hue_motion_sensor_1_motion", "on")
           }}
-          
+
+  - platform: template
+    sensors:
+      presence_salle_de_douche:
+        friendly_name: "Présence Salle de douche"
+        device_class: motion
+        delay_off: 00:03:45
+        value_template: >-
+          {{ 
+            is_state("binary_sensor.salle_de_bain_motion", "on") 
+          }}
+
   - platform: template
     sensors:
       presence_salon:
         friendly_name: "Présence Salon"
         device_class: motion
-        delay_off: 00:03:30
+        delay_off: 00:04:00
         value_template: >-
           {{
             (
@@ -1343,17 +1606,18 @@ binary_sensor:
                 or 
                 is_state("switch.television", "on") 
                 or
-                is_state("binary_sensor.salon_presence_off_state", "on")
+                is_state("binary_sensor.salon_motion", "on")
             )
             and is_state("binary_sensor.presence_maison", "on")
           }}
-          
+    #is_state("binary_sensor.salon_presence_off_state", "on")
+    #or
   - platform: template
     sensors:
       presence_salle_a_manger:
         friendly_name: "Présence Salle à manger"
         device_class: motion
-        delay_off: 00:00:30
+        delay_off: 00:01:20
         #delay_on: 00:00:02
         value_template: >-
           {{ 
@@ -1364,7 +1628,7 @@ binary_sensor:
             )
             and is_state("binary_sensor.presence_maison", "on")
           }}
-          
+
   - platform: template
     sensors:
       presence_hall_entree:
@@ -1375,31 +1639,31 @@ binary_sensor:
           {{ 
             is_state("binary_sensor.hall_entree_person_motion", "on") 
           }}
-          
+
   - platform: template
     sensors:
       presence_couloir:
         friendly_name: "Présence Couloir"
         device_class: motion
-        delay_off: 00:00:30
+        delay_off: 00:00:00
         value_template: >-
           {{ 
             is_state("light.couloir_etage", "on") 
           }}
-          
+
   - platform: template
     sensors:
       presence_chambre_parentale:
         friendly_name: "Présence Chambre parentale"
         device_class: motion
-        delay_off: 00:01:30
+        delay_off: 00:03:00
         value_template: >-
           {{ 
             is_state("binary_sensor.hue_motion_sensor_2_motion", "on") 
             or
             is_state("binary_sensor.hue_motion_sensor_3_motion", "on") 
           }}
-          
+
   - platform: template
     sensors:
       presence_devant_maison:
@@ -1420,19 +1684,19 @@ device_tracker:
     hosts:
       geraldine: 192.168.0.13
       quentin: 192.168.0.5
-      
+
   - platform: bluetooth_tracker
     interval_seconds: 10
-    
+
   - platform: bluetooth_le_tracker
     track_battery: true
-    
+
   - platform: ping
     consider_home: 1
     count: 10
     hosts:
       playstation_4: 192.168.0.59
-      
+
   - platform: synology_srm
     host: 192.168.0.1
     password: !secret pw1
@@ -1452,12 +1716,12 @@ device_tracker:
 #    resource: http://192.168.0.24:1925/6/ambilight/currentconfiguration
 #    value_template: '{{ value_json.styleName == "FOLLOW_VIDEO" }}'
 #    method: GET
-      
+
 shopping_list:
 
 shell_command:
   stream_camera_to_tv: bash /config/scripts/stream_camera_to_tv.sh
-  turn_off_computer: 'curl -k http://192.168.0.3/?shutdown'
+  turn_off_computer: "curl -k http://192.168.0.3/?shutdown"
 
 rest_command:
   entertainment_area_hue_fix_1:
@@ -1486,7 +1750,7 @@ cover:
       cuisine:
         device_class: shutter
         friendly_name: "Cuisine"
-        optimistic: false
+        optimistic: true
         #value_template: "{{ states('sensor.garage_door')|float > 0 }}"
         open_cover:
           - service: cover.open_cover
@@ -1553,7 +1817,7 @@ cover:
                     state: open
                 sequence:
                   - repeat:
-                      count: '5'
+                      count: "5"
                       sequence:
                         - service: cover.open_cover
                           data: {}
@@ -1580,7 +1844,7 @@ cover:
                     state: open
                 sequence:
                   - repeat:
-                      count: '3'
+                      count: "3"
                       sequence:
                         - service: cover.open_cover
                           data: {}
@@ -1594,7 +1858,7 @@ cover:
           data: {}
           target:
             entity_id: cover.rfy_030408_1
-            
+
   - platform: template
     covers:
       salon_droite:
@@ -1623,7 +1887,7 @@ cover:
               command: stop
             target:
               entity_id: remote.broadlink_remote_remote
-              
+
   - platform: template
     covers:
       salon_gauche:
@@ -1667,7 +1931,7 @@ cover:
               command: stop
             target:
               entity_id: remote.broadlink_remote_remote
-              
+
   - platform: cover_rf_time_based
     devices:
       stores_salon:
@@ -1712,28 +1976,28 @@ cover:
         friendly_name: "Porte du garage"
         value_template: "{{ is_state('binary_sensor.garage_door', 'on') }}"
         open_cover:
-            choose:
-              - conditions:
-                  - condition: state
-                    entity_id: binary_sensor.garage_door
-                    state: 'off'
-                sequence:
-                  - service: switch.turn_on
-                    data: {}
-                    target:
-                      entity_id: switch.garage_door
-                  - delay:
-                      hours: 0
-                      minutes: 0
-                      seconds: 0
-                      milliseconds: 800
-                  - service: switch.turn_off
-                    data: {}
-                    target:
-                      entity_id: switch.garage_door
-            default: []
+          choose:
+            - conditions:
+                - condition: state
+                  entity_id: binary_sensor.garage_door
+                  state: "off"
+              sequence:
+                - service: switch.turn_on
+                  data: {}
+                  target:
+                    entity_id: switch.garage_door
+                - delay:
+                    hours: 0
+                    minutes: 0
+                    seconds: 0
+                    milliseconds: 800
+                - service: switch.turn_off
+                  data: {}
+                  target:
+                    entity_id: switch.garage_door
+          default: []
         close_cover:
-            service: script.garage_off
+          service: script.garage_off
 
 firmata:
   serial_port: /dev/serial/by-id/usb-1a86_USB_Serial-if00-port0
@@ -1742,13 +2006,13 @@ firmata:
     - name: garage_door
       pin_mode: OUTPUT
       pin: 13
-      
+
 notify:
   - platform: file
     name: weekly_sleep_time
     filename: statistics/weekly_sleep_time.txt
     timestamp: False
-    
+
   - platform: smtp
     name: mail_to_quentin
     sender: !secret second_mail
@@ -1759,9 +2023,9 @@ notify:
     server: !secret server1
     port: 465
     encryption: tls
-    
+
 recorder:
-  purge_keep_days: 2
+  purge_keep_days: 10
   exclude:
     domains:
       - device_tracker
@@ -1789,14 +2053,18 @@ recorder:
       - sensor.memory_use_percent
       - sensor.processor_use
       - weather.openweathermap
-      
+
 google_assistant:
   project_id: home-assistant-574a4
   service_account: !include SERVICE_ACCOUNT.JSON
-  secure_devices_pin: '!secret iot_pin'
+  secure_devices_pin: !secret iot_pin
   report_state: true
   expose_by_default: false
   entity_config:
+    switch.musique_salle_de_douche:
+      name: La musique dans la salle de bain
+      expose: true
+      room: Salle de bain
     switch.television:
       name: La télévision
       expose: true
@@ -1816,6 +2084,13 @@ google_assistant:
         - Windows
         - Le PC
       room: Divers
+    input_boolean.douche:
+      name: L'ambiance douche
+      expose: true
+      aliases:
+        - Douche
+        - Lumière douche
+        - Mets l'ambiance douche
     light.led_canape:
       name: LED canapé
       expose: true
@@ -1864,7 +2139,7 @@ google_assistant:
     light.ambilight:
       name: Ambilight
       expose: true
-      aliases: 
+      aliases:
         - Lampe de la TV
         - Lampe de la télévision
         - LED de la TV
@@ -1875,7 +2150,7 @@ google_assistant:
     switch.turn_off_all_devices:
       name: Éteins tous les appareils
       expose: true
-      room: Divers   
+      room: Divers
     script.1594471788888:
       name: Pause
       expose: true
@@ -1932,7 +2207,7 @@ google_assistant:
     script.ouvre_tous_les_volets:
       name: Ouvre les volets et rideaux
       expose: true
-      aliases: 
+      aliases:
         - Ouvre tous les volets
         - Ouvre tous les stores
         - Ouvre tous les rideaux
@@ -2091,6 +2366,14 @@ google_assistant:
       room: Salon
       aliases:
         - Le ventilateur du salon
+    light.led_salle_de_douche:
+      name: LED de la salle de bain
+      expose: true
+      room: Salle de bain
+      aliases:
+        - La LED de la salle de bain
+        - LED de la salle de douche
+        - La LED de la salle de douche
     vacuum.aspirateur_rez_de_chaussee:
       name: L'aspirateur du rez-de-chaussée
       expose: true
@@ -2148,7 +2431,7 @@ google_assistant:
         - Ambiance musique
         - L'ambiance fête
         - L'ambiance festive
-    
+
 # climate:
 #   - platform: generic_thermostat
 #     name: Le ventilateur du salon
@@ -2159,7 +2442,7 @@ google_assistant:
 #     max_temp: 24
 #     min_temp: 18
 #     target_temp: 20
-    
+
 #   - platform: harmony_ac
 #     name: Climatiseur - Salon
 #     remote_entity: remote.harmony
@@ -2189,20 +2472,21 @@ camera:
     password: !secret pw3
     country: de
     scan_interval: 120
-    draw: ['all']
+    draw: ["all"]
     colors:
       color_map_outside: [32, 41, 60]
       color_path: [32, 41, 60]
       color_robo: [32, 41, 60]
     map_transformation:
-        trim: 
-          left: 8
-          right: 8
-          top: 8
-          bottom: 21
+      scale: 2
+    #   trim:
+    #     left: 8
+    #     right: 8
+    #     top: 8
+    #     bottom: 21
     attributes:
       - calibration_points
-      
+
   - platform: xiaomi_cloud_map_extractor
     name: Map Roborock Rez-de-chaussée
     host: 192.168.0.42
@@ -2211,26 +2495,26 @@ camera:
     password: !secret pw3
     country: de
     scan_interval: 60
-    draw: ['all']
+    draw: ["all"]
     colors:
       color_map_outside: [32, 41, 60]
       color_path: [32, 41, 60]
       color_robo: [32, 41, 60]
-    # map_transformation:
-    #     trim: 
-    #       left: 8
-    #       right: 8
-    #       top: 8
-    #       bottom: 21
+    map_transformation:
+      scale: 2
+    #   trim:
+    #     top: 50
+    #     bottom: 50
+    #     left: 50
+    #     right: 50
     attributes:
       - calibration_points
-      
+
 amcrest:
   - host: 192.168.2.83
     name: Sonnette
     username: !secret amcrest_username
     password: !secret pw1
-
 # image_processing:
 #   - platform: deepstack_face
 #     ip_address: localhost
