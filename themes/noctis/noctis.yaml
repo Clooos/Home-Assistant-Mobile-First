@@ -10,7 +10,7 @@ noctis:
           }
           #view {
             margin-top: 0 !important;
-            height: auto !important;
+            height: calc(100vh - env(safe-area-inset-top)) !important;
           }
       }
 
