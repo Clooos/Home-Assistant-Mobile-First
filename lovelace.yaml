@@ -530,7 +530,7 @@ views:
               border-radius: 24px !important;
             }
 
-                        
+                          
       - type: custom:vertical-stack-in-card
         cards:
           - type: horizontal-stack
@@ -656,8 +656,24 @@ views:
                           div.relativeTime {
                             display: none;
                           }
-
-
+                          .hoursHTML {
+                            overflow: hidden;
+                            position: absolute;
+                            display: -webkit-box;
+                           -webkit-line-clamp: 1; /* number of lines to show */
+                                   line-clamp: 1; 
+                           -webkit-box-orient: vertical;
+                          }
+                          .event-location {
+                            display: none !important;
+                          }
+                          div.event-main {
+                           overflow: hidden;
+                           display: -webkit-box;
+                           -webkit-line-clamp: 2; /* number of lines to show */
+                                   line-clamp: 2; 
+                           -webkit-box-orient: vertical;
+                          }
 
                           @keyframes scroll {
                             0% { opacity: 0; transform: translateY(0); }
@@ -706,6 +722,7 @@ views:
                         cardHeight: 70px
                         maxDaysToShow: 90
                         showDatePerEvent: true
+                        language: fr
                     style: |
                       ha-card { 
                         box-shadow: none;
@@ -798,14 +815,13 @@ views:
 
                             }
 
-                            ha-card > div.mmp-player > div.mmp-player__core.flex
-                            > div.entity__icon {
+                            ha-card > div.mmp-player > div.mmp-player__core.flex >
+                            div.entity__icon {
                               {% if not is_state('media_player.musique','off') %}
                               display: none;
                               {% endif %}
 
-                            } ha-card > div.mmp-player >
-                            div.mmp-player__core.flex { }
+                            } ha-card > div.mmp-player > div.mmp-player__core.flex { }
 
                             mmp-media-controls {
                               {% if not is_state('media_player.musique','off') %}
@@ -833,7 +849,7 @@ views:
                               align-self: flex-start;
                               height: 100%;
                               {% endif %}
-                              
+
                               background: radial-gradient(circle, rgba(255,255,255,0) 10%, rgba(0,0,0,0.6) 100%) !important;
                               font-size: 0.9em !important;
                             } ha-card > div.mmp-player > div.mmp-player__adds {
