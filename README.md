@@ -13,4 +13,6 @@ Thank you all for your support and motivation!
 
 ![Security](https://github.com/clooos/Home-Assistant-Mobile-First/blob/master/www/images/Home%20Assistant%20-%20UI%20V3%20-%20Security.png?raw=true)
 
+Fully tested on a wall mounted iPad.
+
 ![Setup](https://user-images.githubusercontent.com/36499953/235922272-d2755f31-bd10-4e97-8ef3-0e428e6de209.jpg)
