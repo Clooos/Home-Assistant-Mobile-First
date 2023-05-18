@@ -5,7 +5,6 @@
 *.key
 *.log
 *.log.*
-.google_maps_location_sharing.cookies.cloosquentin2_gmail_com
 .uuid
 .shopping_list.json
 SERVICE_ACCOUNT.JSON
