@@ -44,8 +44,6 @@ tts:
 
 logger:
   default: warning
-  logs:
-    homeassistant.components.light: debug
 
 waste_collection_schedule:
   sources:
@@ -184,7 +182,7 @@ media_player:
       state: media_player.salon_2
 
 light:
-  #.  My custom integration
+  # My custom integration
   - platform: philips_ambilight
     name: Ambilight
     host: 192.168.0.24
@@ -405,6 +403,7 @@ light:
       - light.spots_canape_salle_a_manger
       - light.bas_tv
       - light.led_canape
+      - light.haut_etagere
 
   - platform: group
     name: Pièce principale
@@ -420,6 +419,7 @@ light:
       - light.led_canape
       - light.led_salle_a_manger
       - light.led_cuisine
+      - light.haut_etagere
 
   - platform: group
     name: Rez-de-chaussée
@@ -438,6 +438,7 @@ light:
       - light.led_cuisine
       - light.spots_haut_tv
       - light.spots_canape_salle_a_manger
+      - light.haut_etagere
 
   - platform: group
     name: Toutes les lampes
@@ -463,6 +464,7 @@ light:
       - light.led_salle_a_manger
       - light.led_cuisine
       - light.salle_de_bain
+      - light.haut_etagere
 
   - platform: group
     name: Chambre chevet
@@ -525,6 +527,7 @@ light:
       - light.bar_cuisine_2
       - light.led_salle_a_manger
       - light.led_cuisine
+      - light.haut_etagere
 
 switch:
   - platform: template
@@ -984,6 +987,17 @@ template:
         unit_of_measurement: kWh
         device_class: energy
         state_class: measurement
+        
+  - trigger:
+      - platform: state
+        entity_id:
+          - sensor.electricite_total_semaine
+    sensor:
+      - name: Électricité consommée - Moyenne journalière
+        state: "{{ ((states('sensor.envoy_122227015952_lifetime_energy_production')|float + states('sensor.consommation_electricite')|float) / ((as_timestamp(now()) - as_timestamp('2022-09-09T00:00:00+00:00')) / 86400))|round(2) }}"
+        unit_of_measurement: kWh/Jour
+        device_class: energy
+        state_class: measurement
 
   - trigger:
       - platform: state
@@ -1095,7 +1109,7 @@ template:
         offset: -72:00:00
       - platform: calendar
         event: start
-        entity_id: calendar.jours_feries
+        entity_id: calendar.jours_feries_en_belgique
         offset: -72:00:00
       - platform: calendar
         event: start
@@ -1131,7 +1145,7 @@ template:
           {% elif is_state("light.piece_principale", "on") and (states("sensor.envoy_122227015952_current_power_production") | int <= 120) %}
             {{ (states("sensor.envoy_122227015952_current_power_production") | int / 5) | round }}
           {% else %}
-            {{ (states("sensor.envoy_122227015952_current_power_production") | int / 5) | round }}
+            0
           {% endif %}
         device_class: illuminance
         unit_of_measurement: "lx"
@@ -1163,6 +1177,150 @@ template:
       - name: "Sonnette Button Pressed"
         state: on
         auto_off: 00:00:20
+        
+  - trigger:
+      - platform: state
+        entity_id:
+          - binary_sensor.hue_motion_sensor_1_motion
+          - binary_sensor.hue_motion_sensor_2_motion
+          - binary_sensor.hue_motion_sensor_3_motion
+          - binary_sensor.salon_motion
+          - switch.television
+          - sensor.media_state
+        to:
+    binary_sensor:
+      - name: "Présence Pièce principale"
+        device_class: motion
+        delay_off: 00:01:30
+        state: >-
+          {{ 
+              (
+                is_state("binary_sensor.cuisine_person_motion", "on") 
+                or 
+                is_state("binary_sensor.salon_person_motion", "on")
+                or
+                is_state("binary_sensor.salle_a_manger_person_motion", "on")
+                or
+                is_state("binary_sensor.hue_motion_sensor_1_motion", "on")
+                or
+                is_state("binary_sensor.salon_motion", "on")
+                or
+                is_state("switch.television", "on")
+                or
+                is_state("binary_sensor.cuisine_pir_person_motion", "on")
+              )
+              and
+              is_state("binary_sensor.presence_maison", "on")
+          }}
+          
+  - trigger:
+      - platform: state
+        entity_id:
+          - binary_sensor.hue_motion_sensor_1_motion
+          - binary_sensor.hue_motion_sensor_2_motion
+          - binary_sensor.hue_motion_sensor_3_motion
+          - binary_sensor.salon_motion
+          - switch.television
+          - sensor.media_state
+          - input_boolean.quentin_is_home
+          - input_boolean.geraldine_is_home
+        to:
+    binary_sensor:
+      - name: "Présence Cuisine"
+        device_class: motion
+        delay_off: 00:01:30
+        state: >-
+          {{ 
+            is_state("binary_sensor.cuisine_person_motion", "on") 
+            or
+            is_state("binary_sensor.hue_motion_sensor_1_motion", "on")
+          }}
+          
+  - trigger:
+      - platform: state
+        entity_id:
+          - binary_sensor.hue_motion_sensor_1_motion
+          - binary_sensor.hue_motion_sensor_2_motion
+          - binary_sensor.hue_motion_sensor_3_motion
+          - binary_sensor.salon_motion
+          - switch.television
+          - sensor.media_state
+          - input_boolean.quentin_is_home
+          - input_boolean.geraldine_is_home
+        to:
+    binary_sensor:
+      - name: "Présence Salon"
+        device_class: motion
+        delay_off: 00:01:30
+        state: >-
+          {{ 
+            is_state("binary_sensor.salon_person_motion", "on") 
+            or
+            is_state("binary_sensor.salon_motion", "on")
+            or
+            is_state("switch.television", "on")
+          }}
+          
+  - trigger:
+      - platform: state
+        entity_id:
+          - binary_sensor.hue_motion_sensor_1_motion
+          - binary_sensor.hue_motion_sensor_2_motion
+          - binary_sensor.hue_motion_sensor_3_motion
+          - binary_sensor.salon_motion
+          - switch.television
+          - sensor.media_state
+          - input_boolean.quentin_is_home
+          - input_boolean.geraldine_is_home
+        to:
+      - platform: state
+        entity_id:
+          - binary_sensor.salle_a_manger_person_motion
+        to: "on"
+        for: 00:00:01
+    binary_sensor:
+      - name: "Présence Salle à manger"
+        device_class: motion
+        delay_off: 00:01:30
+        state: >-
+          {{ 
+            is_state("binary_sensor.salle_a_manger_person_motion", "on")
+            and
+            is_state("binary_sensor.presence_maison", "on")
+          }}
+          
+  - trigger:
+      - platform: state
+        entity_id:
+          - input_boolean.quentin_is_home
+          - input_boolean.geraldine_is_home
+          - binary_sensor.presence_cuisine
+          - binary_sensor.presence_salle_a_manger
+          - binary_sensor.presence_salon
+          - binary_sensor.presence_chambre_parentale
+          - device_tracker.a70_de_coline
+          - device_tracker.telephone_mi
+          - device_tracker.s8
+          - device_tracker.poco_x3_pro
+          - device_tracker.iphone
+    binary_sensor:
+      - name: "Présence Maison"
+        delay_off: 00:01:30
+        device_class: motion
+        state: >-
+          {{ 
+             is_state("input_boolean.quentin_is_home", "on") or 
+             is_state("input_boolean.geraldine_is_home", "on") or 
+             is_state("binary_sensor.presence_cuisine", "on") or 
+             is_state("binary_sensor.presence_salle_a_manger", "on") or 
+             is_state("binary_sensor.presence_salon", "on") or 
+             is_state("binary_sensor.presence_chambre_parentale", "on") or
+             is_state("device_tracker.a70_de_coline", "home") or
+             is_state("device_tracker.telephone_mi", "home") or
+             is_state("device_tracker.s8", "home") or
+             is_state("device_tracker.poco_x3_pro", "home") or
+             is_state("device_tracker.iphone", "home")
+          }}
 
 sensor:
   - platform: time_date
@@ -1477,27 +1635,6 @@ binary_sensor:
              is_state("binary_sensor.sonnette_button_pressed", "on")
           }}
 
-  - platform: template
-    sensors:
-      presence_maison:
-        friendly_name: "Présence Maison"
-        delay_off: 00:05:00
-        device_class: motion
-        value_template: >-
-          {{ 
-             is_state("input_boolean.quentin_is_home", "on") or 
-             is_state("input_boolean.geraldine_is_home", "on") or 
-             is_state("binary_sensor.presence_cuisine", "on") or 
-             is_state("binary_sensor.presence_salle_a_manger", "on") or 
-             is_state("binary_sensor.presence_salon", "on") or 
-             is_state("binary_sensor.presence_chambre_parentale", "on") or
-             is_state("device_tracker.a70_de_coline", "home") or
-             is_state("device_tracker.telephone_mi", "home") or
-             is_state("device_tracker.s8", "home") or
-             is_state("device_tracker.poco_x3_pro", "home") or
-             is_state("device_tracker.iphone", "home")
-          }}
-
   - platform: ping
     host: 192.168.0.13
     count: 1
@@ -1554,36 +1691,6 @@ binary_sensor:
 
   - platform: template
     sensors:
-      presence_piece_principale:
-        friendly_name: "Présence Pièce principale"
-        device_class: motion
-        delay_off: 00:03:30
-        value_template: >-
-          {{ 
-            is_state("binary_sensor.cuisine_pir_person_motion", "on") 
-            or 
-            is_state("binary_sensor.presence_salon", "on")
-            or
-            is_state("binary_sensor.hue_motion_sensor_1_motion", "on")
-            or
-            is_state("binary_sensor.salon_presence_off_state", "on")
-          }}
-
-  - platform: template
-    sensors:
-      presence_cuisine:
-        friendly_name: "Présence Cuisine"
-        device_class: motion
-        delay_off: 00:02:00
-        value_template: >-
-          {{ 
-            is_state("binary_sensor.cuisine_person_motion", "on") 
-            or 
-            is_state("binary_sensor.hue_motion_sensor_1_motion", "on")
-          }}
-
-  - platform: template
-    sensors:
       presence_salle_de_douche:
         friendly_name: "Présence Salle de douche"
         device_class: motion
@@ -1591,42 +1698,6 @@ binary_sensor:
         value_template: >-
           {{ 
             is_state("binary_sensor.salle_de_bain_motion", "on") 
-          }}
-
-  - platform: template
-    sensors:
-      presence_salon:
-        friendly_name: "Présence Salon"
-        device_class: motion
-        delay_off: 00:04:00
-        value_template: >-
-          {{
-            (
-                is_state("binary_sensor.salon_person_motion", "on") 
-                or 
-                is_state("switch.television", "on") 
-                or
-                is_state("binary_sensor.salon_motion", "on")
-            )
-            and is_state("binary_sensor.presence_maison", "on")
-          }}
-    #is_state("binary_sensor.salon_presence_off_state", "on")
-    #or
-  - platform: template
-    sensors:
-      presence_salle_a_manger:
-        friendly_name: "Présence Salle à manger"
-        device_class: motion
-        delay_off: 00:01:20
-        #delay_on: 00:00:02
-        value_template: >-
-          {{ 
-            (
-                is_state("binary_sensor.salle_a_manger_person_motion", "on") 
-               
-                
-            )
-            and is_state("binary_sensor.presence_maison", "on")
           }}
 
   - platform: template
@@ -2510,11 +2581,16 @@ camera:
     attributes:
       - calibration_points
 
+  - platform: mjpeg
+    name: Sonnette MJPEG
+    mjpeg_url: !secret sonnette_camera_url
+
 amcrest:
   - host: 192.168.2.83
     name: Sonnette
     username: !secret amcrest_username
     password: !secret pw1
+    
 # image_processing:
 #   - platform: deepstack_face
 #     ip_address: localhost
