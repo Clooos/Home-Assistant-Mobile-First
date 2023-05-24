@@ -13,4 +13,4 @@ Thank you all for your support and motivation!
 
 ![Security](https://github.com/clooos/Home-Assistant-Mobile-First/blob/master/www/images/Home%20Assistant%20-%20UI%20V4%20-%20Security.jpg?raw=true)
 
-![Animated widgets](https://github.com/clooos/Home-Assistant-Mobile-First/blob/master/www/images/Home%20Assistant%20-%20UI%20V4%20-%20Animated%20widgets.gif?raw=true)
+![Animated widgets](https://github.com/clooos/Home-Assistant-Mobile-First/blob/master/www/images/Home%20Assistant%20-%20UI%20V3%20-%20Animated%20widgets.gif?raw=true)
