@@ -1,5 +1,7 @@
 # Home Assistant - Mobile First Dashboard
-About three years ago, a friend introduced me to Home Assistant. I was drawn to the idea and its open-source nature, so I purchased a Raspberry Pi 4 and quickly became enamored with the platform. I'm sharing my personal setup to inspire the community.
+About three years ago, a friend introduced me to Home Assistant. I was drawn to the idea and its open-source nature, so I purchased a Raspberry Pi 4 and quickly became enamored with the platform. 
+
+I'm sharing my personal setup to inspire the community.
 
 ## Screenshots
 
