@@ -17,7 +17,7 @@ I'm sharing my personal setup to inspire the community.
 
 # Installation
 
-There is **no** easy installation process, as this is my personal setup uploaded as is.
+There is **no easy installation process**, as this is my personal setup uploaded as is.
 
 But here is a guide that will show you where to start.
 
