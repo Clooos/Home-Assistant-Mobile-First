@@ -25,15 +25,15 @@ You need to install the following dependencies using HACS (more details below). 
 
 - [lovelace-card-mod](https://github.com/thomasloven/lovelace-card-mod)  
   This is a custom component that allows modifying the appearance of any Lovelace card using CSS styles.  
-  **This one is not mandatory.**
+  **This one is mandatory.**
   
 - [button-card](https://github.com/custom-cards/button-card)  
   This is a button card that allows creating buttons with icons, text, actions, and styles.  
-  **This one is not mandatory.**
+  **This one is mandatory.**
   
 - [vertical-stack-in-card](https://github.com/ofekashery/vertical-stack-in-card)  
   This is a custom card that allows stacking multiple cards vertically.  
-  **This one is not mandatory.**
+  **This one is mandatory.**
   
 - [slider-button-card](https://github.com/mattieha/slider-button-card)  
   This is a button card that shows and controls numeric values of entities with a slider and an action button.  
