@@ -15,7 +15,9 @@ About three years ago, a friend introduced me to Home Assistant. I was drawn to 
 
 # Installation
 
-There is no easy installation process, as this is my personal setup uploaded as is. But here is a guide that will show you where to start.
+There is **no** easy installation process, as this is my personal setup uploaded as is.
+
+But here is a guide that will show you where to start.
 
 You need to install the following dependencies using HACS (more details below). Note that you may not need all of them depending on what you want, but these are the ones that I use in my setup:
 
@@ -33,7 +35,7 @@ You need to install the following dependencies using HACS (more details below). 
   
 - [slider-button-card](https://github.com/mattieha/slider-button-card)  
   This is a button card that shows and controls numeric values of entities with a slider and an action button.  
-  This one is used for my room's light sliders.
+  This one is used for my room light sliders.
 
 - [light-entity-card](https://github.com/ljmerza/light-entity-card)  
   This is a light card that shows and controls the brightness, color, and color temperature of light entities.  
@@ -81,7 +83,7 @@ You need to install the following dependencies using HACS (more details below). 
 ## 2. Installing the theme
 
 1. Download the files from this repository by clicking on Code > Download ZIP 
-2. Copy the "themes" folder in your Home Assistant configuration directory (you can do that with the Samba share add-on or the File editor add-on for exemple).
+2. Copy the `themes` folder in your Home Assistant configuration directory (you can do that with the Samba share add-on or the File editor add-on for exemple).
 3. Add the following lines to your configuration.yaml file:
 
 ```
