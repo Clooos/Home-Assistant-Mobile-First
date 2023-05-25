@@ -3,7 +3,7 @@ About three years ago, a friend introduced me to Home Assistant. I was drawn to 
 
 I'm sharing my personal setup to inspire the community.
 
-## Features
+## Screenshots and features
 
 ![Main dashboard](https://github.com/clooos/Home-Assistant-Mobile-First/blob/master/www/images/Home%20Assistant%20-%20UI%20V4%20-%20Main%20dashboard.jpg?raw=true)
 
