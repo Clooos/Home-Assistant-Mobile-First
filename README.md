@@ -19,7 +19,7 @@ I'm sharing my personal setup to inspire the community.
 
 There is **no easy installation process**, as this is my personal setup uploaded as is.
 
-But here is a guide that will show you where to start.
+But here is a step-by-step guide that will show you where to start.
 
 You need to install the following dependencies using HACS (more details below). Note that you may not need all of them depending on what you want, but these are the ones that I use in my setup:
 
