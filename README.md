@@ -116,16 +116,6 @@ You can use the service `frontend.reload_themes` to refresh it.*
 
 ```
 sensor:
-  - platform: time_date
-    display_options:
-      - "time"
-      - "date"
-      - "date_time"
-      - "date_time_utc"
-      - "date_time_iso"
-      - "time_date"
-      - "time_utc"
-      - "beat"
   - platform: template
     sensors:
       jour_fr:
