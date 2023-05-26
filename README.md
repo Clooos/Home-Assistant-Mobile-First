@@ -163,7 +163,7 @@ For `header_temperature_graph:`
 
 For `header_main:`
 ```
-# You can edit jour_fr (day in french) and date_fr to fit the sensors that you will create right after.
+# You can edit jour_fr (day in french) and date_fr to fit the sensors that you have added before.
   name: '{{ states(''sensor.jour_fr'') }}, {{ states(''sensor.date_fr'') }}'
 
 # A temperature sensor that you have inside your house, you can change °C if you need to.
