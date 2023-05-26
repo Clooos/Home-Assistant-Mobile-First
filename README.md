@@ -6,7 +6,7 @@
 
 About three years ago, a friend introduced me to Home Assistant. I was drawn to the idea and its open-source nature, so I purchased a Raspberry Pi 4 and quickly became enamored with the platform. 
 
-I now share my personal setup to inspire the community.
+I’m now happy to share my personal setup with the community and hope it inspires you.
 
 ## Screenshots and features
 
