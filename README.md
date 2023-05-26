@@ -83,14 +83,14 @@ You need to install the following dependencies using HACS (more details below). 
 
 1. Download HACS following the instructions on [https://hacs.xyz/docs/setup/download](https://hacs.xyz/docs/setup/download/)
 2. Proceed to the initial configuration following the instructions on [https://hacs.xyz/docs/configuration/basic](https://hacs.xyz/docs/configuration/basic)
-3. Go to HACS > Frontend and click on the + button at the bottom right corner. Search for each dependency you want to install and click on it. Then click on Install this repository in HACS and confirm.
-4. After installing all the dependencies, go to Configuration > System to restart Home Assistant.
+3. On your sidebar go to `HACS` > `Frontend` and click on the `+` button at the bottom right corner. Search for each dependency you want to install and click on it. Then click on `Install this repository in HACS` and confirm.
+4. After installing all the dependencies, go to `Configuration` > `System` to restart Home Assistant.
 
 ## 2. Installing the theme
 
-1. Download the files from this repository by clicking on Code > Download ZIP 
+1. Download the files from this repository by clicking on `Code` > `Download ZIP`.
 2. Copy the `themes` folder in your Home Assistant configuration directory (you can do that with the Samba share add-on or the File editor add-on for exemple).
-3. Add the following lines to your configuration.yaml file:
+3. Add the following lines to your `configuration.yaml` file:
 
 ```
 frontend:
@@ -99,23 +99,27 @@ frontend:
     - /hacsfiles/lovelace-card-mod/card-mod.js
 ```
   
-4. Go to Configuration > System to restart Home Assistant.
+4. Go to `Configuration` > `System` to restart Home Assistant.
 5. After restarting, go to your profile and select the Noctis theme from the drop-down menu.
 
 *Please note that my version of Noctis from @aFFekopp is heavily modified and you will need to replace the original one if you have it already installed. 
 You can use the service `frontend.reload_themes` to refresh it.*
 
-## 3. Installing and configuring the dashboard
+## 3. Installing and configuring a new view
 
 *Here is the tricky part, because you will need to edit a lot of my code to fit your configuration and entities.*
 
-*Also note that I'm using the UI mode and this is the way that I will cover in this next part of the guide.*
+*Also note that I'm using the UI mode and this is the way that I will cover in the next part of this guide.*
 
-1. Go to your dashboard and click on the 3 dots icon in the top right corner of the page then click on Edit Dashboard.
-2. Click on the + button.
-3. Fill in the first fields (the icon is optional, I don't use it) and select Noctis in the drop-down menu.
-4. **Important**: For the view type select Sidebar and turn on the Subview toggle button.
-5. In progress...
+1. Go to your dashboard and click on the 3 dots icon in the top right corner of the page then click on `Edit Dashboard`.
+2. Click on the `+` button to add a new view.
+3. Fill in the first fields (the icon is optional, I don't use it) and select Noctis in the theme drop-down menu.
+4. **Important**: For the view type select `Sidebar` and turn on the `Subview` toggle button, click on Save.
+5. Click on the 3 dots icon in the top right corner then click on `Raw configuration editor`.
+6. In the folder you downloaded earlier, open the `lovelace.yaml` file with a text editor.
+7. Copy all the lines of code from `decluttering_templates:` to the last line right before `title:`.
+8. Paste this code in the top of your editor in Home Assistant.
+9. In progress...
 
 # Troubleshooting 
 
