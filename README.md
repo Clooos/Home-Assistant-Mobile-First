@@ -5,9 +5,9 @@ I'm now sharing my personal setup to inspire the community.
 
 ## Screenshots and features
 
-![Main dashboard](https://github.com/clooos/Home-Assistant-Mobile-First/blob/master/www/images/Home%20Assistant%20-%20UI%20V4%20-%20Main%20dashboard.jpg?raw=true)
-
 ![Header and footer](https://github.com/clooos/Home-Assistant-Mobile-First/blob/master/www/images/Home%20Assistant%20-%20UI%20V4%20-%20Header%20and%20footer.jpg?raw=true)
+
+![Main dashboard](https://github.com/clooos/Home-Assistant-Mobile-First/blob/master/www/images/Home%20Assistant%20-%20UI%20V4%20-%20Main%20dashboard.jpg?raw=true)
 
 ![More dashboards](https://github.com/clooos/Home-Assistant-Mobile-First/blob/master/www/images/Home%20Assistant%20-%20UI%20V4%20-%20More%20dashboards.jpg?raw=true)
 
