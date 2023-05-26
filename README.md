@@ -112,15 +112,38 @@ You can use the service `frontend.reload_themes` to refresh it.*
 
 *Also note that I'm using the UI mode and this is the way that I will cover in the next part of this guide.*
 
-1. Go to your dashboard and click on the 3 dots icon in the top right corner of the page then click on `Edit Dashboard`.
-2. Click on the `+` button to add a new view.
-3. Fill in the first fields (the icon is optional, I don't use it) and select Noctis in the theme drop-down menu.
-4. **Important**: For the view type select `Sidebar` and turn on the `Subview` toggle button, click on Save.
-5. Click on the 3 dots icon in the top right corner then click on `Raw configuration editor`.
-6. In the folder you downloaded earlier, open the `lovelace.yaml` file with a text editor.
-7. Copy all the lines of code from `decluttering_templates:` to the last line right before `title:`.
-8. Paste this code in the top of your `Raw configuration editor` in Home Assistant.
-9. Edit the following lines to fit your actual configuration:
+1. First you need to add the following lines to your `configuration.yaml` and translate it to the language you want, then save it.
+
+```
+sensor:
+  - platform: time_date
+    display_options:
+      - "time"
+      - "date"
+      - "date_time"
+      - "date_time_utc"
+      - "date_time_iso"
+      - "time_date"
+      - "time_utc"
+      - "beat"
+  - platform: template
+    sensors:
+      jour_fr:
+        value_template: "{{ ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'][now().weekday()] }}"
+
+      date_fr:
+        value_template: "{% set months = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'] %} {{ now().day | string + ' ' + months[now().month-1]}}"
+```
+
+2. Go to your dashboard and click on the 3 dots icon in the top right corner of the page then click on `Edit Dashboard`.
+3. Click on the `+` button to add a new view.
+4. Fill in the first fields (the icon is optional, I don't use it) and select Noctis in the theme drop-down menu.
+5. **Important**: For the view type select `Sidebar` and turn on the `Subview` toggle button, click on Save.
+6. Click on the 3 dots icon in the top right corner then click on `Raw configuration editor`.
+7. In the folder you downloaded earlier, open the `lovelace.yaml` file with a text editor.
+8. Copy all the lines of code from `decluttering_templates:` to the last line right before `title:`.
+9. Paste this code in the top of your `Raw configuration editor` in Home Assistant.
+10. Edit the following lines to fit your actual configuration:
 
 For `header_live_weather_background:`
 ```
@@ -189,7 +212,7 @@ For `footer_sticky_menu:`
       navigation_path: /lovelace/volets
 ```
 
-10. Now add the following lines to your new view, this should look like this:
+11. Now add the following lines to your new view, this should look like this:
 
 ```
   - theme: noctis
@@ -257,14 +280,21 @@ For `footer_sticky_menu:`
           }
 ```
 
-11. Click on `Save` then on `X`. You should now have a working header and footer.
+12. Click on `Save` then on `X`. 
+14. You should now have a working header and footer.
 
 *Please note that the footer need more content to stay at the bottom of the page.*
 
-In progress...
+## 4. Configuring the other cards and views
+
+I can't cover every details of my huge configuration but at this point you should now have the skill to keep going by yourself.
+
+Have fun ❤️
+
+*Also please note that this guide may not be perfect at this time, if you see something that is missing of if you notice any error you can look at the point below.*
 
 # Troubleshooting 
 
-If you have specific questions, feel free to ask [here](https://community.home-assistant.io/t/a-minimalist-and-user-friendly-dashboard-with-an-mobile-first-approach-now-on-github/535580) and I will try to answer as soon as possible.
+If you have specific questions or if you have noticed any error in this guide, feel free to post a comment [here](https://community.home-assistant.io/t/a-minimalist-and-user-friendly-dashboard-with-an-mobile-first-approach-now-on-github/535580) on the Home Assistant community forum and I will try to answer as soon as possible.
 
 Thank you all for your support and motivation!
