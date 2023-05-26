@@ -35,6 +35,10 @@ You need to install the following dependencies using HACS (more details below). 
   This is a custom card that allows stacking multiple cards vertically.  
   **This one is mandatory.**
   
+- [decluttering-card](https://github.com/custom-cards/decluttering-card)  
+  This is a card that allows you to reuse multiple times the same configuration in your lovelace configuration to avoid repetition.  
+  **This one is mandatory.**
+  
 - [slider-button-card](https://github.com/mattieha/slider-button-card)  
   This is a button card that shows and controls numeric values of entities with a slider and an action button.  
   This one is used for my room light sliders.
@@ -44,7 +48,7 @@ You need to install the following dependencies using HACS (more details below). 
   This one is used on any of my room cards.
 
 - [rgb-light-card](https://github.com/bokub/rgb-light-card)  
-  This is a buttons that controls the color of RGB light entities with a color wheel.  
+  This is the buttons that controls the color of RGB light entities with a color wheel.  
   This one is used on any of my room cards.
 
 - [mini-graph-card](https://github.com/kalkih/mini-graph-card)  
@@ -103,7 +107,15 @@ You can use the service `frontend.reload_themes` to refresh it.*
 
 ## 3. Installing and configuring the dashboard
 
-In progress...
+*Here is the tricky part, because you will need to edit a lot of my code to fit your configuration and entities.*
+
+*Also note that I'm using the UI mode and this is the way that I will cover in this next part of the guide.*
+
+1. Go to your dashboard and click on the 3 dots icon in the top right corner of the page then click on Edit Dashboard.
+2. Click on the + button.
+3. Fill in the first fields (the icon is optional, I don't use it) and select Noctis in the drop-down menu.
+4. **Important**: For the view type select Sidebar and turn on the Subview toggle button.
+5. In progress...
 
 # Troubleshooting 
 
