@@ -106,7 +106,7 @@ frontend:
 *Please note that my version of Noctis from @aFFekopp is heavily modified and you will need to replace the original one if you have it already installed. 
 You can use the service `frontend.reload_themes` to refresh it.*
 
-## 3. Installing and configuring a new view
+## 3. Configuring a new view with the header and the footer
 
 *Here is the tricky part, because you will need to edit a lot of my code to fit your configuration and entities.*
 
@@ -180,7 +180,7 @@ For `footer_sticky_menu:`
     layout: icon
     name: Silence
     
-# This are shorcuts to other views that you will need to create after.
+# These are shorcuts to other views that you will need to create after.
   - layout: icon
     icon: mdi:window-shutter
     name: Volets
@@ -188,6 +188,78 @@ For `footer_sticky_menu:`
       action: navigate
       navigation_path: /lovelace/volets
 ```
+
+10. Now add the following lines to your new view, this should look like this:
+
+```
+  - theme: noctis
+    icon: ''
+    path: default_view
+    title: HOME
+    visible:
+      - user: 12345678901234567890
+    type: sidebar
+    badges: []
+    cards:
+      # These are the lines that you need to past for the header.
+      - type: custom:decluttering-card
+        template: header_live_weather_background
+      - type: custom:decluttering-card
+        template: header_temperature_graph
+      - type: custom:decluttering-card
+        template: header_main
+      # This is optional and you can remove it if you don't use it.
+      - type: custom:decluttering-card
+        template: header_conditional_camera
+        
+      # These are the lines that you need to past at the bottom of this view for the footer.
+      # This card need to always be at the bottom of your view.
+      # The sticky position don't work with Decluttering card. This is why I have to add a part of the CSS style here.
+      - type: custom:vertical-stack-in-card
+        cards:
+          - type: custom:decluttering-card
+            template: footer_sticky_menu
+        style: |
+          :host {
+            position: sticky !important;
+            bottom: 26px;
+            margin-bottom: 10px !important;
+            animation: 1.2s position ease-in-out;
+          }
+          @keyframes position {
+            0% { bottom: -80px; }
+            20% { bottom: -80px; }
+            70% { bottom: 26px; }
+            90% { bottom: 24px; }
+            100% { bottom: 26px; }
+          }
+          ha-card { 
+            background: none;
+            border-radius: 26px !important;
+          }
+          :host:before {
+            content: '';
+            display: block;
+            position: absolute;
+            bottom: -26px;
+            left: -8px;
+            padding-right: 16px;
+            height: 130px;
+            width: 100%; 
+            background: linear-gradient(180deg, rgba(45, 56, 76, 0) 0%, rgba(35, 46, 66, 0.85) 50%);
+            pointer-events: none;
+            animation: 1.2s opacity ease-in-out;
+          }
+          @keyframes opacity {
+            0% { opacity: 0; }
+            20% { opacity: 0; }
+            100% { opacity: 1; }
+          }
+```
+
+11. Click on `Save` then on `X`. You should now have a working header and footer.
+
+*Please note that the footer need more content to stay at the bottom of the page.*
 
 In progress...
 
