@@ -285,7 +285,7 @@ I can't cover every details of my huge configuration but at this point you shoul
 
 Have fun ❤️
 
-*Also please note that this guide may not be perfect at this time, if you see something that is missing or if you notice any error you can look at the point below.*
+*Also please note that this guide may not be perfect at this time, if you see something that is missing or if you notice any error you can take a look at the point below.*
 
 # Troubleshooting 
 
