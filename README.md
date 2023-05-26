@@ -121,7 +121,7 @@ You can use the service `frontend.reload_themes` to refresh it.*
 8. Paste this code in the top of your `Raw configuration editor` in Home Assistant.
 9. Edit the following lines to fit your actual configuration:
 
-For the `header_live_weather_background:`
+For `header_live_weather_background:`
 ```
 # Your camera for the live weather view
 camera_image: camera.camera_sonnette_mjpeg
@@ -137,10 +137,22 @@ style: |
     ...
 ```
 
-For the `header_temperature_graph:`
+For `header_temperature_graph:`
 ```
 # The temperature sensor you want to show for the header graph
 - entity: sensor.temperature_interieure
+```
+
+For `header_main:`
+```
+# You can edit jour_fr (day in french) and date_fr to fit the sensors that you will create right after
+name: '{{ states(''sensor.jour_fr'') }}, {{ states(''sensor.date_fr'') }}'
+
+# A temperature sensor that you have inside your house, you can change °C if you need to
+name: ⌂ {{ states('sensor.temperature_interieure') }}°C
+
+# A temperature sensor for outside, you can use {{ states('sensor.your_sensor') }}
+state: '{{ state_attr(''weather.openweathermap'',''temperature'') }}°C'
 ```
 
 In progress...
