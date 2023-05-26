@@ -124,13 +124,13 @@ You can use the service `frontend.reload_themes` to refresh it.*
 
 For `header_live_weather_background:`
 ```
-# Your camera for the live weather view
+# Your camera for the live weather view.
   camera_image: camera.camera_sonnette_mjpeg
 
-# You can change this to 'live' if you want a true live view
+# You can change this to 'live' if you want a true live view.
   camera_view: auto
 
-# You will probably need to play with the width to have a perfect crop of your sky
+# You will probably need to play with the width to have a perfect crop of your sky.
   style: |
     ha-card {
       ...
@@ -140,22 +140,22 @@ For `header_live_weather_background:`
 
 For `header_temperature_graph:`
 ```
-# The temperature sensor you want to show for the header graph
+# The temperature sensor you want to show for the header graph.
   - entity: sensor.temperature_interieure
 ```
 
 For `header_main:`
 ```
-# You can edit jour_fr (day in french) and date_fr to fit the sensors that you will create right after
+# You can edit jour_fr (day in french) and date_fr to fit the sensors that you will create right after.
   name: '{{ states(''sensor.jour_fr'') }}, {{ states(''sensor.date_fr'') }}'
 
-# A temperature sensor that you have inside your house, you can change °C if you need to
+# A temperature sensor that you have inside your house, you can change °C if you need to.
   name: ⌂ {{ states('sensor.temperature_interieure') }}°C
 
 # A temperature sensor for outside, you can use {{ states('sensor.your_sensor') }}
   state: '{{ state_attr(''weather.openweathermap'',''temperature'') }}°C'
 
-# Your weather integration for the state of the weather icon in the header
+# Your weather integration for the state of the weather icon in the header.
   {% set state = states('weather.maison_2') %}
 ```
 
@@ -163,13 +163,30 @@ For `header_conditional_camera:`
 This one need you to have Frigate and frigate-hass-card.  
 This is optional and you can remove it if you don't use it.  
 ```
-# Your motion sensor from Frigate
+# Your motion sensor from Frigate.
   - entity: binary_sensor.sonnette_motion
 
 # Your camera entity and a title for it
   - camera_entity: camera.sonnette_pir
     live_provider: frigate-jsmpeg
     title: Entrée
+```
+
+For `footer_sticky_menu:`
+```
+# This is the first icon of the footer, this is where you want to put a toggleable entity for a fast access. 
+  I'm using a Mute input_boolean in some of my automations that mute my music, tv, vacuums, tts notifications or anything that can emit sound.
+  - entity: input_boolean.mode_silencieux
+    layout: icon
+    name: Silence
+    
+# This are shorcuts to other views that you will need to create after.
+  - layout: icon
+    icon: mdi:window-shutter
+    name: Volets
+    tap_action:
+      action: navigate
+      navigation_path: /lovelace/volets
 ```
 
 In progress...
