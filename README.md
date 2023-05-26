@@ -118,8 +118,32 @@ You can use the service `frontend.reload_themes` to refresh it.*
 5. Click on the 3 dots icon in the top right corner then click on `Raw configuration editor`.
 6. In the folder you downloaded earlier, open the `lovelace.yaml` file with a text editor.
 7. Copy all the lines of code from `decluttering_templates:` to the last line right before `title:`.
-8. Paste this code in the top of your editor in Home Assistant.
-9. In progress...
+8. Paste this code in the top of your `Raw configuration editor` in Home Assistant.
+9. Edit the following lines to fit your actual configuration:
+
+For the `header_live_weather_background:`
+```
+# Your camera for the live weather view
+camera_image: camera.camera_sonnette_mjpeg
+
+# You can change this to 'live' if you want a true live view
+camera_view: auto
+
+# You will probably need to play with the width to have a perfect crop of your sky
+style: |
+  ha-card {
+    ...
+    width: 1500px;
+    ...
+```
+
+For the `header_temperature_graph:`
+```
+# The temperature sensor you want to show for the header graph
+- entity: sensor.temperature_interieure
+```
+
+In progress...
 
 # Troubleshooting 
 
