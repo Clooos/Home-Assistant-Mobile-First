@@ -112,7 +112,7 @@ You can use the service `frontend.reload_themes` to refresh it.*
 
 *Also note that I'm using the UI mode and this is the way that I will cover in the next part of this guide.*
 
-1. First you need to add the following lines to your `configuration.yaml` and translate it to the language you want, then save it.
+1. First you need to add the following lines to your `configuration.yaml` and translate it to the language you want, then save it and restart Home Assistant.
 
 ```
 sensor:
@@ -130,7 +130,6 @@ sensor:
     sensors:
       jour_fr:
         value_template: "{{ ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'][now().weekday()] }}"
-
       date_fr:
         value_template: "{% set months = ['janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre'] %} {{ now().day | string + ' ' + months[now().month-1]}}"
 ```
