@@ -1,6 +1,6 @@
 # Home Assistant - Mobile First Dashboard
 
-📱 A minimalist and user-friendly design, combined with an mobile first approach for the Home Assistant dashboard.
+A minimalist and user-friendly design, combined with an mobile first approach for the Home Assistant dashboard.
 
 [![Stars](https://img.shields.io/github/stars/clooos/Home-Assistant-Mobile-First)](#) [![Last commit](https://img.shields.io/github/last-commit/clooos/Home-Assistant-Mobile-First)](#) [![Reddit Profile](https://img.shields.io/badge/Reddit-My%20profile-orange?logo=reddit)](https://www.reddit.com/user/Clooooos) [![Home Assistant Community Forum](https://img.shields.io/badge/Home%20Assistant-Community%20Forum-blue?logo=home-assistant)](https://community.home-assistant.io/t/a-minimalist-and-user-friendly-dashboard-with-an-mobile-first-approach-now-on-github/535580)
 
