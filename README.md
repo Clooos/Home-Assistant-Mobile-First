@@ -90,7 +90,8 @@ You need to install the following dependencies using HACS (more details below). 
 
 1. Download the files from this repository by clicking on `Code` > `Download ZIP`.
 2. Copy the `themes` folder in your Home Assistant configuration directory (you can do that with the Samba share add-on or the File editor add-on for exemple).
-3. Add the following lines to your `configuration.yaml` file:
+3. Copy the `icons` folder from the `www` folder to yours.
+4. Add the following lines to your `configuration.yaml` file:
 
 ```
 frontend:
@@ -99,8 +100,8 @@ frontend:
     - /hacsfiles/lovelace-card-mod/card-mod.js
 ```
   
-4. Go to `Configuration` > `System` to restart Home Assistant.
-5. After restarting, go to your profile and select the Noctis theme from the drop-down menu.
+5. Go to `Configuration` > `System` to restart Home Assistant.
+6. After restarting, go to your profile and select the Noctis theme from the drop-down menu.
 
 *Please note that my version of Noctis from @aFFekopp is heavily modified and you will need to replace the original one if you have it already installed. 
 You can use the service `frontend.reload_themes` to refresh it.*
@@ -124,35 +125,51 @@ You can use the service `frontend.reload_themes` to refresh it.*
 For `header_live_weather_background:`
 ```
 # Your camera for the live weather view
-camera_image: camera.camera_sonnette_mjpeg
+  camera_image: camera.camera_sonnette_mjpeg
 
 # You can change this to 'live' if you want a true live view
-camera_view: auto
+  camera_view: auto
 
 # You will probably need to play with the width to have a perfect crop of your sky
-style: |
-  ha-card {
-    ...
-    width: 1500px;
-    ...
+  style: |
+    ha-card {
+      ...
+      width: 1500px;
+      ...
 ```
 
 For `header_temperature_graph:`
 ```
 # The temperature sensor you want to show for the header graph
-- entity: sensor.temperature_interieure
+  - entity: sensor.temperature_interieure
 ```
 
 For `header_main:`
 ```
 # You can edit jour_fr (day in french) and date_fr to fit the sensors that you will create right after
-name: '{{ states(''sensor.jour_fr'') }}, {{ states(''sensor.date_fr'') }}'
+  name: '{{ states(''sensor.jour_fr'') }}, {{ states(''sensor.date_fr'') }}'
 
 # A temperature sensor that you have inside your house, you can change °C if you need to
-name: ⌂ {{ states('sensor.temperature_interieure') }}°C
+  name: ⌂ {{ states('sensor.temperature_interieure') }}°C
 
 # A temperature sensor for outside, you can use {{ states('sensor.your_sensor') }}
-state: '{{ state_attr(''weather.openweathermap'',''temperature'') }}°C'
+  state: '{{ state_attr(''weather.openweathermap'',''temperature'') }}°C'
+
+# Your weather integration for the state of the weather icon in the header
+  {% set state = states('weather.maison_2') %}
+```
+
+For `header_conditional_camera:`  
+This one need you to have Frigate and frigate-hass-card.  
+This is optional and you can remove it if you don't use it.  
+```
+# Your motion sensor from Frigate
+  - entity: binary_sensor.sonnette_motion
+
+# Your camera entity and a title for it
+  - camera_entity: camera.sonnette_pir
+    live_provider: frigate-jsmpeg
+    title: Entrée
 ```
 
 In progress...
