@@ -50,11 +50,11 @@ You need to install the following dependencies using HACS (more details below). 
 
 - [light-entity-card](https://github.com/ljmerza/light-entity-card)  
   This is a light card that shows and controls the brightness, color, and color temperature of light entities.  
-  This one is used on any of my room cards.
+  This one is used on any of my room views.
 
 - [rgb-light-card](https://github.com/bokub/rgb-light-card)  
   This is the buttons that controls the color of RGB light entities with a color wheel.  
-  This one is used on any of my room cards.
+  This one is used on any of my room views.
 
 - [mini-graph-card](https://github.com/kalkih/mini-graph-card)  
   This is a customizable graph card that can display multiple entities on the same graph.  
