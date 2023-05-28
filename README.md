@@ -95,7 +95,7 @@ You need to install the following dependencies using HACS (more details below). 
 
 1. Download the files from this repository by clicking on `Code` > `Download ZIP`.
 2. Copy the `themes` folder in your Home Assistant configuration directory (you can do that with the Samba share add-on or the File editor add-on for exemple).
-3. Copy the `icons` folder from the `www` folder to yours.
+3. Copy the `icons` folder from the `www` folder to your `www` .
 4. Add the following lines to your `configuration.yaml` file:
 
 ```
