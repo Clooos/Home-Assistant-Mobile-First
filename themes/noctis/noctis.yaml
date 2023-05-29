@@ -22,6 +22,7 @@ noctis:
   text-color: '#ffffff' 
   primary-text-color: 'var(--text-color)'
   text-primary-color: 'var(--text-color)'
+  sidebar-text-color: 'var(--text-color)'
   secondary-text-color: "#BAC0C6"
   text-medium-light-color: '#A0A2A8'
   text-medium-color: '#80828A'
