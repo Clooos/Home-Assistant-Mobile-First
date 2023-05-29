@@ -206,9 +206,10 @@ For `footer_sticky_menu:`
       navigation_path: /lovelace/volets
 ```
 
-11. Now add the following lines to your new view  (take a look at the #commented lines), this should look like this:
+11. Now add the following lines to your new view  (take a look at the `#` commented lines), this should look like this:
 
 ```
+  ...
   - theme: noctis
     icon: ''
     path: default_view
