@@ -33,7 +33,7 @@ You need to install the following dependencies using HACS (more details below). 
   **This one is mandatory.**
   
 - [lovelace-canary](https://github.com/jcwillox/lovelace-canary)  
-  This is a custom component that extend the functionality of Lovelace by adding extra configuration options to pre-existing elements.
+  This is a custom component that extend the functionality of Lovelace by adding extra configuration options to pre-existing elements.  
   **This one is mandatory.**
   
 - [button-card](https://github.com/custom-cards/button-card)  
