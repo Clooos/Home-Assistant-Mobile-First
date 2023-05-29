@@ -72,7 +72,7 @@ noctis:
   border-style: 'none !important'
 
   # Icons
-  paper-item-icon-color: '#EBEBEB'
+  paper-item-icon-color: 'var(--text-color)'
   paper-item-icon-active-color: 'var(--accent-color)'
   
   # Sidebar
