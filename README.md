@@ -92,7 +92,7 @@ You need to install the following dependencies using HACS (more details below). 
 
 1. Download HACS following the instructions on [https://hacs.xyz/docs/setup/download](https://hacs.xyz/docs/setup/download/)
 2. Proceed to the initial configuration following the instructions on [https://hacs.xyz/docs/configuration/basic](https://hacs.xyz/docs/configuration/basic)
-3. On your sidebar go to `HACS` > `Frontend` and click on the `+` button at the bottom right corner. Search for each dependency you want to install and click on it. Then click on `Install this repository in HACS` and confirm.
+3. On your sidebar go to `HACS` > `Frontend` and click on the `+` button at the bottom right corner. Search for each dependency you want to install and click on it. Then click on `Download` twice.
 4. After installing all the dependencies, go to `Configuration` > `System` to restart Home Assistant.
 
 ## 2. Installing the theme
