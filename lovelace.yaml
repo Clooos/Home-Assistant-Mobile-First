@@ -16,21 +16,21 @@ decluttering_templates:
           entities: []
           camera_image: camera.camera_sonnette_mjpeg
           camera_view: auto
+          image: []
           style: |
             ha-card {
               position: absolute;
-              width: 1500px;
               filter: blur(2px);
               border-radius: 0 !important;
-            }
-            ha-card:before {
-              content: '';
-              display: block;
-              position: absolute;
-              left: -180px;
-              height: 170px;
-              width: 100%;
-              background: radial-gradient(ellipse at 50% -100%, rgba(35, 46, 66, 0) 25%, rgba(35, 46, 66, 0.8) 55%, rgba(35, 46, 66, 1) 67%);
+              background: none;
+              
+              /* Edit the following lines to adjust your camera or your image */
+              
+              width: 1500px;
+              top: 0px;
+              right: 0px;
+              
+              /* If you don't want to use a camera you can replace [] with an image */
             }
       style: |
         ha-card {
@@ -42,6 +42,17 @@ decluttering_templates:
           margin-right: -8px;
           background: none;
           animation: opacity 2s ease-in;
+          border-radius: 0 var(--ha-card-border-radius);
+        }
+        ha-card:after {
+          content: '';
+          display: block;
+          position: absolute;
+          top: 0;
+          left: -180px;
+          height: 170px;
+          width: 1700px;
+          background: radial-gradient(ellipse at 50% -100%, rgba(35, 46, 66, 0) 25%, rgba(35, 46, 66, 0.8) 55%, rgba(35, 46, 66, 1) 67%);
         }
         @media only screen and (max-width: 768px) {
           ha-card {
