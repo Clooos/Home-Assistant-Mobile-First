@@ -133,7 +133,7 @@ sensor:
 2. Go to your dashboard and click on the 3 dots icon in the top right corner of the page then click on `Edit Dashboard`.
 3. Click on the `+` button to add a new view.
 4. Fill in the first fields (the icon is optional, I don't use it) and select Noctis in the theme drop-down menu.
-5. **Important**: For the view type select `Sidebar` and turn on the `Subview` toggle button, click on Save.
+5. **Important**: For the view type select `Sidebar` (for every additional views you will need to turn on the `Subview` toggle button), click on Save.
 6. Click on the 3 dots icon in the top right corner then click on `Raw configuration editor`.
 7. In the folder you downloaded earlier, open the `lovelace.yaml` file with a text editor.
 8. Copy all the lines of code from `decluttering_templates:` to the last line right before `title:`.
