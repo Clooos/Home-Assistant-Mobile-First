@@ -32,10 +32,6 @@ You need to install the following dependencies using HACS (more details below). 
   This is a custom component that allows modifying the appearance of any Lovelace card using CSS styles.  
   **This one is mandatory.**
   
-- [lovelace-canary](https://github.com/jcwillox/lovelace-canary)  
-  This is a custom component that extend the functionality of Lovelace by adding extra configuration options to pre-existing elements.  
-  **This one is mandatory.**
-  
 - [button-card](https://github.com/custom-cards/button-card)  
   This is a button card that allows creating buttons with icons, text, actions, and styles.  
   **This one is mandatory.**
