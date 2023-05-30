@@ -48,6 +48,10 @@ You need to install the following dependencies using HACS (more details below). 
   This is a card that allows you to reuse multiple times the same configuration in your lovelace configuration to avoid repetition.  
   **This one is mandatory.**
   
+- [lovelace-paper-buttons-row](https://github.com/jcwillox/lovelace-paper-buttons-row)  
+  This is a custom row that shows multiple buttons with icons and actions on the same row.  
+  **This one is mandatory.**
+  
 - [slider-button-card](https://github.com/mattieha/slider-button-card)  
   This is a button card that shows and controls numeric values of entities with a slider and an action button.  
   This one is used for my room light sliders.
@@ -72,9 +76,6 @@ You need to install the following dependencies using HACS (more details below). 
 
 - [lovelace-multiple-entity-row](https://github.com/benct/lovelace-multiple-entity-row)  
   This is a custom row that shows multiple attributes or entities on the same row.
-
-- [lovelace-paper-buttons-row](https://github.com/jcwillox/lovelace-paper-buttons-row)  
-  This is a custom row that shows multiple buttons with icons and actions on the same row.
 
 - [lovelace-slider-entity-row](https://github.com/thomasloven/lovelace-slider-entity-row)  
   This is a slider to adjust numeric values of entities.
