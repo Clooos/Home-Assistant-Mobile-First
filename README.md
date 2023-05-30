@@ -279,6 +279,8 @@ For `footer_sticky_menu:`
 12. Click on `Save` then on `X`. 
 14. You should now have a working header and footer.
 
+*If you have errors please take a look at this link: https://hacs.xyz/docs/faq/status_not_loaded/*
+
 *Please note that the footer need more content to stay at the bottom of the page.*
 
 ## 4. Configuring the other cards and views
