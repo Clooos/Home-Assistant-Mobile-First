@@ -148,15 +148,19 @@ For `header_live_weather_background:`
 # You can change this to 'live' if you want a true live view.
   camera_view: auto
 
-# You will probably need to play with the width to have a perfect crop of your sky.
+# You will probably need to play with these values to have a perfect crop of your sky.
   style: |
     ha-card {
       ...
       width: 1500px;
+      top: 0px;
+      right: 0px;
       ...
 ```
 
-For `header_temperature_graph:`
+For `header_temperature_graph:`  
+This one need you to have `mini-graph-card`.  
+This is optional and you can remove it if you don't use it. 
 ```
 # The temperature sensor you want to show for the header graph.
   - entity: sensor.temperature_interieure
@@ -178,7 +182,7 @@ For `header_main:`
 ```
 
 For `header_conditional_camera:`  
-This one need you to have Frigate and frigate-hass-card.  
+This one need you to have Frigate and `frigate-hass-card`.  
 This is optional and you can remove it if you don't use it.  
 ```
 # Your motion sensor from Frigate.
