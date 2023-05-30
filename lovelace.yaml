@@ -42,7 +42,7 @@ decluttering_templates:
           margin-right: -8px;
           background: none;
           animation: opacity 2s ease-in;
-          border-radius: 0 var(--ha-card-border-radius);
+          border-radius: 0 var(--ha-card-border-radius) 0 0;
         }
         ha-card:after {
           content: '';
