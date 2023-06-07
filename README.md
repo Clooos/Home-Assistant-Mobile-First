@@ -99,7 +99,7 @@ You need to install the following dependencies using HACS (more details below). 
 3. Copy the `icons` folder from the `www` folder to your `www` folder.
 4. Add the following lines to your `configuration.yaml` file:
 
-```
+```yaml
 frontend:
   themes: !include_dir_merge_named themes
   extra_module_url:
@@ -120,7 +120,7 @@ You can use the service `frontend.reload_themes` to refresh it.*
 
 1. First you need to add the following lines to your `configuration.yaml` and translate it to the language you want, then save it and restart Home Assistant.
 
-```
+```yaml
 sensor:
   - platform: template
     sensors:
@@ -141,7 +141,7 @@ sensor:
 10. Edit the following lines to fit your actual configuration:
 
 For `header_live_weather_background:`
-```
+```yaml
 # Your camera for the live weather view.
   camera_image: camera.camera_sonnette_mjpeg
 
@@ -161,13 +161,13 @@ For `header_live_weather_background:`
 For `header_temperature_graph:`  
 *This one need you to have `mini-graph-card`.*  
 *This is optional and you can remove it if you don't use it.* 
-```
+```yaml
 # The temperature sensor you want to show for the header graph.
   - entity: sensor.temperature_interieure
 ```
 
 For `header_main:`
-```
+```yaml
 # You can edit jour_fr (day in french) and date_fr to fit the sensors that you have added before.
   name: '{{ states(''sensor.jour_fr'') }}, {{ states(''sensor.date_fr'') }}'
 
@@ -184,7 +184,7 @@ For `header_main:`
 For `header_conditional_camera:`  
 *This one need you to have Frigate and `frigate-hass-card`.*  
 *This is optional and you can remove it if you don't use it.*  
-```
+```yaml
 # Your motion sensor from Frigate.
   - entity: binary_sensor.sonnette_motion
 
@@ -195,7 +195,7 @@ For `header_conditional_camera:`
 ```
 
 For `footer_sticky_menu:`
-```
+```yaml
 # This is the first icon of the footer, this is where you want to put a toggleable entity for a fast access. 
   I'm using a Mute input_boolean in some of my automations that mute my music, tv, vacuums, tts notifications or anything that can emit sound.
   - entity: input_boolean.mode_silencieux
@@ -213,7 +213,7 @@ For `footer_sticky_menu:`
 
 11. Now add the following lines to your new view  (take a look at the `#` commented lines), this should look like this:
 
-```
+```yaml
   ...
   - theme: noctis
     icon: ''
