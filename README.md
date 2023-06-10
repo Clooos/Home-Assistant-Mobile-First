@@ -197,7 +197,7 @@ For `header_conditional_camera:`
 For `footer_sticky_menu:`
 ```yaml
 # This is the first icon of the footer, this is where you want to put a toggleable entity for a fast access. 
-  I'm using a Mute input_boolean in some of my automations that mute my music, tv, vacuums, tts notifications or anything that can emit sound.
+# I'm using a Mute input_boolean in some of my automations that mute my music, tv, vacuums, tts notifications or anything that can emit sound.
   - entity: input_boolean.mode_silencieux
     layout: icon
     name: Silence
