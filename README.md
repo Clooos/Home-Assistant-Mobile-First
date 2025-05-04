@@ -8,6 +8,15 @@ About three years ago, a friend introduced me to Home Assistant. I was drawn to 
 
 I’m now happy to share my personal setup with the community and hope it inspires you.
 
+<br><br><br><br><br><br>
+
+> [!important]
+> # Hi! This project is no longer maintained. But I’m now working on [Bubble Card](https://github.com/Clooos/Bubble-Card), available on [HACS](https://hacs.xyz/docs/use/download/download/), feel free to check it out!
+
+
+
+<br><br><br><br><br><br>
+
 ## Screenshots and features
 
 ![Header and footer](https://github.com/clooos/Home-Assistant-Mobile-First/blob/master/www/images/Home%20Assistant%20-%20UI%20V4%20-%20Header%20and%20footer.jpg?raw=true)
